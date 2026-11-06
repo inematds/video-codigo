@@ -100,6 +100,7 @@ async function main() {
     page.on('requestfailed',r=>failures.add('Solicitud fallida: '+r.url()));
     const relative=path.relative(root,entryPath).split(path.sep).map(encodeURIComponent).join('/');
     await page.goto(origin+'/'+relative,{waitUntil:'networkidle'});
+    if(failures.size)throw new Error('Erro ao abrir a página (corrija antes de renderizar):\n'+[...failures].join('\n'));
     const spec=await page.evaluate(()=>window.videoSpec||{});
     const overrides={};for(const key of ['width','height','fps','duration'])overrides[key]=Number(o[key]??spec[key]);
     const {width,height,fps,duration}=overrides;

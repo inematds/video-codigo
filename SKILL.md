@@ -1,7 +1,7 @@
 ---
 name: video-codigo
 description: Dirige e produz vídeos feitos com CÓDIGO (HTML, Canvas, SVG → MP4) a partir de uma ideia, documento, pasta, repositório ou site — lançamento, anúncio com vários ganchos, explicativo de produto, série de produtos, venda narrada e aula longa, em 16:9 e 9:16. Antes de tudo pergunta se vai COM VOZ (voz local clonada, sem API) ou SÓ COM MÚSICA; com voz, cada imagem entra no instante da palavra dita. Testa um trecho antes do render inteiro e revisa o MP4. Gatilho: "vídeo com código", "/video-codigo", "vídeo do meu produto sem câmera", "motion graphics do repositório". Não usa Remotion nem HyperFrames.
-compatibility: Roda no computador da pessoa (Claude Code ou Codex). Precisa de Node 20+, Python 3 e FFmpeg; o resto o preparar-entorno.sh instala. Voz: inemavox (Chatterbox + Whisper) com GPU.
+compatibility: Roda no computador da pessoa (Claude Code ou Codex). Precisa de Node 18+, Python 3 e FFmpeg; o resto o preparar-entorno.sh instala. Voz: inemavox (Chatterbox + Whisper) com GPU.
 ---
 
 # Vídeos com código

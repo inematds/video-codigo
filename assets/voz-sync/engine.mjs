@@ -8,7 +8,7 @@ export const T = window.TIEMPOS;
 // ── Tiempos de la voz ──
 export function fr(id) {
   const f = T.frases.find(x => x.id === id);
-  if (!f) throw new Error('No existe la frase ' + id);
+  if (!f) throw new Error('Não existe a frase ' + id + ' no roteiro');
   return f;
 }
 export const ini = id => fr(id).inicio;
@@ -17,12 +17,12 @@ const norm = s => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').repla
 // Instante en que se dice la palabra `w` (empieza por) dentro de la frase `id`; `n` = qué aparición.
 export function pal(id, w, n = 0) {
   const m = T.palabras.filter(p => p.frase === id && norm(p.texto).startsWith(norm(w)));
-  if (!m[n]) throw new Error(`No encuentro «${w}» en ${id}`);
+  if (!m[n]) throw new Error(`Não encontrei «${w}» na frase ${id} do roteiro`);
   return m[n].inicio;
 }
 export const palFin = (id, w, n = 0) => {
   const m = T.palabras.filter(p => p.frase === id && norm(p.texto).startsWith(norm(w)));
-  if (!m[n]) throw new Error(`No encuentro «${w}» en ${id}`);
+  if (!m[n]) throw new Error(`Não encontrei «${w}» na frase ${id} do roteiro`);
   return m[n].fin;
 };
 export const bloque = id => T.bloques.find(b => b.id === id);

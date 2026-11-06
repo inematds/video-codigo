@@ -57,12 +57,23 @@ Pré-requisitos: Node 18+, Python 3 com `numpy` e Pillow, FFmpeg. **Voz (opciona
 `venv` dele; a voz de referência é um `.wav` de 10–20 s (`"voz": "/caminho/minha-voz.wav"` no roteiro). Sem voz, a
 skill funciona só com música.
 
+```bash
+# voz local (testado: Python 3.11, chatterbox-tts 0.1.6, GPU NVIDIA)
+git clone https://github.com/inematds/inemavox ~/projetos/inemavox
+conda create -n chatterbox python=3.11 -y
+~/miniconda3/envs/chatterbox/bin/pip install chatterbox-tts==0.1.6
+cd ~/projetos/inemavox && python3 -m venv venv && venv/bin/pip install faster-whisper soundfile numpy
+```
+
+Teste rápido da instalação (sem voz, ~1 min):
+`cd ~/projetos/video-codigo/exemplos/lancamento && node ../../scripts/render-video.mjs --project . --output teste.mp4 --audio audio/lancamento/mezcla.wav`
+
 ## Exemplos (feitos com o próprio kit)
 
 | Exemplo | Tipo | Arquivos |
 |---|---|---|
-| Este vídeo não tem câmera | explicativo narrado (voz local), 44 s | `exemplos/explicativo-narrado/` · `renders/explicativo-16x9.mp4` · `renders/explicativo-9x16.mp4` |
-| INEMA.CLUB em um plano | lançamento só com música, 21 s | `exemplos/lancamento/` · `renders/lancamento-16x9.mp4` · `renders/lancamento-9x16.mp4` |
+| Este vídeo não tem câmera | explicativo narrado (voz local), 44 s | `exemplos/explicativo-narrado/` · `renders/explicativo-16x9.mp4` · `renders/explicativo-9x16.mp4` · [YouTube](https://www.youtube.com/watch?v=tkT2I6nrMAk) |
+| INEMA.CLUB em um plano | lançamento só com música, 21 s | `exemplos/lancamento/` · `renders/lancamento-16x9.mp4` · `renders/lancamento-9x16.mp4` · [YouTube](https://www.youtube.com/watch?v=IJ-qZQ1drBc) |
 
 Para refazer um exemplo: `cd exemplos/lancamento && node ../../scripts/render-video.mjs --project . --output x.mp4 --audio audio/lancamento/mezcla.wav`.
 

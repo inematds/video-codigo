@@ -150,7 +150,7 @@
   <p class="sub">A skill pergunta o que importa, propõe a direção, testa um trecho e só depois renderiza o vídeo inteiro.</p>
   <figure style="margin:0 0 26px;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:0 30px 80px -30px #000"><img src="assets/banner-grade.jpg" alt="Os seis tipos de vídeo: lançamento, anúncio com ganchos, explicativo, série de produtos, voz local, 16:9 e 9:16" loading="lazy" style="width:100%;display:block"></figure>
   <div class="grid g3">
-    <div class="card"><h3>🎬 Seis tipos de vídeo</h3><p>Filme de lançamento, anúncio com vários ganchos, explicativo de produto, série de produtos com o mesmo visual, venda narrada e aula longa.</p></div>
+    <div class="card"><h3>🎬 Vários tipos de vídeo</h3><p>A skill sabe dirigir lançamento, anúncio com vários ganchos, explicativo de produto, série com o mesmo visual, venda narrada e aula longa. Já vêm dois prontos para copiar: um explicativo narrado e um lançamento só com música.</p></div>
     <div class="card"><h3>🎙️ Voz presa à palavra</h3><p><code>scripts/voz.py</code> gera a narração com a sua voz clonada e mede o tempo de cada palavra. No HTML, <code>pal('frase', 'palavra')</code> diz quando cada coisa entra.</p></div>
     <div class="card"><h3>📐 16:9 e 9:16 juntos</h3><p>O mesmo projeto se recompõe por formato. Um render para o YouTube, outro para Reels, Shorts e TikTok.</p></div>
   </div>
@@ -183,12 +183,17 @@
   <div class="grid g3">
     <div class="card"><h3>Node, Python e FFmpeg</h3><p>Node 18 ou mais novo, Python 3 com numpy e Pillow, FFmpeg no PATH.</p><pre><span class="c"># conferir</span>
 node -v && python3 -V && ffmpeg -version | head -1</pre></div>
-    <div class="card"><h3>Playwright + Chromium</h3><p>Um navegador sem janela, controlado por script, que tira a foto de cada quadro do vídeo. Vai para <code>~/.cache</code>.</p><pre><span class="c"># instala sozinho</span>
-bash scripts/preparar-entorno.sh</pre></div>
+    <div class="card"><h3>Playwright + Chromium</h3><p>Um navegador sem janela, controlado por script, que tira a foto de cada quadro do vídeo. Vai para <code>~/.cache</code>.</p><pre><span class="c"># o instalar.sh (passo 1) já roda isto</span>
+bash ~/projetos/video-codigo/scripts/preparar-entorno.sh</pre></div>
     <div class="card"><h3>Voz (opcional, precisa de GPU NVIDIA)</h3><p>A voz usa o <a href="https://github.com/inematds/inemavox" target="_blank" rel="noopener">inemavox</a> instalado em <code>~/projetos/inemavox</code>: o <b>Chatterbox</b> (modelo que fala com uma voz copiada de uma gravação, a "voz clonada") e o <b>Whisper</b> (modelo que ouve o áudio e marca o tempo de cada palavra). Você também precisa de uma gravação limpa de 10–20 s da sua voz em <code>.wav</code>. Sem GPU ou sem o inemavox, faça vídeos só com música.</p><pre><span class="c"># os três precisam existir</span>
 ls ~/miniconda3/envs/chatterbox/bin/python3 \
    ~/projetos/inemavox/chatterbox_tts_worker.py \
-   ~/projetos/inemavox/venv/bin/python</pre></div>
+   ~/projetos/inemavox/venv/bin/python
+<span class="c"># instalar (testado: Python 3.11, chatterbox-tts 0.1.6)</span>
+git clone https://github.com/inematds/inemavox ~/projetos/inemavox
+conda create -n chatterbox python=3.11 -y
+~/miniconda3/envs/chatterbox/bin/pip install chatterbox-tts==0.1.6
+cd ~/projetos/inemavox && python3 -m venv venv && venv/bin/pip install faster-whisper soundfile numpy</pre></div>
   </div>
 </div></section>
 
@@ -204,12 +209,21 @@ ls ~/miniconda3/envs/chatterbox/bin/python3 \
     <p>Clona o repositório, liga a skill no Claude Code e no Codex e instala o navegador do render.</p>
 <pre><span class="k">git clone https://github.com/inematds/video-codigo ~/projetos/video-codigo</span>
 <span class="k">bash ~/projetos/video-codigo/instalar.sh</span>  <span class="c"># ✓ skill em ~/.claude/skills/video-codigo</span></pre>
+    <p>Teste a instalação renderizando o exemplo pronto (não precisa de voz nem de GPU; leva cerca de 1 minuto):</p>
+<pre><span class="k">cd ~/projetos/video-codigo/exemplos/lancamento && node ../../scripts/render-video.mjs --project . --output teste.mp4 --audio audio/lancamento/mezcla.wav</span></pre>
   </div></div>
 
   <div class="step"><div class="b">2</div><div>
     <h3>Peça o vídeo</h3>
     <p>Diga o assunto e, se tiver, onde está o material. O agente faz as três perguntas que faltarem. Para narrar com a sua voz, diga onde está a gravação <code>.wav</code>.</p>
 <pre><span class="k">/video-codigo</span> <span class="s">faz um vídeo de 40 s do meu app, lê a pasta ~/projetos/meu-app, narrado com a voz de ~/minha-voz.wav, estilo INEMA</span></pre>
+  </div></div>
+
+  <div class="step"><div class="b">↷</div><div>
+    <h3>Sem voz? Pule para a música</h3>
+    <p>Sem narração, o relógio é a música e você não precisa de roteiro nem de GPU. Copie o exemplo de lançamento, gere a música com a duração que quiser (<code>--duracao</code>) e troque, no <code>index.html</code>, os textos de <code>SEG</code> e os estados da forma em <code>S</code> (cada um tem o segundo em que acontece). Depois vá direto ao passo 7.</p>
+<pre><span class="k">cp -r $K/exemplos/lancamento/{index.html,motion.mjs,inema} $P/</span>
+<span class="k">python3 $K/scripts/mezcla.py --projeto $P --id meuapp --duracao 21 --musica energica --lufs -14</span></pre>
   </div></div>
 
   <div class="step"><div class="b">3</div><div>
@@ -224,19 +238,19 @@ ls ~/miniconda3/envs/chatterbox/bin/python3 \
 
   <div class="step"><div class="b">4</div><div>
     <h3>Gere a voz com o tempo de cada palavra</h3>
-    <p>Roda no seu computador. Sai <code>voz.wav</code> e <code>tiempos.js</code>; frase abaixo de 80% de semelhança é refeita sozinha.</p>
+    <p>Roda no seu computador. Sai <code>$P/voz/meuapp/voz.wav</code> e <code>$P/voz/meuapp/tiempos.js</code> (o tempo de cada palavra); frase abaixo de 80% de semelhança é refeita sozinha.</p>
 <pre><span class="k">python3 $K/scripts/voz.py --projeto $P $P/roteiro.json</span>  <span class="c"># ex.: meuapp: 41.9 s · 12 frases · 107 palavras</span></pre>
   </div></div>
 
   <div class="step"><div class="b">5</div><div>
     <h3>Música por baixo</h3>
-    <p>Música original sintetizada (<code>energica</code> 120 BPM, <code>tranquila</code> 84 BPM, ou <code>--pista</code> com a sua música), 24 dB abaixo da voz enquanto se fala. <code>--lufs -14</code> é o volume que YouTube e Instagram esperam. Sem voz, passe <code>--duracao</code> em segundos.</p>
+    <p>Música original sintetizada (<code>energica</code>, 120 batidas por minuto; <code>tranquila</code>, 84; ou <code>--pista</code> com a sua música), 24 dB abaixo da voz enquanto se fala. <code>--lufs -14</code> deixa o volume final no nível que YouTube e Instagram usam (assim a plataforma não abaixa nem estoura o som). Sem voz, passe <code>--duracao</code> em segundos.</p>
 <pre><span class="k">python3 $K/scripts/mezcla.py --projeto $P --id meuapp --musica tranquila --lufs -14</span>  <span class="c"># → $P/audio/meuapp/mezcla.wav</span></pre>
   </div></div>
 
   <div class="step"><div class="b">6</div><div>
     <h3>Cenas presas à fala</h3>
-    <p>Parta do exemplo narrado: ele já traz o tema, o motor de tempo e o esqueleto (<code>videoSpec</code>, <code>seek</code>, <code>renderReady</code>). Troque o texto das cenas e os <code>id</code> das frases pelos do seu roteiro. Cada elemento entra quando a palavra é dita.</p>
+    <p>Parta do exemplo narrado: ele já traz o tema, o motor de tempo e o esqueleto que o render usa (<code>videoSpec</code> = tamanho e duração, <code>seek(t)</code> = desenha o instante <code>t</code>, <code>renderReady</code> = avisa quando fontes e imagens carregaram). Troque o texto das cenas e, em todo <code>pal('frase', 'palavra')</code>, <code>ini('frase')</code> e <code>data-in</code>, os <code>id</code> e palavras pelos do seu roteiro. Se sobrar algum do exemplo, o render para e diz qual: <code>Não encontrei «câmera» na frase hook do roteiro</code>.</p>
 <pre><span class="k">cp -r $K/exemplos/explicativo-narrado/{index.html,engine.mjs,motion.mjs,declarativo.mjs,inema} $P/</span>
 <span class="k">cp $P/voz/meuapp/tiempos.js $P/</span>   <span class="c"># os tempos da sua voz</span></pre>
 <pre>&lt;h1 data-in="hook"&gt;Só código.&lt;/h1&gt;
@@ -245,9 +259,9 @@ ls ~/miniconda3/envs/chatterbox/bin/python3 \
 
   <div class="step"><div class="b">7</div><div>
     <h3>Prova antes do render inteiro</h3>
-    <p>Tire quadros soltos nos momentos difíceis, nos dois formatos, e olhe antes de gastar tempo com o vídeo todo.</p>
-<pre><span class="k">node $K/scripts/render-video.mjs --project $P --output $P/prova.png --still 7.5</span>
-<span class="k">node $K/scripts/render-video.mjs --project $P --output $P/prova-v.png --still 7.5 --width 1080 --height 1920</span></pre>
+    <p>Tire quadros soltos nos momentos difíceis, nos dois formatos, e olhe antes de gastar tempo com o vídeo todo. <code>--still</code> é o segundo do vídeo (tem que estar dentro da duração; num roteiro de 5 s, use 2 ou 3).</p>
+<pre><span class="k">node $K/scripts/render-video.mjs --project $P --output $P/prova.png --still 2</span>
+<span class="k">node $K/scripts/render-video.mjs --project $P --output $P/prova-v.png --still 2 --width 1080 --height 1920</span></pre>
   </div></div>
 
   <div class="step"><div class="b">8</div><div>
@@ -265,8 +279,8 @@ ls ~/miniconda3/envs/chatterbox/bin/python3 \
   <p class="sub">Código, roteiro e áudio de cada um estão em <a href="https://github.com/inematds/video-codigo/tree/main/exemplos" target="_blank" rel="noopener"><code>exemplos/</code></a>. Nenhum quadro foi filmado. O primeiro sucesso mais rápido, sem voz nem GPU: renderize o exemplo de lançamento.</p>
 <pre><span class="k">cd $K/exemplos/lancamento && node ../../scripts/render-video.mjs --project . --output teste.mp4 --audio audio/lancamento/mezcla.wav</span></pre>
   <div class="ex">
-    <figure><video controls preload="none" playsinline poster="assets/explicativo-16x9.jpg" src="../renders/explicativo-16x9.mp4" style="width:100%;display:block"></video><figcaption><b>Explicativo narrado</b> (44 s) — voz local do Nei; código digitando, marcas de tempo de cada palavra e o quadro 16:9 virando 9:16 na palavra certa. <a href="../renders/explicativo-9x16.mp4">versão 9:16</a></figcaption></figure>
-    <figure><video controls preload="none" playsinline poster="assets/lancamento-16x9.jpg" src="../renders/lancamento-16x9.mp4" style="width:100%;display:block"></video><figcaption><b>Lançamento só com música</b> (21 s) — um plano só: a mesma forma vira curso, guia, vídeo, kit, comunidade e o ponto do INEMA.CLUB. <a href="../renders/lancamento-9x16.mp4">versão 9:16</a></figcaption></figure>
+    <figure><video controls preload="none" playsinline poster="assets/explicativo-16x9.jpg" src="../renders/explicativo-16x9.mp4" style="width:100%;display:block"></video><figcaption><b>Explicativo narrado</b> (44 s) — voz local do Nei; código digitando, marcas de tempo de cada palavra e o quadro 16:9 virando 9:16 na palavra certa. <a href="../renders/explicativo-9x16.mp4">versão 9:16</a> · <a href="https://www.youtube.com/watch?v=tkT2I6nrMAk" target="_blank" rel="noopener">YouTube</a></figcaption></figure>
+    <figure><video controls preload="none" playsinline poster="assets/lancamento-16x9.jpg" src="../renders/lancamento-16x9.mp4" style="width:100%;display:block"></video><figcaption><b>Lançamento só com música</b> (21 s) — um plano só: a mesma forma vira curso, guia, vídeo, kit, comunidade e o ponto do INEMA.CLUB. <a href="../renders/lancamento-9x16.mp4">versão 9:16</a> · <a href="https://www.youtube.com/watch?v=IJ-qZQ1drBc" target="_blank" rel="noopener">YouTube</a></figcaption></figure>
   </div>
 </div></section>
 
@@ -275,8 +289,8 @@ ls ~/miniconda3/envs/chatterbox/bin/python3 \
   <h2>O que já existe e o que vem</h2>
   <p class="sub">Feito = está no repositório e foi usado nos exemplos.</p>
   <div class="phase"><div class="tag">Feito</div><div class="d"><strong>Skill, voz local e tema INEMA</strong><span>SKILL.md e referências em português, voz.py com Chatterbox + Whisper, tema com fontes locais, dois exemplos em 16:9 e 9:16.</span></div></div>
-  <div class="phase"><div class="tag">Próximo</div><div class="d"><strong>Anúncio com vários ganchos</strong><span>Um exemplo com o mesmo corpo e cinco aberturas diferentes, para testar qual gancho funciona.</span></div></div>
-  <div class="phase"><div class="tag">Depois</div><div class="d"><strong>Série de produtos</strong><span>Um vídeo por produto com o mesmo visual, a partir de uma lista.</span></div></div>
+  <div class="phase"><div class="tag">Próximo</div><div class="d"><strong>Exemplo pronto de anúncio com vários ganchos</strong><span>A skill já sabe fazer; falta um exemplo renderizado com o mesmo corpo e cinco aberturas diferentes.</span></div></div>
+  <div class="phase"><div class="tag">Depois</div><div class="d"><strong>Exemplo pronto de série de produtos</strong><span>Um vídeo por produto com o mesmo visual, a partir de uma lista.</span></div></div>
 </div></section>
 
 <footer>
