@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es"><meta charset="utf-8"><title>Estudio de transformación</title>
+<style>html,body{margin:0;overflow:hidden;background:#f1eee6}canvas{display:block}</style>
+<canvas id="stage"></canvas>
+<script type="module">
+import {clamp,track,morphBox,camera} from './motion.mjs';
+// Example mechanism, not a finished style: one form -> chart -> result.
+window.videoSpec={width:1080,height:1920,fps:60,duration:6};
+const c=document.querySelector('canvas'),g=c.getContext('2d');
+const type={frequency:2.8,damping:1};
+function rr(x,y,w,h,r){g.beginPath();g.roundRect(x,y,w,h,r);}
+window.seek=t=>{
+ const {width:w,height:h}=window.videoSpec;c.width=w;c.height=h;
+ const portrait=h>=w,scale=Math.min(w/(portrait?720:1200),h/(portrait?1000:720));g.fillStyle='#f1eee6';g.fillRect(0,0,w,h);
+ g.save();camera(g,{x:0,y:0,zoom:scale*track(t,[[0,1],[.85,1.12],[3.4,1],[4.55,.93]],{damping:1})},w,h);
+ const b=morphBox(t,[{t:0,x:-90,y:-40,w:180,h:80,r:40},{t:.65,x:-250,y:-170,w:500,h:340,r:30},{t:3.4,x:-190,y:-105,w:380,h:210,r:32}],type);
+ g.fillStyle='#203d31';rr(b.x,b.y,b.w,b.h,b.r);g.fill();
+ g.save();rr(b.x,b.y,b.w,b.h,b.r);g.clip();
+ const chart=clamp((t-1)/.25)*clamp((3.4-t)/.22);g.globalAlpha=chart;
+ const values=[.34,.7,.5,.95];
+ for(let i=0;i<4;i++){const bh=values[i]*190*track(t,[[0,0],[1+i*.18,1]],type);g.fillStyle=i===3?'#e8efac':'#8cad94';rr(-178+i*99,104-bh,58,bh,12);g.fill();}
+ g.globalAlpha=clamp((t-3.75)/.3);g.strokeStyle='#e8efac';g.lineWidth=10;g.lineCap='round';
+ g.beginPath();g.moveTo(-115,0);g.lineTo(-93,23);g.lineTo(-53,-27);g.stroke();
+ g.fillStyle='#ffffff';g.font='bold 35px sans-serif';g.fillText('Conectado',-23,12);
+ g.restore();g.fillStyle='#203d31';g.textAlign='center';g.font='bold 48px sans-serif';
+ const headline=t<3.5?'De partes a una idea.':'Una acción. Un resultado.';
+ const ha=clamp(t/.15);g.globalAlpha=ha;g.fillText(headline,0,-280);
+ g.globalAlpha=clamp((t-4.5)/.3);g.font='25px sans-serif';g.fillText('Transformación ilustrativa',0,230);g.restore();
+};
+window.renderReady=document.fonts.ready.then(()=>window.seek(0));
+</script></html>

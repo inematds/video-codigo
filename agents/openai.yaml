@@ -1,0 +1,8 @@
+interface:
+  display_name: Vídeos com código
+  short_description: Dirige, anima e revisa vídeos feitos com código, com voz local sincronizada
+  default_prompt: Use $video-codigo para estudar este projeto e as referências, propor uma direção e produzir uma prova de movimento e som antes do vídeo completo.
+  icon_small: assets/icon.svg
+  icon_large: assets/icon.svg
+policy:
+  allow_implicit_invocation: true

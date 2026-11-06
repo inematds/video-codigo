@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>video-codigo — videos hechos con código</title>
+<meta name="description" content="Skill para Claude Code y Codex que crea videos sin cámara: cada fotograma en código, voz local sincronizada con cada palabra, 16:9 y 9:16.">
+<link rel="alternate" hreflang="pt-BR" href="https://inematds.github.io/video-codigo/guia/">
+<link rel="alternate" hreflang="en" href="https://inematds.github.io/video-codigo/guia/en/">
+<link rel="alternate" hreflang="es" href="https://inematds.github.io/video-codigo/guia/es/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0c0c10; --bg2:#14141b; --card:#16161e; --line:#272730;
+    --txt:#e9e9ee; --mut:#9a9aa6; --amb:#FACC15; --amb2:#f0c070; --sky:#38bdf8; --pro:#cbd5e1;
+    color-scheme:dark;
+  }
+  body.light{
+    --bg:#f6f7f9; --bg2:#eceef2; --card:#ffffff; --line:#e1e3ea;
+    --txt:#1a1a22; --mut:#5b5b68; --amb:#a16207; --amb2:#a16207; --sky:#0369a1; --pro:#b45309;
+    color-scheme:light;
+  }
+  body.light .hero .glow{opacity:.5}
+  body.light pre{background:#0e0e14;color:#d6d6e0}
+  body.light pre .c{color:#8a8a98}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--txt);font:16px/1.65 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:Sora,sans-serif;line-height:1.15;margin:0}
+  a{color:var(--amb);text-decoration:none}
+  code,pre{font-family:"JetBrains Mono",monospace}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 22px}
+  .mut{color:var(--mut)} .amb{color:var(--amb)}
+  .chip{display:inline-block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--amb);font-weight:600;font-family:Sora}
+  nav{position:sticky;top:0;z-index:30;backdrop-filter:blur(12px);background:rgba(12,12,16,.78);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;align-items:center;gap:22px;height:60px}
+  nav .brand{display:flex;align-items:center;gap:8px;font-family:Sora;font-weight:800;letter-spacing:-.02em;color:var(--amb)}
+  nav .brand .emoji{font-size:1.25rem}
+  nav .sep{color:var(--mut);opacity:.45}
+  nav .inema{color:var(--sky);font-weight:600;font-size:.88rem;font-family:Sora}
+  nav .inema:hover{filter:brightness(1.15)}
+  nav .pro{color:var(--pro);font-weight:600;font-size:.88rem;font-family:Sora}
+  nav .pro:hover{filter:brightness(1.15)}
+  nav .clubpro{display:inline-flex;align-items:center;gap:6px}
+  nav .links{margin-left:auto;display:flex;align-items:center;gap:20px;font-size:.92rem}
+  nav .links a.sec{color:var(--mut)} nav .links a.sec:hover{color:var(--txt)}
+  .lang{display:inline-flex;gap:2px;font-family:Sora;font-size:.78rem}
+  .lang a{color:var(--mut);padding:.2em .45em;border-radius:6px} .lang a.on{color:var(--amb);background:rgba(226,162,59,.12)}
+  .tgl{background:var(--bg2);border:1px solid var(--line);color:var(--txt);width:38px;height:38px;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;font-size:1.05rem}
+  .tgl:hover{border-color:var(--amb)}
+  .btn{display:inline-block;background:var(--amb);color:#1a1206;font-weight:600;padding:.6em 1.05em;border-radius:10px;font-family:Sora}
+  .btn.ghost{background:transparent;color:var(--txt);border:1px solid var(--line)}
+  @media(max-width:760px){nav .links a.sec{display:none}}
+  @media(max-width:520px){nav .wrap{gap:8px;padding:8px 14px;height:auto;flex-wrap:wrap} nav .links{gap:8px;margin-left:0;width:100%;justify-content:space-between} nav .btn{padding:.45em .7em;font-size:.82rem} .tgl{width:34px;height:34px}}
+  .hero{position:relative;overflow:hidden;border-bottom:1px solid var(--line)}
+  .hero .glow{position:absolute;inset:-40% -20% auto auto;width:70%;height:600px;background:radial-gradient(closest-side,rgba(226,162,59,.22),transparent 70%);pointer-events:none}
+  .hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;padding:74px 22px}
+  .hero h1{font-size:clamp(2.2rem,5vw,3.5rem);font-weight:800;letter-spacing:-.025em}
+  .hero p.lead{font-size:1.18rem;color:var(--mut);margin:1.1em 0 1.6em;max-width:34ch}
+  .hero .cta{display:flex;gap:12px;flex-wrap:wrap}
+  .hero figure{margin:0;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:0 30px 80px -30px #000}
+  .hero figure img{width:100%;height:auto;display:block}
+  .resumo{padding:38px 0 34px;border-bottom:1px solid var(--line)}
+  .resumo p{font-size:1.12rem;line-height:1.7;max-width:74ch;margin:.55em 0 0}
+  @media(max-width:780px){.hero .wrap{grid-template-columns:1fr;padding:48px 22px}}
+  section{padding:62px 0;border-bottom:1px solid var(--line)}
+  section h2{font-size:clamp(1.5rem,3.4vw,2.1rem);font-weight:800;letter-spacing:-.02em}
+  section .sub{color:var(--mut);margin:.6em 0 2em;max-width:62ch}
+  .grid{display:grid;gap:16px}
+  .g3{grid-template-columns:repeat(3,1fr)} .g4{grid-template-columns:repeat(4,1fr)} .g2{grid-template-columns:repeat(2,1fr)}
+  @media(max-width:820px){.g3,.g4{grid-template-columns:1fr 1fr}}
+  @media(max-width:540px){.g2,.g3,.g4{grid-template-columns:1fr}}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+  .card h3{font-size:1.05rem;margin-bottom:.4em}
+  .card p{color:var(--mut);font-size:.92rem;margin:0}
+  .num{display:inline-flex;width:30px;height:30px;align-items:center;justify-content:center;border-radius:8px;background:rgba(226,162,59,.14);color:var(--amb);font-family:Sora;font-weight:800;font-size:.9rem;margin-bottom:.7em}
+  .flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+  .flow span{background:var(--bg2);border:1px solid var(--line);border-radius:999px;padding:.45em .9em;font-size:.85rem;font-family:Sora;font-weight:600}
+  .flow .arr{color:var(--amb);border:none;background:none;padding:0 .1em}
+  pre{background:#0a0a0e;border:1px solid var(--line);border-radius:12px;padding:16px 18px;overflow:auto;font-size:.86rem;line-height:1.6;color:#d6d6e0}
+  pre .c{color:#6f6f7c} pre .k{color:var(--amb2)} pre .s{color:#9ece6a}
+  .step{display:grid;grid-template-columns:46px minmax(0,1fr);gap:16px;margin-bottom:26px}
+  .step>div,.card{min-width:0}
+  p code,li code,td code{overflow-wrap:anywhere}
+  .step .b{width:46px;height:46px;border-radius:12px;background:var(--amb);color:#1a1206;font-family:Sora;font-weight:800;font-size:1.25rem;display:flex;align-items:center;justify-content:center}
+  .step h3{font-size:1.12rem;margin-bottom:.3em}
+  .step p{color:var(--mut);margin:.2em 0 .7em}
+  .ex{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:680px){.ex{grid-template-columns:1fr}}
+  .ex figure{margin:0;border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+  .ex figure img{width:100%;height:auto;display:block}
+  .ex figcaption{padding:12px 14px;font-size:.88rem;color:var(--mut);background:var(--card)}
+  .phase{display:flex;gap:14px;padding:16px 0;border-bottom:1px solid var(--line)}
+  .phase:last-child{border:none}
+  .phase .tag{flex:0 0 92px;font-family:Sora;font-weight:800;color:var(--amb)}
+  .phase .d strong{display:block;margin-bottom:.2em}
+  .phase .d span{color:var(--mut);font-size:.92rem}
+  footer{padding:46px 0;text-align:center;color:var(--mut);font-size:.9rem}
+  .pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:.3em .8em;font-size:.78rem;color:var(--mut);margin:0 4px}
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <a class="brand" href="#top"><span class="emoji">🎬</span> video-codigo</a>
+  <span class="sep">|</span>
+  <span class="clubpro">
+    <a class="inema" href="https://inema.club" target="_blank" rel="noopener">INEMA.CLUB</a>
+    <span class="sep">-</span>
+    <a class="pro" href="https://inema.pro" target="_blank" rel="noopener">PRO</a>
+  </span>
+  <div class="links">
+    <a class="sec" href="#oque">Qué es</a>
+    <a class="sec" href="#fluxo">Cómo funciona</a>
+    <a class="sec" href="#guia">Guía de uso</a>
+    <a class="sec" href="#exemplos">Ejemplos</a>
+    <a class="sec" href="#roadmap">Próximos pasos</a>
+    <span class="lang"><a href="../">PT</a><a href="../en/">EN</a><a class="on" href="./">ES</a></span>
+    <button class="tgl" id="themeToggle" aria-label="Cambiar tema" title="Cambiar tema">🌙</button>
+    <a class="btn" href="https://github.com/inematds/video-codigo" target="_blank" rel="noopener">GitHub</a>
+  </div>
+</div></nav>
+
+<header class="hero" id="top">
+  <div class="glow"></div>
+  <div class="wrap">
+    <div>
+      <span class="chip">Skill para Claude Code y Codex</span>
+      <h1>Video de tu producto, hecho con <span class="amb">código</span></h1>
+      <p class="lead">Respondes tres preguntas y el agente escribe cada fotograma en HTML, renderiza el MP4 en 16:9 y 9:16 y, si quieres narración, sincroniza cada imagen con la palabra que está diciendo tu voz.</p>
+      <div class="cta">
+        <a class="btn" href="#guia">Empezar la guía</a>
+        <a class="btn ghost" href="https://github.com/inematds/video-codigo" target="_blank" rel="noopener">Ver en GitHub</a>
+      </div>
+    </div>
+    <figure><img src="../assets/banner-es.jpg" alt="Banner: video con código, tu producto en video sin cámara ni editor"></figure>
+  </div>
+</header>
+
+<section id="resumo" class="resumo"><div class="wrap">
+  <span class="chip">En resumen</span>
+  <p>video-codigo es una skill (un paquete de instrucciones y scripts) para Claude Code y Codex, los agentes de código de Anthropic y OpenAI, que crea videos sin cámara ni editor: cada fotograma se escribe en código (HTML, Canvas o SVG) y se convierte en MP4. Sirve para quien quiere mostrar un producto, un proyecto o una idea en video: lanzamiento, anuncio, explicativo o clase. Si el video lleva narración, la voz se genera en tu computadora, sin pagar por voz, y cada imagen aparece en el instante en que se pronuncia la palabra. Para usarlo, necesitas Node, Python y FFmpeg; para la voz, inemavox con GPU NVIDIA (sin ella, el video sale solo con música).</p>
+</div></section>
+
+<section id="oque"><div class="wrap">
+  <span class="chip">Qué es</span>
+  <h2>Un director de video dentro de tu agente</h2>
+  <p class="sub">La skill pregunta lo que importa, propone la dirección, prueba un fragmento y solo después renderiza el video completo.</p>
+  <figure style="margin:0 0 26px;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:0 30px 80px -30px #000"><img src="../assets/banner-grade-es.jpg" alt="Los seis tipos de video: lanzamiento, anuncio con ganchos, explicativo, serie de productos, voz local, 16:9 y 9:16" loading="lazy" style="width:100%;display:block"></figure>
+  <div class="grid g3">
+    <div class="card"><h3>🎬 Seis tipos de video</h3><p>Video de lanzamiento, anuncio con varios ganchos, explicativo de producto, serie de productos con el mismo estilo visual, venta narrada y clase larga.</p></div>
+    <div class="card"><h3>🎙️ Voz sincronizada con cada palabra</h3><p><code>scripts/voz.py</code> genera la narración con tu voz clonada y mide el tiempo de cada palabra. En HTML, <code>pal('frase', 'palavra')</code> indica cuándo aparece cada cosa.</p></div>
+    <div class="card"><h3>📐 16:9 y 9:16 juntos</h3><p>El mismo proyecto se adapta a cada formato. Un render para YouTube y otro para Reels, Shorts y TikTok.</p></div>
+  </div>
+</div></section>
+
+<section id="fluxo"><div class="wrap">
+  <span class="chip">Cómo funciona</span>
+  <h2>De la solicitud al MP4</h2>
+  <p class="sub">Con voz, el reloj del video es el habla. Sin voz, es la música.</p>
+  <div class="flow">
+    <span>3 preguntas</span><span class="arr">→</span>
+    <span>roteiro.json</span><span class="arr">→</span>
+    <span>voz.wav + tiempos</span><span class="arr">→</span>
+    <span>escenas en HTML</span><span class="arr">→</span>
+    <span>prueba de 5 s</span><span class="arr">→</span>
+    <span>MP4 16:9 y 9:16</span><span class="arr">→</span>
+    <span>revisión</span>
+  </div>
+  <div class="grid g3" style="margin-top:26px">
+    <div class="card"><h3>1 · Las preguntas</h3><p><b>¿De qué se trata y para quién?</b> (puede ser una carpeta, un repositorio o un sitio web para leer) · <b>¿Con voz o solo música?</b> · <b>¿Qué estilo?</b>: el estándar INEMA o un video de referencia.</p></div>
+    <div class="card"><h3>2 · La voz</h3><p>Chatterbox dice cada frase con la voz clonada; Whisper escucha, verifica y marca el tiempo de cada palabra. Las frases que salen mal se generan de nuevo.</p></div>
+    <div class="card"><h3>3 · El renderizado</h3><p>Un navegador sin ventana abre la página, solicita el fotograma de cada instante (<code>window.seek(t)</code>) y FFmpeg lo une todo con el audio. Sin conexión: las fuentes y las imágenes están en el proyecto.</p></div>
+  </div>
+</div></section>
+
+<section id="pre"><div class="wrap">
+  <span class="chip">Requisitos previos</span>
+  <h2>Qué debe estar instalado en la máquina</h2>
+  <p class="sub">El instalador comprueba e instala lo que falta, sin sudo.</p>
+  <div class="grid g3">
+    <div class="card"><h3>Node, Python y FFmpeg</h3><p>Node 18 o posterior, Python 3 con numpy y Pillow, FFmpeg en PATH.</p><pre><span class="c"># comprobar</span>
+node -v && python3 -V && ffmpeg -version | head -1</pre></div>
+    <div class="card"><h3>Playwright + Chromium</h3><p>Un navegador sin ventana, controlado por un script, que captura cada fotograma del video. Se instala en <code>~/.cache</code>.</p><pre><span class="c"># se instala automáticamente</span>
+bash scripts/preparar-entorno.sh</pre></div>
+    <div class="card"><h3>Voz (opcional, requiere GPU NVIDIA)</h3><p>La voz usa <a href="https://github.com/inematds/inemavox" target="_blank" rel="noopener">inemavox</a> instalado en <code>~/projetos/inemavox</code>: <b>Chatterbox</b> (modelo que habla con una voz copiada de una grabación, la «voz clonada») y <b>Whisper</b> (modelo que escucha el audio y marca el tiempo de cada palabra). También necesitas una grabación limpia de 10–20 s de tu voz en <code>.wav</code>. Sin GPU o sin inemavox, crea videos solo con música.</p><pre><span class="c"># los tres deben existir</span>
+ls ~/miniconda3/envs/chatterbox/bin/python3 \
+   ~/projetos/inemavox/chatterbox_tts_worker.py \
+   ~/projetos/inemavox/venv/bin/python</pre></div>
+  </div>
+</div></section>
+
+<section id="guia"><div class="wrap">
+  <span class="chip">Guía de uso · paso a paso</span>
+  <h2>Tu primer video con código</h2>
+  <p class="sub">Lo habitual es pedírselo al agente. Los comandos de abajo son los que ejecuta y te sirven para repetir cualquier etapa a mano. En ellos, <code>$K</code> es la carpeta del kit y <code>$P</code> es la carpeta de tu video:</p>
+<pre><span class="k">K=~/projetos/video-codigo</span>                      <span class="c"># dónde se clonó el kit</span>
+<span class="k">P=~/videos/trabalho/2026-11-06-meuapp</span>         <span class="c"># una carpeta por video</span></pre>
+
+  <div class="step"><div class="b">1</div><div>
+    <h3>Instala la skill</h3>
+    <p>Clona el repositorio, activa la skill en Claude Code y Codex e instala el navegador para el renderizado.</p>
+<pre><span class="k">git clone https://github.com/inematds/video-codigo ~/projetos/video-codigo</span>
+<span class="k">bash ~/projetos/video-codigo/instalar.sh</span>  <span class="c"># ✓ skill en ~/.claude/skills/video-codigo</span></pre>
+  </div></div>
+
+  <div class="step"><div class="b">2</div><div>
+    <h3>Pide el video</h3>
+    <p>Di el tema y, si tienes material, dónde está. El agente hace las tres preguntas que falten. Para narrar con tu voz, dile dónde está la grabación <code>.wav</code>.</p>
+<pre><span class="k">/video-codigo</span> <span class="s">haz un video de 40 s de mi app, lee la carpeta ~/projetos/meu-app, narrado con la voz de ~/minha-voz.wav, estilo INEMA</span></pre>
+  </div></div>
+
+  <div class="step"><div class="b">3</div><div>
+    <h3>Guion con una frase por instante</h3>
+    <p>Archivo <code>$P/roteiro.json</code>. Cada frase tiene un <code>id</code>: es ahí donde se sincroniza la imagen. En <code>voz</code> va la ruta a tu grabación. El <code>dicionario</code> cambia lo que aparece en pantalla por lo que debe leer la voz.</p>
+<pre>{"id": "meuapp", "pausa": 0.28, "voz": "/home/voce/minha-voz.wav",
+ "dicionario": [["16:9", "dezesseis por nove"]],
+ "blocos": [{"id": "abertura", "frases": [
+   {"id": "hook", "texto": "Este vídeo no tiene cámara."},
+   {"id": "codigo", "texto": "Cada fotograma se escribió en código."}]}]}</pre>
+  </div></div>
+
+  <div class="step"><div class="b">4</div><div>
+    <h3>Genera la voz con el tiempo de cada palabra</h3>
+    <p>Se ejecuta en tu computadora. Genera <code>voz.wav</code> y <code>tiempos.js</code>; las frases con menos del 80% de similitud se vuelven a generar automáticamente.</p>
+<pre><span class="k">python3 $K/scripts/voz.py --projeto $P $P/roteiro.json</span>  <span class="c"># ej.: meuapp: 41.9 s · 12 frases · 107 palabras</span></pre>
+  </div></div>
+
+  <div class="step"><div class="b">5</div><div>
+    <h3>Música de fondo</h3>
+    <p>Música original sintetizada (<code>energica</code> 120 BPM, <code>tranquila</code> 84 BPM, o <code>--pista</code> con tu música), 24 dB por debajo de la voz mientras se habla. <code>--lufs -14</code> es el volumen que esperan YouTube e Instagram. Sin voz, pasa <code>--duracao</code> en segundos.</p>
+<pre><span class="k">python3 $K/scripts/mezcla.py --projeto $P --id meuapp --musica tranquila --lufs -14</span>  <span class="c"># → $P/audio/meuapp/mezcla.wav</span></pre>
+  </div></div>
+
+  <div class="step"><div class="b">6</div><div>
+    <h3>Escenas sincronizadas con el habla</h3>
+    <p>Parte del ejemplo narrado: ya incluye el tema, el motor de tiempo y la estructura (<code>videoSpec</code>, <code>seek</code>, <code>renderReady</code>). Cambia el texto de las escenas y los <code>id</code> de las frases por los de tu guion. Cada elemento aparece cuando se pronuncia la palabra.</p>
+<pre><span class="k">cp -r $K/exemplos/explicativo-narrado/{index.html,engine.mjs,motion.mjs,declarativo.mjs,inema} $P/</span>
+<span class="k">cp $P/voz/meuapp/tiempos.js $P/</span>   <span class="c"># los tiempos de tu voz</span></pre>
+<pre>&lt;h1 data-in="hook"&gt;Solo código.&lt;/h1&gt;
+&lt;div data-in="codigo@escrito" data-a="scale"&gt;…&lt;/div&gt;   <span class="c">&lt;!-- aparece cuando la voz dice "escrito" --&gt;</span></pre>
+  </div></div>
+
+  <div class="step"><div class="b">7</div><div>
+    <h3>Prueba antes del renderizado completo</h3>
+    <p>Captura fotogramas sueltos en los momentos difíciles, en ambos formatos, y revísalos antes de dedicar tiempo al video completo.</p>
+<pre><span class="k">node $K/scripts/render-video.mjs --project $P --output $P/prova.png --still 7.5</span>
+<span class="k">node $K/scripts/render-video.mjs --project $P --output $P/prova-v.png --still 7.5 --width 1080 --height 1920</span></pre>
+  </div></div>
+
+  <div class="step"><div class="b">8</div><div>
+    <h3>Renderizado y revisión</h3>
+    <p>Un MP4 por formato y una hoja de fotogramas para revisar el video completo de una vez.</p>
+<pre><span class="k">node $K/scripts/render-video.mjs --project $P --output $P/renders/meuapp-16x9.mp4 --audio $P/audio/meuapp/mezcla.wav</span>
+<span class="k">node $K/scripts/render-video.mjs --project $P --output $P/renders/meuapp-9x16.mp4 --width 1080 --height 1920 --audio $P/audio/meuapp/mezcla.wav</span>
+<span class="k">python3 $K/scripts/inspect-video.py $P/renders/meuapp-9x16.mp4 --output-dir $P/reviews</span></pre>
+  </div></div>
+</div></section>
+
+<section id="exemplos"><div class="wrap">
+  <span class="chip">Ejemplos</span>
+  <h2>Dos videos hechos con el propio kit</h2>
+  <p class="sub">El código, el guion y el audio de cada uno están en <a href="https://github.com/inematds/video-codigo/tree/main/exemplos" target="_blank" rel="noopener"><code>exemplos/</code></a>. Ningún fotograma se filmó. El primer éxito más rápido, sin voz ni GPU: renderiza el ejemplo de lanzamiento.</p>
+<pre><span class="k">cd $K/exemplos/lancamento && node ../../scripts/render-video.mjs --project . --output teste.mp4 --audio audio/lancamento/mezcla.wav</span></pre>
+  <div class="ex">
+    <figure><video controls preload="none" playsinline poster="../assets/explicativo-16x9.jpg" src="../../renders/explicativo-16x9.mp4" style="width:100%;display:block"></video><figcaption><b>Explicativo narrado</b> (44 s) — voz local de Nei; código escribiéndose, marcas de tiempo de cada palabra y el fotograma 16:9 convirtiéndose en 9:16 en la palabra precisa. <a href="../../renders/explicativo-9x16.mp4">versión 9:16</a></figcaption></figure>
+    <figure><video controls preload="none" playsinline poster="../assets/lancamento-16x9.jpg" src="../../renders/lancamento-16x9.mp4" style="width:100%;display:block"></video><figcaption><b>Lanzamiento solo con música</b> (21 s) — un solo plano: la misma forma se convierte en curso, guía, video, kit, comunidad y el punto de INEMA.CLUB. <a href="../../renders/lancamento-9x16.mp4">versión 9:16</a></figcaption></figure>
+  </div>
+</div></section>
+
+<section id="roadmap"><div class="wrap">
+  <span class="chip">Próximos pasos</span>
+  <h2>Lo que ya existe y lo que viene</h2>
+  <p class="sub">Hecho = está en el repositorio y se usó en los ejemplos.</p>
+  <div class="phase"><div class="tag">Hecho</div><div class="d"><strong>Skill, voz local y tema INEMA</strong><span>SKILL.md y referencias en portugués, voz.py con Chatterbox + Whisper, tema con fuentes locales, dos ejemplos en 16:9 y 9:16.</span></div></div>
+  <div class="phase"><div class="tag">Siguiente</div><div class="d"><strong>Anuncio con varios ganchos</strong><span>Un ejemplo con el mismo cuerpo y cinco aperturas distintas para probar qué gancho funciona.</span></div></div>
+  <div class="phase"><div class="tag">Después</div><div class="d"><strong>Serie de productos</strong><span>Un video por producto con el mismo estilo visual, a partir de una lista.</span></div></div>
+</div></section>
+
+<footer>
+  <div class="wrap">
+    <div class="pill">HTML · Canvas · SVG</div><div class="pill">Playwright + FFmpeg</div><div class="pill">Chatterbox + Whisper</div>
+    <p style="margin-top:18px">video-codigo · videos hechos con código ·
+      <a href="https://github.com/inematds/video-codigo">inematds/video-codigo</a> ·
+      <a href="https://inema.club">INEMA.CLUB</a></p>
+  </div>
+</footer>
+
+<script>
+  (function(){
+    var KEY='video-codigo-theme';
+    var b=document.body, t=document.getElementById('themeToggle');
+    if(localStorage.getItem(KEY)==='light'){ b.classList.add('light'); t.textContent='☀️'; }
+    t.addEventListener('click',function(){
+      var light=b.classList.toggle('light');
+      t.textContent=light?'☀️':'🌙';
+      localStorage.setItem(KEY, light?'light':'dark');
+    });
+  })();
+</script>
+</body>
+</html>

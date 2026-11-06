@@ -1,0 +1,15 @@
+/* Subtítulos palabra a palabra para engine.mjs › subtitulos(). Colores y fuentes por variables CSS. */
+/* Subtítulos palabra a palabra */
+#subs{position:absolute;left:0;right:0;bottom:46px;display:flex;justify-content:center;pointer-events:none}
+#subs .line{will-change:opacity,transform;display:flex;gap:.26em;flex-wrap:nowrap;font-family:var(--titulos,'Plus Jakarta Sans',sans-serif);font-weight:800;letter-spacing:-.02em;text-transform:uppercase;font-size:56px;line-height:1.1;padding:10px 26px;border-radius:22px;background:rgba(255,252,248,.92);box-shadow:0 18px 50px -30px rgba(26,15,12,.45)}
+#subs .w{color:rgba(26,15,12,.32);display:inline-block}
+#subs .w.dicha{color:var(--tinta,#1A0F0C)}
+#subs .w.ahora{color:var(--acento,#6D28D9)}
+#subs.sobrio .line{font-family:var(--texto,system-ui,sans-serif);font-weight:600;text-transform:none;font-size:40px;letter-spacing:-.01em;background:rgba(26,15,12,.82);border-radius:16px;padding:10px 22px;box-shadow:none}
+#subs.sobrio .w{color:rgba(255,252,248,.55)}
+#subs.sobrio .w.dicha,#subs.sobrio .w.ahora{color:#fff}
+#subs.oscuro .line{background:rgba(255,252,248,.1);box-shadow:none}
+#subs.oscuro .w{color:rgba(255,252,248,.35)}
+#subs.oscuro .w.dicha{color:#fff}
+#subs.oscuro .w.ahora{color:#C4B5FD}
+

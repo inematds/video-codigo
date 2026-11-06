@@ -1,0 +1,24 @@
+/* Tema INEMA para vídeos com código — cores e fontes do DESIGN.md (fundo #0c0c10, amarelo #FACC15, Sora + Inter).
+   Copie a pasta assets/inema/ para dentro do projeto do vídeo: o render bloqueia rede, as fontes precisam ser locais. */
+@font-face{font-family:Sora;font-weight:100 900;src:url(fonts/Sora.ttf) format('truetype')}
+@font-face{font-family:Inter;font-weight:400 500;src:url(fonts/Inter-Regular.ttf) format('truetype')}
+@font-face{font-family:Inter;font-weight:600 900;src:url(fonts/Inter-Bold.ttf) format('truetype')}
+@font-face{font-family:'JetBrains Mono';font-weight:400;src:url(fonts/JetBrainsMono-Regular.ttf) format('truetype')}
+@font-face{font-family:'JetBrains Mono';font-weight:700;src:url(fonts/JetBrainsMono-Bold.ttf) format('truetype')}
+@font-face{font-family:Montserrat;font-weight:900;src:url(fonts/Montserrat-Black.ttf) format('truetype')}
+
+:root{
+  --bg:#0c0c10; --bg2:#14141b; --card:#16161e; --line:#272730;
+  --txt:#e9e9ee; --mut:#9a9aa6; --amb:#FACC15; --amb-ink:#1a1206; --sky:#38bdf8;
+  --titulos:Sora,sans-serif; --texto:Inter,sans-serif; --mono:'JetBrains Mono',monospace;
+  --tinta:#fff; --acento:#FACC15;
+}
+html,body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--texto);overflow:hidden}
+
+/* Legenda INEMA: até 3 palavras, Montserrat Black, contorno preto, palavra dita em amarelo. */
+#subs{position:absolute;left:0;right:0;bottom:64px;display:flex;justify-content:center;pointer-events:none;z-index:50}
+#subs .line{display:flex;gap:.28em;font-family:Montserrat,sans-serif;font-weight:900;text-transform:uppercase;
+  font-size:64px;line-height:1.05;letter-spacing:-.01em;-webkit-text-stroke:8px #000;paint-order:stroke fill}
+#subs .w{color:#fff;display:inline-block}
+#subs .w.ahora{color:var(--amb)}
+@media (orientation:portrait){#subs{bottom:auto;top:66%}#subs .line{font-size:76px}}

@@ -1,0 +1,8 @@
+_log/
+prev/
+**/voz/*/cache/
+renders/*.json
+renders/log*.txt
+reviews/
+__pycache__/
+guia/assets/*.codex.log
