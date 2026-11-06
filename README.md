@@ -52,7 +52,7 @@ git clone https://github.com/inematds/video-codigo ~/projetos/video-codigo
 bash ~/projetos/video-codigo/instalar.sh     # liga a skill no Claude Code/Codex e instala o Playwright (sem sudo)
 ```
 
-Pré-requisitos: Node 18+, Python 3 com `numpy`, `scipy` e Pillow, FFmpeg. O `instalar.sh` instala o Playwright e o Chromium (sem sudo); o resto ele confere e mostra o comando. **Voz (opcional):** o
+Pré-requisitos: Node 18+, Python 3 com `numpy`, `scipy` e Pillow, FFmpeg. (Ubuntu/Debian: `sudo apt install python3-numpy python3-scipy python3-pil`.) O `instalar.sh` instala o Playwright e o Chromium (sem sudo); o resto ele confere e mostra o comando. **Voz (opcional):** o
 [inemavox](https://github.com/inematds/inemavox) em `~/projetos/inemavox` com o ambiente Chatterbox (`~/miniconda3/envs/chatterbox`) e o Whisper do
 `venv` dele; a voz de referência é um `.wav` de 10–20 s (`"voz": "/caminho/minha-voz.wav"` no roteiro). Sem voz, a
 skill funciona só com música.

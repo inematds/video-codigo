@@ -183,11 +183,13 @@
   <div class="grid g3">
     <div class="card"><h3>Node, Python e FFmpeg</h3><p>Node 18 ou mais novo, Python 3 com numpy, scipy e Pillow, FFmpeg no PATH.</p><pre><span class="c"># conferir</span>
 node -v && python3 -V && ffmpeg -version | head -1
-<span class="c"># bibliotecas do Python</span>
+<span class="c"># bibliotecas do Python (Ubuntu/Debian)</span>
+sudo apt install python3-numpy python3-scipy python3-pil
+<span class="c"># outros sistemas</span>
 python3 -m pip install --user numpy scipy pillow</pre></div>
     <div class="card"><h3>Playwright + Chromium</h3><p>Um navegador sem janela, controlado por script, que tira a foto de cada quadro do vídeo. Vai para <code>~/.cache</code>.</p><pre><span class="c"># o instalar.sh (passo 1) já roda isto</span>
 bash ~/projetos/video-codigo/scripts/preparar-entorno.sh</pre></div>
-    <div class="card"><h3>Voz (opcional, precisa de GPU NVIDIA)</h3><p>A voz usa o <a href="https://github.com/inematds/inemavox" target="_blank" rel="noopener">inemavox</a> instalado em <code>~/projetos/inemavox</code>: o <b>Chatterbox</b> (modelo que fala com uma voz copiada de uma gravação, a "voz clonada") e o <b>Whisper</b> (modelo que ouve o áudio e marca o tempo de cada palavra). Precisa também do <b>Miniconda</b> (gerenciador de ambientes Python) e de uma gravação limpa de 10–20 s da sua voz em <code>.wav</code>. No primeiro uso os modelos baixam alguns GB. Se o seu conda ou o inemavox estiverem em outro lugar, aponte com <code>CHATTERBOX_PYTHON=/caminho/python3</code> e <code>INEMAVOX_DIR=/caminho/inemavox</code>. Sem GPU ou sem o inemavox, faça vídeos só com música.</p><pre><span class="c"># os três precisam existir</span>
+    <div class="card"><h3>Voz (opcional, precisa de GPU NVIDIA)</h3><p>A voz usa o <a href="https://github.com/inematds/inemavox" target="_blank" rel="noopener">inemavox</a> instalado em <code>~/projetos/inemavox</code>: o <b>Chatterbox</b> (modelo que fala com uma voz copiada de uma gravação, a "voz clonada") e o <b>Whisper</b> (modelo que ouve o áudio e marca o tempo de cada palavra). Precisa também do <b><a href="https://docs.conda.io/en/latest/miniconda.html" target="_blank" rel="noopener">Miniconda</a></b> (gerenciador de ambientes Python; o instalador oficial vai para <code>~/miniconda3</code>) e de uma gravação limpa de 10–20 s da sua voz em <code>.wav</code>. No primeiro uso os modelos baixam alguns GB. Se o seu conda ou o inemavox estiverem em outro lugar, aponte com <code>CHATTERBOX_PYTHON=/caminho/python3</code> e <code>INEMAVOX_DIR=/caminho/inemavox</code>. Sem GPU ou sem o inemavox, faça vídeos só com música.</p><pre><span class="c"># os três precisam existir</span>
 ls ~/miniconda3/envs/chatterbox/bin/python3 \
    ~/projetos/inemavox/chatterbox_tts_worker.py \
    ~/projetos/inemavox/venv/bin/python
@@ -261,8 +263,9 @@ cd ~/projetos/inemavox && python3 -m venv venv && venv/bin/pip install faster-wh
     <p>Parta do exemplo narrado: ele já traz o tema, o motor de tempo e o esqueleto que o render usa (<code>videoSpec</code> = tamanho e duração, <code>seek(t)</code> = desenha o instante <code>t</code>, <code>renderReady</code> = avisa quando fontes e imagens carregaram). Troque o texto das cenas e, em todo <code>pal('frase', 'palavra')</code>, <code>ini('frase')</code> e <code>data-in</code>, os <code>id</code> e palavras pelos do seu roteiro. Se sobrar algum do exemplo, o render para e diz qual: <code>Não encontrei «câmera» na frase hook do roteiro</code>.</p>
 <pre><span class="k">cp -r $K/exemplos/explicativo-narrado/{index.html,engine.mjs,motion.mjs,declarativo.mjs,inema} $P/</span>
 <span class="k">cp $P/voz/meuapp/tiempos.js $P/</span>   <span class="c"># os tempos da sua voz</span></pre>
-<pre>&lt;h1 data-in="hook"&gt;Só código.&lt;/h1&gt;
-&lt;div data-in="codigo@escrito" data-a="scale"&gt;…&lt;/div&gt;   <span class="c">&lt;!-- entra quando a voz diz "escrito" --&gt;</span></pre>
+<pre><span class="c">// no &lt;script&gt; do index.html: cada elemento entra na palavra dita</span>
+pop($('.code', c1), t, pal('codigo', 'escrito'));   <span class="c">// entra quando a voz diz "escrito"</span>
+pop($('.onda', c1), t, ini('voz'));                 <span class="c">// entra no começo da frase "voz"</span></pre>
   </div></div>
 
   <div class="step"><div class="b">7</div><div>
