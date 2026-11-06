@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="es"><meta charset="utf-8"><title>INEMA.CLUB — película de lanzamiento (solo música)</title>
+<link rel="stylesheet" href="inema/tema.css">
+<style>canvas{display:block}</style>
+<canvas id="palco"></canvas>
+<script type="module">
+// Um plano só: a mesma forma vira curso → guia → vídeo → kit → comunidade → o ponto do INEMA.CLUB.
+// A música (120 BPM) troca a cada 2,5 s; nada aqui depende da ordem dos quadros.
+import {clamp, mix, track, morphBox, camera, spring} from './motion.mjs';
+window.videoSpec = {width: 1920, height: 1080, fps: 30, duration: 21};
+const cv = document.getElementById('palco'), g = cv.getContext('2d');
+const AMB = '#FACC15', BG = '#0c0c10', CARD = '#16161e', LINE = '#272730', MUT = '#9a9aa6', INK = '#1a1206';
+const mola = {frequency: 2.2, damping: .82}, firme = {frequency: 2.6, damping: 1};
+const ease = (t, a, d = .5) => { const x = clamp((t - a) / d); return 1 - Math.pow(1 - x, 3); };
+const win = (t, a, b, i = .35, o = .3) => Math.min(ease(t, a, i), 1 - ease(t, b, o));
+const rr = (x, y, w, h, r) => { g.beginPath(); g.roundRect(x, y, w, h, r); };
+const font = (px, w = 800, f = 'Sora') => g.font = `${w} ${px}px ${f}`;
+
+// Tempos (s) de cada estado da forma
+const S = [
+  {t: 0,    x: -150, y: 70,   w: 300, h: 22,  r: 11},   // traço sob o título
+  {t: 2.5,  x: -320, y: -190, w: 640, h: 400, r: 28},   // curso
+  {t: 5,    x: -230, y: -220, w: 460, h: 480, r: 22},   // guia (página)
+  {t: 7.5,  x: -420, y: -200, w: 840, h: 472, r: 24},   // vídeo 16:9
+  {t: 10,   x: -340, y: -190, w: 680, h: 410, r: 18},   // kit (terminal)
+  {t: 12.5, x: -330, y: -200, w: 660, h: 420, r: 44},   // comunidade (conversa)
+  {t: 15,   x: -20,  y: -20,  w: 40,  h: 40,  r: 20},   // o ponto do INEMA.CLUB
+];
+const SEG = [
+  {a: 2.5, b: 5, rot: 'Cursos', sub: 'rutas de cero al proyecto'},
+  {a: 5, b: 7.5, rot: 'Guías de proyecto', sub: 'paso a paso, en 3 idiomas'},
+  {a: 7.5, b: 10, rot: 'Videos', sub: 'explicativos y reels cada semana'},
+  {a: 10, b: 12.5, rot: 'Kits abiertos', sub: 'código en GitHub, listo para usar'},
+  {a: 12.5, b: 15, rot: 'Comunidad', sub: 'gente aplicando junta'},
+];
+
+function conteudo(t, b, i, a) {
+  g.save(); g.globalAlpha *= a; rr(b.x, b.y, b.w, b.h, b.r); g.clip();
+  const cx = b.x + b.w / 2, cy = b.y + b.h / 2, s = SEG[i].a;
+  if (i === 0) { // curso: módulos que se completam
+    ['Módulo 1 · Qué hace la IA', 'Módulo 2 · Tu primer agente', 'Módulo 3 · Proyecto real'].forEach((m, k) => {
+      const y = b.y + 70 + k * 105; font(30, 600, 'Inter'); g.fillStyle = '#e9e9ee'; g.textAlign = 'left'; g.fillText(m, b.x + 50, y);
+      g.fillStyle = LINE; rr(b.x + 50, y + 24, b.w - 100, 14, 7); g.fill();
+      g.fillStyle = AMB; rr(b.x + 50, y + 24, (b.w - 100) * track(t, [[0, 0], [s + .35 + k * .45, 1]], firme), 14, 7); g.fill();
+    });
+  } else if (i === 1) { // guia: página com título, linhas e botão
+    g.fillStyle = AMB; rr(b.x + 40, b.y + 46, 150, 14, 7); g.fill();
+    font(40); g.fillStyle = '#fff'; g.textAlign = 'left'; g.fillText('Cómo usar', b.x + 40, b.y + 120);
+    for (let k = 0; k < 6; k++) { const p = clamp((t - s - .3 - k * .12) / .3); g.fillStyle = LINE; rr(b.x + 40, b.y + 160 + k * 44, (b.w - 80) * (k % 3 === 2 ? .6 : .92) * p, 14, 7); g.fill(); }
+    const p = ease(t, s + 1.2, .4); g.globalAlpha *= p; g.fillStyle = AMB; rr(b.x + 40, b.y + b.h - 100, 230, 60, 10); g.fill();
+    font(26, 700); g.fillStyle = INK; g.fillText('Abrir en GitHub', b.x + 62, b.y + b.h - 61);
+  } else if (i === 2) { // vídeo: play + barra que corre
+    const p = spring(t - s - .2, mola); g.fillStyle = AMB; g.beginPath();
+    const R = 70 * p; g.moveTo(cx - R * .55, cy - R * .8); g.lineTo(cx + R * .85, cy); g.lineTo(cx - R * .55, cy + R * .8); g.closePath(); g.fill();
+    g.fillStyle = LINE; rr(b.x + 40, b.y + b.h - 50, b.w - 80, 10, 5); g.fill();
+    g.fillStyle = AMB; rr(b.x + 40, b.y + b.h - 50, (b.w - 80) * clamp((t - s - .4) / 2.2) , 10, 5); g.fill();
+  } else if (i === 3) { // kit: terminal
+    font(28, 400, 'JetBrains Mono'); g.textAlign = 'left';
+    const L = [['$ ', 'git clone inematds/tu-kit'], ['$ ', 'cd tu-kit && ./instalar.sh'], ['✓ ', 'listo en 2 minutos']];
+    L.forEach(([p, l], k) => { const st = s + .3 + k * .6, n = Math.floor(clamp((t - st) * 40, 0, l.length));
+      if (t < st) return; g.fillStyle = k === 2 ? AMB : MUT; g.fillText(p, b.x + 44, b.y + 90 + k * 64); g.fillStyle = k === 2 ? AMB : '#e9e9ee'; g.fillText(l.slice(0, n), b.x + 84, b.y + 90 + k * 64); });
+  } else if (i === 4) { // comunidade: conversa
+    const M = [['¡Funcionó aquí!', 0], ['¿Qué comando usaste?', 1], ['Te paso el paso a paso', 0]];
+    M.forEach(([m, lado], k) => { const p = spring(t - s - .25 - k * .5, mola); if (p <= 0) return;
+      font(28, 600, 'Inter'); const w = g.measureText(m).width + 56, x = lado ? b.x + b.w - 40 - w : b.x + 40, y = b.y + 50 + k * 115 + (1 - p) * 30;
+      g.save(); g.globalAlpha *= clamp(p); g.fillStyle = lado ? AMB : '#23232d'; rr(x, y, w, 76, 22); g.fill();
+      g.fillStyle = lado ? INK : '#fff'; g.textAlign = 'left'; g.fillText(m, x + 28, y + 48); g.restore(); });
+  }
+  g.restore();
+}
+
+window.seek = t => {
+  const {width: W, height: H} = window.videoSpec; cv.width = W; cv.height = H;
+  const vert = H > W, k = vert ? Math.min(W / 940, H / 1450) : Math.min(W / 1250, H / 860);
+  g.fillStyle = BG; g.fillRect(0, 0, W, H);
+  g.save(); camera(g, {x: 0, y: vert ? 40 : -45, zoom: k * track(t, [[0, 1], [2.5, 1.06], [7.5, 1], [12.5, 1.05], [15, 1]], {frequency: .8, damping: 1})}, W, H);
+  const b = morphBox(t, S, mola);
+  const amarelo = Math.max(1 - ease(t, 2.3, .3), ease(t, 14.6, .35));
+  // forma: escura com borda amarela; no começo e no fim, amarela cheia
+  g.fillStyle = CARD; rr(b.x, b.y, b.w, b.h, b.r); g.fill();
+  g.lineWidth = 4; g.strokeStyle = AMB; g.stroke();
+  if (amarelo > 0) { g.save(); g.globalAlpha = amarelo; g.fillStyle = AMB; rr(b.x, b.y, b.w, b.h, b.r); g.fill(); g.restore(); }
+  SEG.forEach((sg, i) => { const a = win(t, sg.a + .15, sg.b - .1); if (a > 0) conteudo(t, b, i, a); });
+
+  // rótulo de cada etapa: acima da forma (16:9) ou no alto (9:16)
+  g.textAlign = 'center';
+  SEG.forEach((sg, i) => { const a = win(t, sg.a + .1, sg.b - .05, .3, .25); if (a <= 0) return;
+    const yy = (vert ? -560 : b.y - 120) + (1 - ease(t, sg.a + .1, .4)) * 24;
+    g.save(); g.globalAlpha = a; font(vert ? 92 : 78); g.fillStyle = '#fff'; g.fillText(sg.rot, 0, yy);
+    font(vert ? 40 : 34, 500, 'Inter'); g.fillStyle = MUT; g.fillText(sg.sub, 0, yy + (vert ? 66 : 56));
+    font(24, 700); g.fillStyle = AMB; g.fillText(`0${i + 1} / 05`, 0, vert ? 560 : b.y + b.h + 52); g.restore(); });
+
+  // abertura (quadro 0 já com título)
+  const ab = 1 - ease(t, 2.1, .35);
+  if (ab > 0) { g.save(); g.globalAlpha = ab; font(vert ? 118 : 120); g.fillStyle = '#fff';
+    if (vert) { g.fillText('IA en la', 0, -170); g.fillText('práctica.', 0, -40); } else g.fillText('IA en la práctica.', 0, -40);
+    font(vert ? 50 : 44, 600, 'Inter'); g.fillStyle = MUT; g.fillText('abierto y gratis', 0, 160); g.restore(); }
+
+  // fecho: a forma vira o ponto do INEMA.CLUB
+  const fe = ease(t, 15, .5);
+  if (fe > 0) { g.save(); g.globalAlpha = fe; font(vert ? 112 : 150); g.fillStyle = '#fff';
+    g.textAlign = 'right'; g.fillText('INEMA', -30 - (1 - fe) * 40, 20);
+    g.textAlign = 'left'; g.fillText('CLUB', 34 + (1 - fe) * 40, 20);
+    const p = ease(t, 16.2, .5); g.globalAlpha = p; g.textAlign = 'center'; font(vert ? 50 : 46, 600, 'Inter'); g.fillStyle = MUT;
+    g.fillText('IA en la práctica, gratis.', 0, 140 + (1 - p) * 20);
+    const q = ease(t, 17, .5); g.globalAlpha = q; font(vert ? 42 : 38, 700); g.fillStyle = AMB; g.fillText('inema.club', 0, 230); g.restore(); }
+  g.restore();
+};
+window.renderReady = Promise.all(['800 80px Sora', '700 30px Sora', '600 30px Inter', '500 30px Inter', '400 28px "JetBrains Mono"'].map(f => document.fonts.load(f)))
+  .then(() => window.seek(0));
+</script>
+</html>

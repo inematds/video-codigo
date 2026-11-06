@@ -1,0 +1,29 @@
+{
+  "id": "explicativo-es",
+  "pausa": 0.28,
+  "intervalo_blocos": 0.7,
+  "voz": "nei",
+  "dicionario": [["16:9", "dieciséis por nueve"], ["9:16", "nueve por dieciséis"]],
+  "blocos": [
+    {"id": "abertura", "frases": [
+      {"id": "hook", "texto": "Este video no tiene cámara."},
+      {"id": "codigo", "texto": "Claude escribió cada cuadro con código."},
+      {"id": "voz", "texto": "Y esta voz es la mía, generada en mi computadora."}
+    ]},
+    {"id": "perguntas", "frases": [
+      {"id": "pede", "texto": "Pides el video en una frase y respondes tres preguntas."},
+      {"id": "p1", "texto": "De qué trata y para quién."},
+      {"id": "p2", "texto": "Si lleva voz o solo música."},
+      {"id": "p3", "texto": "Y qué estilo quieres."}
+    ]},
+    {"id": "motor", "frases": [
+      {"id": "roteiro", "texto": "Claude escribe el guion y la voz sale sincronizada con cada palabra."},
+      {"id": "sincronia", "texto": "Cada imagen aparece justo cuando se dice la palabra."},
+      {"id": "formatos", "texto": "Y el mismo proyecto sale en 16:9 y en 9:16."}
+    ]},
+    {"id": "fecho", "frases": [
+      {"id": "sem", "texto": "Sin cámara, sin editor y sin pagar por la voz."},
+      {"id": "cta", "texto": "El kit es abierto. Está todo en INEMA.CLUB."}
+    ]}
+  ]
+}

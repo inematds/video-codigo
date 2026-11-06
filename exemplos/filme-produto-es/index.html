@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="es"><meta charset="utf-8"><title>atende-leads — película de producto</title>
+<link rel="stylesheet" href="inema/tema.css">
+<style>
+body{width:100vw;height:100vh;background:radial-gradient(120% 90% at 70% 10%,#17171f 0%,#0c0c10 60%)}
+.cena{position:absolute;inset:0;display:none;transform-origin:50% 45%}
+.y{color:var(--amb)}
+h1,h2{font-family:var(--titulos);font-weight:800;letter-spacing:-.02em;margin:0;line-height:1.02}
+.rot{font-family:var(--titulos);font-weight:700;font-size:22px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.exemplo{position:absolute;right:56px;top:40px;z-index:40;font:700 18px var(--titulos);letter-spacing:.14em;text-transform:uppercase;color:var(--mut);border:1px solid var(--line);border-radius:999px;padding:8px 16px}
+.emo{font-family:'Noto Color Emoji',sans-serif}
+
+/* telefone com WhatsApp (modo escuro) */
+.fone{position:absolute;width:460px;height:880px;border-radius:56px;background:#000;padding:14px;box-sizing:border-box;box-shadow:0 40px 120px -40px #000,0 0 0 2px #2a2a33}
+.tela{width:100%;height:100%;border-radius:44px;overflow:hidden;background:#0b141a;position:relative;font-family:var(--texto)}
+.wa-top{height:92px;background:#202c33;display:flex;align-items:flex-end;gap:14px;padding:0 22px 14px;box-sizing:border-box;color:#e9edef}
+.wa-top .av{width:44px;height:44px;border-radius:50%;background:var(--amb);color:var(--amb-ink);font:800 20px var(--titulos);display:flex;align-items:center;justify-content:center}
+.wa-top b{font-size:21px;display:block}.wa-top small{font-size:15px;color:#8696a0}
+.lista .it{display:flex;gap:14px;align-items:center;padding:18px 22px;border-bottom:1px solid #1f2c34;color:#e9edef}
+.lista .av{width:52px;height:52px;border-radius:50%;background:#2a3942;display:flex;align-items:center;justify-content:center;font:700 22px var(--titulos);color:#aebac1;flex:none}
+.lista .tx{flex:1;min-width:0}.lista .tx b{font-size:22px}.lista .tx p{margin:4px 0 0;font-size:19px;color:#8696a0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lista .esp{text-align:right;font-size:17px;color:#8696a0;white-space:nowrap}
+.lista .esp i{display:inline-block;margin-top:6px;min-width:26px;height:26px;border-radius:13px;background:#00a884;color:#0b141a;font:700 15px/26px var(--texto);font-style:normal;text-align:center}
+.lista .esp.frio{color:#e0736f}
+.conv{position:absolute;top:92px;left:0;right:0;bottom:0;padding:18px 16px;display:flex;flex-direction:column;gap:10px}
+.msg{max-width:80%;padding:10px 14px 8px;border-radius:12px;font-size:21px;line-height:1.35;color:#e9edef;white-space:pre-line}
+.msg.in{background:#202c33;align-self:flex-start;border-top-left-radius:2px}
+.msg.out{background:#005c4b;align-self:flex-end;border-top-right-radius:2px}
+.msg small{display:block;text-align:right;font-size:12px;color:#8696a0;margin-top:2px}
+
+/* Telegram (modo escuro) */
+.tg{position:absolute;background:#17212b;border-radius:22px;overflow:hidden;box-shadow:0 40px 120px -40px #000,0 0 0 1px #24303d;font-family:var(--texto);color:#f5f5f5}
+.tg-top{display:flex;align-items:center;gap:16px;padding:18px 24px;background:#1e2c3a}
+.tg-top .av{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font:800 22px var(--titulos);color:#fff;flex:none}
+.tg-top b{font-size:26px;display:block}.tg-top small{font-size:19px;color:#7f91a4}
+.tg-body{padding:22px 24px}
+.bolha{background:#182533;border-radius:14px;padding:18px 22px;font-size:25px;line-height:1.5;white-space:pre-line;position:relative}
+.bolha .k{color:#7f91a4}
+.bts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.bt{background:#2b5278;border-radius:10px;padding:15px 8px;text-align:center;font:600 23px var(--texto);color:#fff}
+.bt.amb{background:var(--amb);color:var(--amb-ink)}
+.status{display:inline-block;margin-left:auto;padding:6px 14px;border-radius:999px;font:700 16px var(--titulos)}
+.anel{position:absolute;right:24px;top:14px;width:62px;height:62px}
+.anel circle{fill:none;stroke-width:6}
+.anel text{font:700 15px var(--texto);fill:#fff}
+
+/* cursor */
+#cursor{position:absolute;left:0;top:0;width:44px;height:44px;z-index:60;pointer-events:none;opacity:0}
+#cursor .rp{position:absolute;left:-26px;top:-26px;width:52px;height:52px;border-radius:50%;border:3px solid var(--amb);opacity:0}
+
+/* 1 abertura */
+#c1 h1{position:absolute;left:140px;top:280px;width:960px;font-size:112px}
+#c1 .sub{position:absolute;left:140px;top:560px;width:900px;font:500 40px/1.35 var(--texto);color:var(--mut)}
+#c1 .fone{left:1250px;top:70px;transform-origin:50% 0;scale:1.04}
+/* 2 agente */
+#c2 .fone{left:250px;top:60px;transform-origin:50% 0;scale:1.0}
+#c2 .lado{position:absolute;left:880px;top:180px;width:900px}
+#c2 .lado h2{font-size:76px;margin:14px 0 40px}
+.medidor{display:flex;gap:16px}
+.medidor div{flex:1;padding:22px 0;border-radius:14px;border:2px solid var(--line);text-align:center;font:800 32px var(--titulos);color:var(--mut)}
+.medidor div.on{border-color:var(--amb);background:var(--amb);color:var(--amb-ink)}
+.qual{display:flex;flex-direction:column;gap:14px;margin-top:40px;font:600 30px var(--texto)}
+.qual div{display:flex;align-items:center;gap:16px;color:var(--mut)}
+.qual div.on{color:#fff}.qual div b{width:46px;height:46px;border-radius:12px;background:var(--line);color:var(--mut);display:flex;align-items:center;justify-content:center;font:800 24px var(--titulos)}
+.qual div.on b{background:var(--amb);color:var(--amb-ink)}
+/* 3 oferta */
+#c3 .tg{width:840px;top:190px}
+#ana{left:90px}#bruno{left:990px}
+#c3 .tit{position:absolute;left:90px;top:90px;font:800 48px var(--titulos)}
+/* 4 equipe */
+#c4 .grupo{left:90px;top:170px;width:840px}
+#c4 .priv{left:990px;top:170px;width:840px}
+.painel{font-size:28px;line-height:1.7;white-space:normal}
+.painel .ln{display:block}
+.sug{margin-top:14px;background:#1f2a1a;border:2px solid var(--amb);border-radius:14px;padding:18px 22px;font-size:25px;line-height:1.45}
+/* 5 fecho */
+#c5 .priv{left:90px;top:220px;width:860px}
+#c5 .valor{position:absolute;left:1020px;top:300px;width:780px}
+#c5 .valor .n{font:800 150px var(--titulos);color:var(--amb);letter-spacing:-.03em}
+#c5 .gestor{position:absolute;left:140px;right:140px;top:120px;bottom:200px;background:#101016;border:1px solid var(--line);border-radius:22px;padding:30px 36px;box-sizing:border-box}
+.gestor .abas{display:flex;gap:12px;margin:18px 0 28px}
+.gestor .abas span{padding:8px 20px;border-radius:999px;border:1px solid var(--line);font:700 20px var(--titulos);color:var(--txt)}
+.gestor .abas span.on{background:var(--amb);color:var(--amb-ink);border-color:var(--amb)}
+.tiles{display:grid;grid-template-columns:repeat(6,1fr);gap:16px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+.tile small{display:block;font:700 15px var(--titulos);letter-spacing:.12em;color:var(--mut);text-transform:uppercase}
+.tile b{display:block;margin-top:18px;font:800 44px var(--titulos);color:var(--amb);white-space:nowrap}
+#c5 .cta{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#0c0c10}
+#c5 .cta h1{font-size:120px}
+#c5 .cta p{font:500 40px var(--texto);color:var(--mut);margin:26px 0 0}
+#c5 .cta .club{margin-top:40px;font:800 56px var(--titulos)}
+
+/* ── 9:16 ── */
+@media (orientation:portrait){
+  .exemplo{right:40px;top:40px}
+  #c1 h1{left:80px;top:140px;width:920px;font-size:104px}
+  #c1 .sub{display:none}
+  #c1 .fone{left:310px;top:420px;transform-origin:50% 0;scale:1.14}
+  #subs{top:79%!important}
+  #c2 .fone{left:310px;top:100px;transform-origin:50% 0;scale:1.2}
+  #c2 .lado{left:70px;top:1240px;width:940px}
+  #c2 .lado .rot,#c2 .lado h2,#c2 .qual{display:none}
+  #c3 .tit{left:80px;top:120px;width:920px;font-size:52px}
+  #c3 .tg{width:940px;top:300px}
+  .bolha{font-size:31px}.bt{font-size:28px;padding:18px 8px}.tg-top b{font-size:30px}.tg-top small{font-size:22px}.painel{font-size:33px}.sug{font-size:30px}
+  #ana,#bruno{left:70px}
+  #c4 .grupo{left:70px;top:110px;width:940px}
+  #c4 .priv{left:70px;top:720px;width:940px}
+  #c5 .priv{left:70px;top:160px;width:940px}
+  #c5 .valor{left:80px;top:1010px;width:920px}
+  #c5 .valor .n{font-size:140px}
+  #c5 .gestor{left:60px;right:60px;top:200px;bottom:640px;padding:26px}
+  .tiles{grid-template-columns:repeat(2,1fr)}
+  .tile b{font-size:60px}
+  #c5 .cta h1{font-size:104px}
+  #c5 .cta p{font-size:42px;text-align:center;padding:0 60px}
+}
+</style>
+
+<div class="exemplo" id="exemplo">Caso de ejemplo</div>
+
+<!-- 1 · leads esperando -->
+<div id="c1" class="cena">
+  <h1>El prospecto que espera <span class="y">se enfría</span>.</h1>
+  <div class="sub">Cada minuto sin respuesta en WhatsApp es una venta que se va.</div>
+  <div class="fone"><div class="tela">
+    <div class="wa-top"><div><b>WhatsApp</b><small>Escuela de Idiomas Ejemplo</small></div></div>
+    <div class="lista" id="lista"></div>
+  </div></div>
+</div>
+
+<!-- 2 · o agente responde -->
+<div id="c2" class="cena">
+  <div class="fone"><div class="tela">
+    <div class="wa-top"><div class="av">E</div><div><b>María Souza</b><small>en línea</small></div></div>
+    <div class="conv" id="conv">
+      <div class="msg in" data-f="chega" data-w="0">Hola, ¿cuánto cuesta el curso de inglés?<small>10:02</small></div>
+      <div class="msg out" data-f="chega" data-w="agente">¡Hola! Te atiende la Escuela de Idiomas Ejemplo. ¿Cuál es tu nombre?<small>10:02 ✓✓</small></div>
+      <div class="msg in" data-f="faq" data-w="nombre">María<small>10:02</small></div>
+      <div class="msg out" data-f="faq" data-w="busca">¿Qué buscas?
+1 - Plan anual
+2 - Curso de inglés<small>10:02 ✓✓</small></div>
+      <div class="msg in" data-f="faq" data-w="busca" data-d=".9">2<small>10:03</small></div>
+      <div class="msg out" data-f="faq" data-w="cuando">¿Para cuándo lo necesitas?
+1 - Hoy / esta semana
+2 - Este mes<small>10:03 ✓✓</small></div>
+      <div class="msg in" data-f="nota" data-w="0">1<small>10:03</small></div>
+    </div>
+  </div></div>
+  <div class="lado">
+    <div class="rot">El agente atiende</div>
+    <h2>Pregunta, entiende y <span class="y">califica</span>.</h2>
+    <div class="medidor"><div id="m-q"><span class="emo">🔥</span> caliente</div><div id="m-m">tibio</div><div id="m-f">frío</div></div>
+    <div class="qual"><div id="q1"><b>1</b>nombre</div><div id="q2"><b>2</b>qué busca</div><div id="q3"><b>3</b>para cuándo</div></div>
+  </div>
+</div>
+
+<!-- 3 · a oferta ao colaborador livre -->
+<div id="c3" class="cena">
+  <div class="tit">Pasa a quien lleva <span class="y">más tiempo libre</span></div>
+  <div class="tg" id="ana">
+    <div class="tg-top"><div class="av" style="background:#c0392b">A</div><div><b>Atendimento Bot</b><small>privado de Ana · <span class="emo">🟢</span> libre hace 18 min</small></div>
+      <svg class="anel" viewBox="0 0 62 62"><circle cx="31" cy="31" r="26" stroke="#24303d"/><circle class="arco" cx="31" cy="31" r="26" stroke="#FACC15" stroke-dasharray="163.4" transform="rotate(-90 31 31)"/><text x="31" y="36" text-anchor="middle" class="rel">2:00</text></svg></div>
+    <div class="tg-body"><div class="bolha"><span class="emo">🔥</span> <b>Llamado #1 · chance de venta</b>
+<span class="k">Nombre:</span> María Souza
+<span class="k">Teléfono:</span> +52 (55) 5••••-0001
+<span class="k">Calificación:</span> caliente
+<span class="k">Interés:</span> Curso de inglés
+<span class="k">Urgencia:</span> hoy
+<span class="k">Últimos mensajes:</span> • hola • 2 • 1</div>
+      <div class="bts"><div class="bt"><span class="emo">✅</span> Asumir</div><div class="bt"><span class="emo">🔄</span> Pasar</div><div class="bt"><span class="emo">📞</span> Llamar ↗</div><div class="bt"><span class="emo">💬</span> WhatsApp ↗</div></div>
+    </div>
+  </div>
+  <div class="tg" id="bruno">
+    <div class="tg-top"><div class="av" style="background:#2980b9">B</div><div><b>Atendimento Bot</b><small id="b-st">privado de Bruno · <span class="emo">🟢</span> libre hace 7 min</small></div></div>
+    <div class="tg-body"><div class="bolha" id="b-bolha"><span class="emo" id="b-emo">🔥</span> <b id="b-tit">Llamado #1 · chance de venta</b>
+<span class="k">Nombre:</span> María Souza
+<span class="k">Teléfono:</span> +52 (55) 5••••-0001
+<span class="k">Calificación:</span> caliente
+<span class="k">Interés:</span> Curso de inglés
+<span class="k">Urgencia:</span> hoy
+<span class="k">Últimos mensajes:</span> • hola • 2 • 1</div>
+      <div class="bts"><div class="bt" id="b-assumir"><span class="emo">✅</span> Asumir</div><div class="bt"><span class="emo">🔄</span> Pasar</div><div class="bt" id="b-ligar"><span class="emo">📞</span> Llamar ↗</div><div class="bt"><span class="emo">💬</span> WhatsApp ↗</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 4 · equipe e sugestão -->
+<div id="c4" class="cena">
+  <div class="tg grupo">
+    <div class="tg-top"><div class="av" style="background:#3b82f6">E</div><div><b>Equipo · Escuela de Idiomas</b><small>mensaje fijado</small></div></div>
+    <div class="tg-body"><div class="bolha painel"><b>EQUIPO AHORA · 10:05</b>
+<span class="ln" id="p1"><span class="emo">🟡</span> Bruno atendiendo a María · 1 min</span><span class="ln" id="p2"><span class="emo">🟢</span> Ana libre hace 20 min (le toca)</span><span class="ln" id="p3"><span class="emo">🟡</span> Carla atendiendo a Lucas · 4 min</span><span class="ln" id="p4"><span class="emo">⚪</span> David fuera</span><span class="ln" id="p5" style="margin-top:12px"><b>FILA</b></span><span class="ln" id="p6"><span class="emo">🙋</span> Juan · esperando 1 min</span></div></div>
+  </div>
+  <div class="tg priv">
+    <div class="tg-top"><div class="av" style="background:#2980b9">B</div><div><b>Atendimento Bot</b><small>privado de Bruno · atendiendo #1</small></div></div>
+    <div class="tg-body">
+      <div class="bolha" id="s-msg"><span class="k">María:</span> ¿Tienen clases el sábado?</div>
+      <div class="sug" id="s-sug"><span class="emo">💡</span> <b>Sugerencia:</b> ¡Sí! Hay grupos los sábados a las 9 y a las 11.</div>
+      <div class="bts"><div class="bt amb" id="s-enviar"><span class="emo">✅</span> Enviar</div><div class="bt"><span class="emo">✏️</span> Editar</div></div>
+      <div class="bolha" id="s-ok" style="margin-top:12px;background:#2b5278">Enviado a María por WhatsApp <span class="emo">✓</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 5 · fechamento, gestor e chamada -->
+<div id="c5" class="cena">
+  <div class="tg priv" id="f-priv">
+    <div class="tg-top"><div class="av" style="background:#2980b9">B</div><div><b>Atendimento Bot</b><small>privado de Bruno · atendiendo #1</small></div></div>
+    <div class="tg-body">
+      <div class="bolha"><span class="emo">✅</span> <b>Estás atendiendo #1</b>
+<span class="k">María Souza · Curso de inglés</span>
+Al terminar, elige el resultado:</div>
+      <div class="bts"><div class="bt amb" id="f-vendeu"><span class="emo">✅</span> Vendió</div><div class="bt"><span class="emo">📅</span> Volver a llamar</div><div class="bt"><span class="emo">🤝</span> Negociando</div><div class="bt"><span class="emo">❌</span> Sin interés</div></div>
+    </div>
+  </div>
+  <div class="valor" id="f-valor"><div class="rot">Valor de la venta</div><div class="n" id="f-n">US$ 0</div><div style="font:600 30px var(--texto);color:var(--mut)" id="f-fila"><span class="emo">🟢</span> Bruno vuelve a la fila</div></div>
+  <div class="gestor" id="g">
+    <div style="display:flex;align-items:center"><b style="font:800 30px var(--titulos)">atende·leads</b><span class="status" style="border:1px solid var(--amb);color:var(--amb)">GESTOR</span></div>
+    <div class="abas"><span class="on">En vivo</span><span>Hoy</span><span>Prospectos</span><span>Registros</span><span>Exportar</span></div>
+    <div class="tiles">
+      <div class="tile"><small>Prospectos nuevos</small><b id="g1">0</b></div><div class="tile"><small>Llamados abiertos</small><b id="g2">0</b></div>
+      <div class="tile"><small>Asumidos</small><b id="g3">0</b></div><div class="tile"><small>Ventas</small><b id="g4">0</b></div>
+      <div class="tile"><small>Valor vendido</small><b id="g5">US$ 0</b></div><div class="tile"><small>Tiempo p/ asumir</small><b id="g6">0 min</b></div>
+    </div>
+  </div>
+  <div class="cta" id="cta"><h1>atende<span class="y">·</span>leads</h1><p>código abierto · funciona en tu VPS</p><div class="club">INEMA<span class="y">.</span>CLUB</div></div>
+</div>
+
+<div id="cursor"><svg viewBox="0 0 24 24" width="44" height="44"><path d="M4 2l16 11-7 1.5L9.5 22z" fill="#fff" stroke="#000" stroke-width="1.6" stroke-linejoin="round"/></svg><div class="rp"></div></div>
+<div id="subs"></div>
+
+<script src="tiempos.js"></script>
+<script type="module">
+import {T, Film, arrancar, subtitulos, ini, fin, pal, pop, win, ease, easeIO, set, mix, clamp, count, tap, track} from './engine.mjs';
+const $ = (s, r = document) => r.querySelector(s);
+const vert = () => innerHeight > innerWidth;
+const X = .3;
+const C = [1, 2, 3, 4, 5].map(i => $('#c' + i));
+const F = [[0, ini('chega') - X], [ini('chega') - X, ini('gatilho') - X], [ini('gatilho') - X, ini('painel') - X], [ini('painel') - X, ini('vendeu') - X], [ini('vendeu') - X, 999]];
+const cena = (i, t) => {
+  const [a, b] = F[i], o = a === 0 ? 1 - ease(t, b, .35) : win(t, a, b, .4, .35);
+  C[i].style.opacity = o;
+  C[i].style.transform = `scale(${mix(1, 1.035, clamp((t - a) / Math.max(1, b - a)))})`;   // push-in lento, ≤ 1,04
+};
+
+// ── cursor: vai até o alvo e clica ──
+const cur = $('#cursor'), rp = $('.rp', cur);
+let curVis = 0;
+function cursorEm(t, alvos) {   // alvos: [{el, t}] em ordem; o cursor anda do anterior ao próximo
+  let x = innerWidth * .78, y = innerHeight * .82, vis = 0, clique = -9;
+  for (let i = 0; i < alvos.length; i++) {
+    const {el, t: tc} = alvos[i], r = el.getBoundingClientRect();
+    const tx = r.left + r.width * .55, ty = r.top + r.height * .6;
+    const p = easeIO(t, tc - .75, .7);
+    x = mix(x, tx, p); y = mix(y, ty, p);
+    if (t >= tc - 1) vis = 1;
+    if (t >= tc) clique = tc;
+  }
+  cur.style.opacity = vis; cur.style.transform = `translate(${x - 8}px,${y - 4}px)`;
+  const k = clamp((t - clique) / .45);
+  rp.style.opacity = t >= clique && k < 1 ? 1 - k : 0; rp.style.transform = `scale(${.4 + k})`;
+  return clique;
+}
+
+// ── 1: lista de conversas esperando (os minutos sobem com o tempo) ──
+const nomes = [['M', 'María Souza', 'Hola, ¿cuánto cuesta el curso?', 3], ['L', 'Lucas', '¿Abren el sábado?', 6], ['J', 'Juan Pablo', '¿Hay grupo de noche?', 9], ['R', 'Rita', 'Quiero saber del plan anual', 14], ['P', 'Pedro', '¿Hay alguien?', 22], ['C', 'Camila', '¿Hola?', 31]];
+const lista = $('#lista');
+const itens = nomes.map(([a, n, m, min]) => {
+  const d = document.createElement('div'); d.className = 'it';
+  d.innerHTML = `<div class="av">${a}</div><div class="tx"><b>${n}</b><p>${m}</p></div><div class="esp"><span class="mm"></span><br><i>1</i></div>`;
+  lista.appendChild(d); return {d, min, mm: $('.mm', d), esp: $('.esp', d)};
+});
+
+// ── 2: mensagens e qualificação ──
+const msgs = [...document.querySelectorAll('#conv .msg')].map(el => {
+  const f = el.dataset.f, w = el.dataset.w;
+  return {el, t: (w === '0' ? ini(f) : pal(f, w)) + (+el.dataset.d || 0) - .15};
+});
+
+const film = new Film()
+  .add(C[0], F[0][0], F[0][1], t => {
+    cena(0, t);
+    pop($('#c1 .sub'), t, ini('dor') - .1, {y: 20});
+    // os minutos correm: de 3 a 31 min viram 3 a 31 + 12 min durante a abertura
+    const dt = Math.floor(easeIO(t, .3, F[0][1] - .5) * 12);
+    itens.forEach((it, i) => {
+      pop(it.d, t, -1 + i * .001, {y: 0});
+      const m = it.min + dt; it.mm.textContent = `esperando ${m} min`;
+      it.esp.classList.toggle('frio', m >= 15);
+    });
+  })
+  .add(C[1], F[1][0], F[1][1], t => {
+    cena(1, t);
+    msgs.forEach(({el, t: tm}) => { el.style.display = t >= tm ? '' : 'none'; if (t >= tm) pop(el, t, tm, {y: 16, s0: .97}); });
+    pop($('#c2 .rot'), t, ini('chega'), {y: 16}); pop($('#c2 h2'), t, ini('chega') + .2, {y: 24});
+    [['#q1', pal('faq', 'nombre')], ['#q2', pal('faq', 'busca')], ['#q3', pal('faq', 'cuando')]].forEach(([s, tt]) => { $(s).classList.toggle('on', t >= tt); pop($(s), t, ini('faq') - .1 + (s === '#q1' ? 0 : s === '#q2' ? .15 : .3), {x: -30, y: 0}); });
+    pop($('.medidor'), t, ini('nota') - .1, {y: 24});
+    $('#m-q').classList.toggle('on', t >= pal('nota', 'caliente'));
+    $('#m-m').classList.toggle('on', false); $('#m-f').classList.toggle('on', false);
+    if (vert()) { set($('#c2 .lado'), {o: ease(t, ini('nota') - .2, .3)}); }
+  })
+  .add(C[2], F[2][0], F[2][1], t => {
+    cena(2, t);
+    pop($('#c3 .tit'), t, ini('gatilho'), {y: 20});
+    const tAna = pal('gatilho', 'libre'), tDois = ini('dois'), tPassa = pal('dois', 'siguiente'), tAss = pal('assume', 'hace');
+    // a Ana recebe; o anel de 2 min corre (acelerado) durante "dois minutos"; sem resposta, o card passa ao Bruno
+    pop($('#ana'), t, ini('gatilho') + .6, {y: 40});
+    const k = easeIO(t, tDois, Math.max(.6, tPassa - tDois - .1));
+    $('#ana .arco').style.strokeDashoffset = 163.4 * k;
+    const s = Math.round(120 * (1 - k)); $('#ana .rel').textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+    const saiAna = ease(t, tPassa - .1, .45);
+    $('#ana').style.opacity *= 1 - (vert() ? saiAna : saiAna * .6);
+    $('#ana').style.filter = `grayscale(${saiAna})`;
+    pop($('#bruno'), t, tPassa - .05, {x: vert() ? 0 : 120, y: vert() ? 60 : 0, s0: .96});
+    const cl = cursorEm(t, [{el: $('#b-assumir'), t: tAss}, {el: $('#b-ligar'), t: tAss + 1.1}]);
+    const assumido = t >= tAss;
+    $('#b-emo').textContent = assumido ? '✅' : '🔥';
+    $('#b-tit').textContent = assumido ? 'Estás atendiendo #1' : 'Llamado #1 · chance de venta';
+    $('#b-st').innerHTML = assumido ? 'privado de Bruno · <span class="emo">🟡</span> atendiendo a María' : 'privado de Bruno · <span class="emo">🟢</span> libre hace 7 min';
+    tap($('#b-assumir'), t, tAss); tap($('#b-ligar'), t, tAss + 1.1);
+    $('#b-assumir').classList.toggle('amb', assumido); $('#b-ligar').classList.toggle('amb', t >= tAss + 1.1);
+  })
+  .add(C[3], F[3][0], F[3][1], t => {
+    cena(3, t);
+    pop($('#c4 .grupo'), t, ini('painel') - .1, {y: 40});
+    [['#p1', 'disponible'], ['#p2', 'disponible'], ['#p3', 'atendiendo'], ['#p4', 'atendiendo'], ['#p5', 'fila'], ['#p6', 'fila']].forEach(([s, w], i) => pop($(s), t, pal('painel', w) + (i % 2) * .25 - .2, {x: -24, y: 0}));
+    pop($('#c4 .priv'), t, ini('sugestao') - .3, {y: 40});
+    pop($('#s-msg'), t, pal('sugestao', 'mensaje'), {y: 16});
+    pop($('#s-sug'), t, pal('sugestao', 'sugerencia'), {y: 16, s0: .95});
+    pop($('#s-enviar').parentNode, t, pal('sugestao', 'sugerencia') + .3, {y: 10});
+    const tEnv = pal('sugestao', 'enviar');
+    cursorEm(t, [{el: $('#s-enviar'), t: tEnv}]); tap($('#s-enviar'), t, tEnv);
+    pop($('#s-ok'), t, tEnv + .35, {y: 10});
+  })
+  .add(C[4], F[4][0], F[4][1], t => {
+    cena(4, t);
+    const tV = pal('vendeu', 'toque'), tG = ini('gestor'), tC = ini('cta');
+    const fase1 = 1 - ease(t, tG - .3, .4);
+    $('#f-priv').style.opacity = fase1 * ease(t, F[4][0], .4);
+    cursorEm(t, t < tG ? [{el: $('#f-vendeu'), t: tV}] : []); tap($('#f-vendeu'), t, tV);
+    pop($('#f-valor'), t, tV + .2, {y: 30}); $('#f-valor').style.opacity *= fase1;
+    $('#f-n').textContent = 'US$ ' + count(t, tV + .2, tV + 1.1, 0, 380).toLocaleString('es');
+    pop($('#f-fila'), t, pal('vendeu', 'fila') - .1, {y: 12});
+    // gestor ao vivo
+    pop($('#g'), t, tG - .2, {y: 50, s0: .97}); $('#g').style.opacity *= 1 - ease(t, tC - .25, .35);
+    const g = (id, a, b, f = v => v) => $(id).textContent = f(count(t, tG + .1, tG + 1.4, a, b));
+    g('#g1', 0, 4); g('#g2', 0, 4); g('#g3', 0, 3); g('#g4', 0, 1); g('#g5', 0, 380, v => 'US$ ' + v.toLocaleString('es')); g('#g6', 0, 2, v => v + ' min');
+    // chamada final
+    const cc = ease(t, tC - .2, .45); $('#cta').style.opacity = cc;
+    pop($('#cta h1'), t, tC - .1, {y: 30}); pop($('#cta p'), t, pal('cta', 'funciona'), {y: 20}); pop($('#cta .club'), t, pal('cta', 'todo'), {y: 20, s0: .9});
+  })
+  .every(t => {
+    $('#exemplo').style.opacity = t > ini('chega') - .2 && t < ini('cta') - .2 ? 1 : 0;   // caso inventado sempre com rótulo
+    if (t < ini('assume') - 1.2 && !(t >= ini('sugestao') && t < ini('vendeu') - X) && !(t >= ini('vendeu') - X && t < ini('gestor'))) cur.style.opacity = 0;
+  });
+
+film.every(subtitulos($('#subs'), {max: 3}));
+arrancar(film, {fps: 30, cola: 2.6});
+</script>
+</html>

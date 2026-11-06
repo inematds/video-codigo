@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="es"><meta charset="utf-8"><title>Video sin cámara — explicativo narrado</title>
+<link rel="stylesheet" href="inema/tema.css">
+<style>
+body{width:100vw;height:100vh}
+.cena{position:absolute;inset:0;display:none}
+.y{color:var(--amb)}
+h1,h2{font-family:var(--titulos);font-weight:800;letter-spacing:-.02em;margin:0;line-height:1.02}
+.rot{font-family:var(--titulos);font-weight:700;font-size:22px;letter-spacing:.14em;text-transform:uppercase;color:var(--mut)}
+.box{background:var(--card);border:1px solid var(--line);border-radius:14px}
+svg.ic{stroke:currentColor;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+
+/* ── 1 abertura ── */
+#c1 h1{position:absolute;left:140px;top:130px;width:1000px;font-size:118px}
+#c1 .cam{position:absolute;left:1180px;top:130px;width:230px;height:230px;color:#fff}
+#c1 .cam .risco{stroke:var(--amb);stroke-width:7}
+#c1 .code{position:absolute;left:140px;top:470px;width:960px;padding:32px 40px;font-family:var(--mono);font-size:34px;line-height:1.6}
+#c1 .code .bar{display:flex;gap:10px;margin-bottom:16px}#c1 .code .bar i{width:14px;height:14px;border-radius:50%;background:var(--line)}
+#c1 .code .k{color:var(--amb)}#c1 .code .c{color:var(--mut)}
+#c1 .onda{position:absolute;left:1160px;top:470px;width:640px;height:300px;padding:26px 30px;box-sizing:border-box}
+#c1 .onda .bars{display:flex;align-items:center;gap:7px;height:170px;margin-top:14px}
+#c1 .onda .bars b{flex:1;background:var(--amb);border-radius:4px}
+#c1 .onda .tx{font-size:28px;font-weight:600;margin-top:12px}
+
+/* ── 2 três perguntas ── */
+#c2 .pedido{position:absolute;left:0;right:0;margin:auto;width:fit-content;top:120px;padding:24px 34px;font-size:38px;font-weight:600;border-radius:22px 22px 6px 22px;background:var(--amb);color:var(--amb-ink);white-space:nowrap}
+#c2 .qs{position:absolute;left:140px;right:140px;top:300px;display:flex;gap:36px}
+#c2 .q{flex:1;padding:38px 38px 34px;min-height:400px;box-sizing:border-box}
+#c2 .n{width:64px;height:64px;border-radius:12px;background:var(--amb);color:var(--amb-ink);font:800 36px var(--titulos);display:flex;align-items:center;justify-content:center}
+#c2 .q h2{font-size:50px;margin:26px 0 24px}
+#c2 .chip{display:inline-block;padding:10px 20px;border-radius:999px;border:2px solid var(--amb);color:var(--amb);font-weight:700;font-size:26px}
+
+/* ── 3 motor ── */
+#c3 .pipe{position:absolute;left:120px;right:120px;top:120px;display:flex;align-items:center;justify-content:space-between}
+#c3 .no{width:330px;padding:26px 20px;text-align:center;font-family:var(--mono);font-size:30px;font-weight:700;color:var(--mut);box-sizing:border-box;transition:none}
+#c3 .no.on{border-color:var(--amb);color:#fff}
+#c3 .no small{display:block;font-family:var(--texto);font-weight:500;font-size:22px;color:var(--mut);margin-top:8px}
+#c3 .seta{flex:1;height:3px;background:var(--line);margin:0 14px;position:relative}
+#c3 .seta i{position:absolute;left:0;top:0;bottom:0;background:var(--amb)}
+#c3 .linha{position:absolute;left:120px;right:120px;top:470px;height:300px}
+#c3 .trilho{position:absolute;left:0;right:0;top:200px;height:4px;background:var(--line)}
+#c3 .tick{position:absolute;top:186px;width:3px;height:32px;background:var(--mut)}
+#c3 .tick.on{background:var(--amb)}
+#c3 .pal{position:absolute;top:232px;font-family:var(--mono);font-size:22px;color:var(--mut);transform:translateX(-2px);white-space:nowrap}
+#c3 .agulha{position:absolute;top:150px;width:4px;height:110px;background:var(--amb);box-shadow:0 0 18px var(--amb)}
+#c3 .surge{position:absolute;top:30px;padding:14px 26px;font:800 40px var(--titulos);background:var(--amb);color:var(--amb-ink);border-radius:10px;white-space:nowrap}
+#c3 .quadro{position:absolute;left:50%;top:50%;border:4px solid var(--amb);border-radius:16px;display:flex;align-items:center;justify-content:center;font:800 64px var(--titulos);color:#fff;box-sizing:border-box}
+
+/* ── 4 fecho ── */
+#c4 .sem{position:absolute;left:140px;top:170px;display:flex;flex-direction:column;gap:30px}
+#c4 .it{display:flex;align-items:center;gap:26px;font:800 76px var(--titulos)}
+#c4 .it svg{width:64px;height:64px;color:var(--amb)}
+#c4 .marca{position:absolute;right:140px;top:300px;text-align:right}
+#c4 .marca h1{font-size:120px}
+#c4 .marca .ponto{color:var(--amb)}
+#c4 .marca p{font-size:36px;color:var(--mut);margin:22px 0 0;font-weight:500}
+#c4 .marca p b{color:#fff;font-family:var(--mono)}
+
+/* ── 9:16: o mesmo projeto, outra composição ── */
+@media (orientation:portrait){
+  #c1 h1{left:80px;top:170px;width:920px;font-size:124px}
+  #c1 .cam{left:770px;top:520px;width:220px;height:220px}
+  #c1 .code{left:80px;top:840px;width:920px;font-size:33px}
+  #c1 .onda{left:80px;top:500px;width:640px;height:290px}
+  #c2 .pedido{top:170px;font-size:44px}
+  #c2 .qs{left:70px;right:70px;top:340px;flex-direction:column;gap:26px}
+  #c2 .q{min-height:0;padding:40px 34px;display:grid;grid-template-columns:64px 1fr;column-gap:26px;align-items:center}
+  #c2 .q h2{font-size:54px;margin:0}
+  #c2 .q .chip{grid-column:2;justify-self:start;margin-top:16px}
+  #c3 .pipe{left:80px;right:80px;top:150px;flex-direction:column;align-items:stretch;gap:0}
+  #c3 .no{width:100%;font-size:38px;padding:30px 20px}
+  #c3 .no small{font-size:28px}
+  #c3 .seta{height:46px!important}
+  #c3 .seta{flex:none;width:3px;height:40px;margin:0 auto}
+  #c3 .seta i{right:0;bottom:auto;height:0}
+  #c3 .linha{left:60px;right:60px;top:880px}
+  #c3 .pal{display:none}
+  #c4 .sem{left:80px;top:220px;gap:40px}
+  #c4 .it{font-size:86px}
+  #c4 .marca{left:80px;right:80px;top:820px;text-align:left}
+  #c4 .marca p{font-size:42px}
+  #c4 .marca h1{font-size:132px}
+}
+</style>
+
+<div id="c1" class="cena">
+  <h1>Este video no tiene <span class="y">cámara</span>.</h1>
+  <svg class="ic cam" viewBox="0 0 64 64"><rect x="6" y="18" width="40" height="30" rx="5"/><path d="M46 28l12-7v22l-12-7"/><circle cx="26" cy="33" r="7"/><path class="risco" d="M8 8l48 48" pathLength="1"/></svg>
+  <div class="box code"><div class="bar"><i></i><i></i><i></i></div><div class="tw l1"><span class="k">const</span> quadro = seek(t);</div><div class="tw l2">titulo.entra(pal(<span class="k">'cámara'</span>));</div><div class="tw l3">legenda.segue(TEMPOS);</div><div class="c tw l4">// cada cuadro es una función del tiempo</div></div>
+  <div class="box onda"><div class="rot">Voz local</div><div class="bars"></div><div class="tx">generada en la computadora · sin API</div></div>
+</div>
+
+<div id="c2" class="cena">
+  <div class="pedido">Haz un video de mi producto</div>
+  <div class="qs">
+    <div class="box q" id="q1"><div class="n">1</div><h2>¿De qué trata y para quién?</h2><span class="chip">lanzamiento · cliente nuevo</span></div>
+    <div class="box q" id="q2"><div class="n">2</div><h2>¿Con voz o solo música?</h2><span class="chip">voz de Nei</span></div>
+    <div class="box q" id="q3"><div class="n">3</div><h2>¿Qué estilo?</h2><span class="chip">oscuro + amarillo</span></div>
+  </div>
+</div>
+
+<div id="c3" class="cena">
+  <div class="pipe">
+    <div class="box no" id="n1">guion.json<small>lo que se dice</small></div><div class="seta"><i id="s1"></i></div>
+    <div class="box no" id="n2">voz.wav<small>voz de Nei</small></div><div class="seta"><i id="s2"></i></div>
+    <div class="box no" id="n3">tiempos.js<small>tiempo de cada palabra</small></div><div class="seta"><i id="s3"></i></div>
+    <div class="box no" id="n4">video.mp4<small>imagen a tiempo</small></div>
+  </div>
+  <div class="linha"><div class="trilho"></div><div class="agulha"></div></div>
+  <div class="quadro">16:9</div>
+</div>
+
+<div id="c4" class="cena">
+  <div class="sem">
+    <div class="it" id="i1"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>sin cámara</div>
+    <div class="it" id="i2"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>sin editor</div>
+    <div class="it" id="i3"><svg class="ic" viewBox="0 0 24 24"><path d="M5 12l5 5L20 7"/></svg>sin pagar por la voz</div>
+  </div>
+  <div class="marca"><h1>INEMA<span class="ponto">.</span>CLUB</h1><p>kit abierto: <b>video-codigo</b></p></div>
+</div>
+
+<div id="subs"></div>
+
+<script src="tiempos.js"></script>
+<script type="module">
+import {T, Film, arrancar, subtitulos, ini, fin, pal, pop, win, ease, easeIO, type, set, mix, clamp} from './engine.mjs';
+const $ = (s, r = document) => r.querySelector(s);
+const vertical = () => innerHeight > innerWidth;
+const X = .35;                                   // as cenas trocam um pouco antes da 1ª frase da próxima
+const c1 = $('#c1'), c2 = $('#c2'), c3 = $('#c3'), c4 = $('#c4');
+const f1 = [0, ini('pede') - X], f2 = [f1[1], ini('roteiro') - X], f3 = [f2[1], ini('sem') - X], f4 = [f3[1], 999];
+
+// barras da onda: altura determinística (seno), só "falam" quando a voz está falando
+const bars = $('.bars', c1); for (let i = 0; i < 34; i++) bars.appendChild(document.createElement('b'));
+const falando = t => T.palabras.some(p => t >= p.inicio && t <= p.fin + .05);
+
+// trilho de palavras da frase "sincronia" com os tempos reais da voz
+const ws = T.palabras.filter(p => p.frase === 'sincronia');
+const lin = $('.linha', c3), t0s = ws[0].inicio, t1s = ws[ws.length - 1].fin;
+const ticks = ws.map(w => {
+  const k = document.createElement('div'); k.className = 'tick'; lin.appendChild(k);
+  const p = document.createElement('div'); p.className = 'pal'; p.textContent = w.texto.replace(/[.,]$/, ''); lin.appendChild(p);
+  return {w, k, p};
+});
+const destaques = ['imagen', 'justo', 'palabra'].map(w => {
+  const d = document.createElement('div'); d.className = 'surge'; d.textContent = w; lin.appendChild(d);
+  return {d, t: pal('sincronia', w), w: ws.find(x => x.texto.toLowerCase().startsWith(w))};
+});
+
+function cena(el, [a, b], t) { el.style.opacity = a === 0 ? 1 - ease(t, b, .35) : win(t, a, b, .4, .35); }  // quadro 0 já cheio
+
+const film = new Film()
+  .add(c1, f1[0], f1[1], t => {
+    cena(c1, f1, t);
+    set($('h1', c1), {o: 1});                      // quadro 0 já com título
+    const r = $('.risco', c1); r.style.strokeDasharray = 1; r.style.strokeDashoffset = 1 - easeIO(t, pal('hook', 'cámara'), .45);
+    pop($('.code', c1), t, ini('codigo') - .1, {y: 30});
+    ['l1', 'l2', 'l3', 'l4'].forEach((l, i) => type($('.' + l, c1), t, pal('codigo', 'escribió') + i * .55, 48));
+    pop($('.onda', c1), t, ini('voz') - .05, {y: 30});
+    const fala = falando(t) && t >= ini('voz');
+    [...bars.children].forEach((b, i) => {
+      const h = fala ? .25 + .75 * Math.abs(Math.sin(t * 9 + i * .7) * Math.cos(t * 3.3 + i * .23)) : .08;
+      b.style.height = (h * 100).toFixed(1) + '%';
+    });
+  })
+  .add(c2, f2[0], f2[1], t => {
+    cena(c2, f2, t);
+    pop($('.pedido', c2), t, ini('pede'), {y: 24});
+    ['p1', 'p2', 'p3'].forEach((p, i) => {
+      const q = $('#q' + (i + 1), c2);
+      pop(q, t, ini(p) - .1, {y: 50});
+      pop($('.chip', q), t, fin(p) - .2, {y: 10, s0: .8});
+    });
+  })
+  .add(c3, f3[0], f3[1], t => {
+    cena(c3, f3, t);
+    const marcos = [pal('roteiro', 'guion'), pal('roteiro', 'voz'), pal('roteiro', 'palabra'), ini('sincronia')];
+    marcos.forEach((m, i) => {
+      $('#n' + (i + 1), c3).classList.toggle('on', t >= m);
+      pop($('#n' + (i + 1), c3), t, m - .15, {y: 20, s0: .94});
+      if (i < 3) { const s = $('#s' + (i + 1), c3), p = easeIO(t, m, Math.max(.3, marcos[i + 1] - m - .1));
+        if (vertical()) { s.style.height = p * 100 + '%'; s.style.width = '100%'; } else { s.style.width = p * 100 + '%'; s.style.height = ''; } }
+    });
+    // trilho: as marcas são os tempos reais de cada palavra dita
+    const W = lin.clientWidth, x = w => (w - t0s) / (t1s - t0s) * W;
+    const sai = 1 - ease(t, ini('formatos') - .2, .4);
+    lin.style.opacity = win(t, ini('sincronia') - .3, ini('formatos') - .1, .35, .35);
+    ticks.forEach(({w, k, p}) => { k.style.left = x(w.inicio) + 'px'; p.style.left = x(w.inicio) + 'px'; k.classList.toggle('on', t >= w.inicio); p.style.color = t >= w.inicio ? '#fff' : ''; });
+    $('.agulha', c3).style.left = clamp((t - t0s) / (t1s - t0s)) * W + 'px';
+    destaques.forEach(({d, t: td, w}) => { d.style.left = (x(w.inicio) - 40) + 'px'; pop(d, t, td, {y: 26, s0: .7, damp: .6}); });
+    // pipeline sobe e o quadro 16:9 vira 9:16 na palavra
+    $('.pipe', c3).style.opacity = sai;
+    const q = $('.quadro', c3), m = easeIO(t, pal('formatos', '9:16') - .1, .8);
+    const base = vertical() ? 560 : 520, w = mix(base * 16 / 9, base * 9 / 16, m), h = base;
+    q.style.width = w + 'px'; q.style.height = h + 'px';
+    q.style.transform = `translate(-50%,-50%) scale(${mix(.92, 1, ease(t, ini('formatos') - .1, .5))})`;
+    q.style.opacity = ease(t, ini('formatos') - .15, .35);
+    q.textContent = m < .5 ? '16:9' : '9:16';
+  })
+  .add(c4, f4[0], f4[1], t => {
+    cena(c4, f4, t);
+    pop($('#i1', c4), t, pal('sem', 'cámara') - .1, {x: -40, y: 0});
+    pop($('#i2', c4), t, pal('sem', 'editor') - .1, {x: -40, y: 0});
+    pop($('#i3', c4), t, pal('sem', 'pagar') - .1, {x: -40, y: 0});
+    pop($('.marca', c4), t, ini('cta') - .05, {y: 40, s0: .9});
+  });
+
+film.every(subtitulos($('#subs'), {max: 3}));
+arrancar(film, {fps: 30, cola: 2.2});
+</script>
+</html>

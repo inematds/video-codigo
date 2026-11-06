@@ -286,10 +286,11 @@ pop($('.onda', c1), t, ini('voz'));                 <span class="c">// aparece a
 
 <section id="exemplos"><div class="wrap">
   <span class="chip">Ejemplos</span>
-  <h2>Dos vídeos hechos con el propio kit</h2>
+  <h2>Tres videos hechos con el propio kit</h2>
   <p class="sub">El código, el guion y el audio de cada uno están en <a href="https://github.com/inematds/video-codigo/tree/main/exemplos" target="_blank" rel="noopener"><code>exemplos/</code></a>. No se filmó ningún fotograma. El primer éxito más rápido, sin voz ni GPU: renderiza el ejemplo de lanzamiento.</p>
 <pre><span class="k">cd $K/exemplos/lancamento && node ../../scripts/render-video.mjs --project . --output teste.mp4 --audio audio/lancamento/mezcla.wav --overwrite</span></pre>
   <div class="ex">
+    <figure style="grid-column:1/-1"><video controls preload="none" playsinline poster="../assets/atende-16x9.jpg" src="../../renders/atende-es-16x9.mp4" style="width:100%;display:block"></video><figcaption><b>Película de producto de atende-leads</b> (61 s) — recrea las pantallas reales: prospectos esperando en WhatsApp, el agente que califica, el llamado en Telegram que pasa de Ana a Bruno en 2 min, el panel del equipo, la sugerencia de respuesta y la venta. Cursor que hace clic, voz de Nei atada a cada palabra. Caso de ejemplo. <a href="../../renders/atende-es-9x16.mp4">versión 9:16</a></figcaption></figure>
     <figure><video controls preload="none" playsinline poster="../assets/explicativo-16x9.jpg" src="../../renders/explicativo-16x9.mp4" style="width:100%;display:block"></video><figcaption><b>Explicativo narrado</b> (44 s) — voz local de Nei; código que se escribe, marcas de tiempo de cada palabra y el formato 16:9 que pasa a 9:16 en la palabra exacta. <a href="../../renders/explicativo-9x16.mp4">versión 9:16</a> · <a href="https://www.youtube.com/watch?v=tkT2I6nrMAk" target="_blank" rel="noopener">YouTube</a></figcaption></figure>
     <figure><video controls preload="none" playsinline poster="../assets/lancamento-16x9.jpg" src="../../renders/lancamento-16x9.mp4" style="width:100%;display:block"></video><figcaption><b>Lanzamiento solo con música</b> (21 s) — un único plano: la misma forma se convierte en curso, guía, vídeo, kit, comunidad y el punto de INEMA.CLUB. <a href="../../renders/lancamento-9x16.mp4">versión 9:16</a> · <a href="https://www.youtube.com/watch?v=IJ-qZQ1drBc" target="_blank" rel="noopener">YouTube</a></figcaption></figure>
   </div>

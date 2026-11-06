@@ -21,4 +21,4 @@ html,body{margin:0;background:var(--bg);color:var(--txt);font-family:var(--texto
   font-size:64px;line-height:1.05;letter-spacing:-.01em;-webkit-text-stroke:8px #000;paint-order:stroke fill}
 #subs .w{color:#fff;display:inline-block}
 #subs .w.ahora{color:var(--amb)}
-@media (orientation:portrait){#subs{bottom:auto;top:66%}#subs .line{font-size:76px}}
+@media (orientation:portrait){#subs{bottom:auto;top:66%}#subs .line{font-size:60px}}

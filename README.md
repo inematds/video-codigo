@@ -73,6 +73,7 @@ Teste rápido da instalação (sem voz, ~1 min):
 
 | Exemplo | Tipo | Arquivos |
 |---|---|---|
+| Filme de produto do atende-leads (telas reais, cursor, voz presa à palavra) | filme de produto narrado, 63 s; versão ES 61 s | `exemplos/filme-produto/` · `renders/atende-16x9.mp4` · `renders/atende-9x16.mp4` · [YouTube](https://www.youtube.com/watch?v=tWv1mEIK62c) · ES: `exemplos/filme-produto-es/` |
 | Este vídeo não tem câmera | explicativo narrado (voz local), 44 s | `exemplos/explicativo-narrado/` · `renders/explicativo-16x9.mp4` · `renders/explicativo-9x16.mp4` · [YouTube](https://www.youtube.com/watch?v=tkT2I6nrMAk) |
 | INEMA.CLUB em um plano | lançamento só com música, 21 s | `exemplos/lancamento/` · `renders/lancamento-16x9.mp4` · `renders/lancamento-9x16.mp4` · [YouTube](https://www.youtube.com/watch?v=IJ-qZQ1drBc) |
 

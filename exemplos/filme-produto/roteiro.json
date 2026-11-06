@@ -1,0 +1,33 @@
+{
+  "id": "atende",
+  "pausa": 0.26,
+  "intervalo_blocos": 0.55,
+  "voz": "nei",
+  "dicionario": [["atende-leads", "atende líds"], ["VPS", "vê pê ésse"], ["lead", "líd"], ["leads", "líds"]],
+  "blocos": [
+    {"id": "abertura", "frases": [
+      {"id": "hook", "texto": "Lead que espera no WhatsApp esfria."},
+      {"id": "dor", "texto": "Cada minuto sem resposta é uma venda indo embora."}
+    ]},
+    {"id": "agente", "frases": [
+      {"id": "chega", "texto": "Com o atende-leads, quem responde primeiro é um agente."},
+      {"id": "faq", "texto": "Ele pergunta o nome, o que a pessoa procura e para quando."},
+      {"id": "nota", "texto": "E dá uma nota ao lead: quente, morno ou frio."}
+    ]},
+    {"id": "oferta", "frases": [
+      {"id": "gatilho", "texto": "Quando é hora de um humano, o lead vai para quem está livre há mais tempo."},
+      {"id": "card", "texto": "No Telegram chegam o nome, o interesse, as últimas mensagens e os botões."},
+      {"id": "dois", "texto": "Se ninguém responder em dois minutos, passa para o próximo."},
+      {"id": "assume", "texto": "O Bruno assume e liga na hora."}
+    ]},
+    {"id": "equipe", "frases": [
+      {"id": "painel", "texto": "No grupo, um painel mostra quem está livre, quem está atendendo e a fila."},
+      {"id": "sugestao", "texto": "A cada mensagem do lead chega uma sugestão de resposta. É só tocar em enviar."}
+    ]},
+    {"id": "fecho", "frases": [
+      {"id": "vendeu", "texto": "Vendeu? Um toque registra o valor e o Bruno volta para a fila."},
+      {"id": "gestor", "texto": "E o gestor vê tudo ao vivo."},
+      {"id": "cta", "texto": "É código aberto e roda na sua VPS. Tá tudo no INEMA.CLUB."}
+    ]}
+  ]
+}

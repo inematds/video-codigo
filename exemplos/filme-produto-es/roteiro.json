@@ -1,0 +1,99 @@
+{
+ "id": "atende-es",
+ "pausa": 0.26,
+ "intervalo_blocos": 0.55,
+ "voz": "nei",
+ "dicionario": [
+  [
+   "atende-leads",
+   "atiende lids"
+  ],
+  [
+   "VPS",
+   "ve pe ese"
+  ]
+ ],
+ "blocos": [
+  {
+   "id": "abertura",
+   "frases": [
+    {
+     "id": "hook",
+     "texto": "El prospecto que espera en WhatsApp se enfría."
+    },
+    {
+     "id": "dor",
+     "texto": "Cada minuto sin respuesta es una venta que se va."
+    }
+   ]
+  },
+  {
+   "id": "agente",
+   "frases": [
+    {
+     "id": "chega",
+     "texto": "Con atende-leads, quien responde primero es un agente."
+    },
+    {
+     "id": "faq",
+     "texto": "Pregunta el nombre, qué busca la persona y para cuándo."
+    },
+    {
+     "id": "nota",
+     "texto": "Y califica al prospecto: caliente, tibio o frío."
+    }
+   ]
+  },
+  {
+   "id": "oferta",
+   "frases": [
+    {
+     "id": "gatilho",
+     "texto": "Cuando hace falta una persona, el prospecto pasa a quien lleva más tiempo libre."
+    },
+    {
+     "id": "card",
+     "texto": "En Telegram llegan el nombre, el interés, los últimos mensajes y los botones."
+    },
+    {
+     "id": "dois",
+     "texto": "Si nadie responde en dos minutos, pasa al siguiente."
+    },
+    {
+     "id": "assume",
+     "texto": "Bruno se hace cargo y llama de inmediato."
+    }
+   ]
+  },
+  {
+   "id": "equipe",
+   "frases": [
+    {
+     "id": "painel",
+     "texto": "En el grupo, un panel muestra quién está disponible, quién está atendiendo y la fila."
+    },
+    {
+     "id": "sugestao",
+     "texto": "Con cada mensaje del prospecto llega una sugerencia de respuesta. Solo tocas enviar."
+    }
+   ]
+  },
+  {
+   "id": "fecho",
+   "frases": [
+    {
+     "id": "vendeu",
+     "texto": "¿Vendiste? Un toque registra el valor y Bruno vuelve a la fila."
+    },
+    {
+     "id": "gestor",
+     "texto": "Y el gestor lo ve todo en vivo."
+    },
+    {
+     "id": "cta",
+     "texto": "Es de código abierto y funciona en tu VPS. Está todo en INEMA.CLUB."
+    }
+   ]
+  }
+ ]
+}

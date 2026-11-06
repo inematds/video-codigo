@@ -1,0 +1,1053 @@
+{
+ "id": "atende",
+ "duracion": 60.132,
+ "voz": "nei",
+ "pausa": 0.26,
+ "bloques": [
+  {
+   "id": "abertura",
+   "inicio": 0.0,
+   "fin": 6.14
+  },
+  {
+   "id": "agente",
+   "inicio": 6.69,
+   "fin": 19.09
+  },
+  {
+   "id": "oferta",
+   "inicio": 19.64,
+   "fin": 36.32
+  },
+  {
+   "id": "equipe",
+   "inicio": 36.87,
+   "fin": 47.482
+  },
+  {
+   "id": "fecho",
+   "inicio": 48.032,
+   "fin": 60.132
+  }
+ ],
+ "frases": [
+  {
+   "id": "hook",
+   "bloque": "abertura",
+   "texto": "Lead que espera no WhatsApp esfria.",
+   "inicio": 0.01,
+   "fin": 2.56
+  },
+  {
+   "id": "dor",
+   "bloque": "abertura",
+   "texto": "Cada minuto sem resposta é uma venda indo embora.",
+   "inicio": 3.0,
+   "fin": 5.96
+  },
+  {
+   "id": "chega",
+   "bloque": "agente",
+   "texto": "Com o atende-leads, quem responde primeiro é um agente.",
+   "inicio": 6.69,
+   "fin": 10.75
+  },
+  {
+   "id": "faq",
+   "bloque": "agente",
+   "texto": "Ele pergunta o nome, o que a pessoa procura e para quando.",
+   "inicio": 11.19,
+   "fin": 14.93
+  },
+  {
+   "id": "nota",
+   "bloque": "agente",
+   "texto": "E dá uma nota ao lead: quente, morno ou frio.",
+   "inicio": 15.37,
+   "fin": 18.91
+  },
+  {
+   "id": "gatilho",
+   "bloque": "oferta",
+   "texto": "Quando é hora de um humano, o lead vai para quem está livre há mais tempo.",
+   "inicio": 19.64,
+   "fin": 24.0
+  },
+  {
+   "id": "card",
+   "bloque": "oferta",
+   "texto": "No Telegram chegam o nome, o interesse, as últimas mensagens e os botões.",
+   "inicio": 24.44,
+   "fin": 29.44
+  },
+  {
+   "id": "dois",
+   "bloque": "oferta",
+   "texto": "Se ninguém responder em dois minutos, passa para o próximo.",
+   "inicio": 29.88,
+   "fin": 33.76
+  },
+  {
+   "id": "assume",
+   "bloque": "oferta",
+   "texto": "O Bruno assume e liga na hora.",
+   "inicio": 34.2,
+   "fin": 36.14
+  },
+  {
+   "id": "painel",
+   "bloque": "equipe",
+   "texto": "No grupo, um painel mostra quem está livre, quem está atendendo e a fila.",
+   "inicio": 36.87,
+   "fin": 41.99
+  },
+  {
+   "id": "sugestao",
+   "bloque": "equipe",
+   "texto": "A cada mensagem do lead chega uma sugestão de resposta. É só tocar em enviar.",
+   "inicio": 42.382,
+   "fin": 47.302
+  },
+  {
+   "id": "vendeu",
+   "bloque": "fecho",
+   "texto": "Vendeu? Um toque registra o valor e o Bruno volta para a fila.",
+   "inicio": 48.032,
+   "fin": 52.592
+  },
+  {
+   "id": "gestor",
+   "bloque": "fecho",
+   "texto": "E o gestor vê tudo ao vivo.",
+   "inicio": 53.032,
+   "fin": 55.072
+  },
+  {
+   "id": "cta",
+   "bloque": "fecho",
+   "texto": "É código aberto e roda na sua VPS. Tá tudo no INEMA.CLUB.",
+   "inicio": 55.512,
+   "fin": 59.952
+  }
+ ],
+ "palabras": [
+  {
+   "texto": "Lead",
+   "inicio": 0.01,
+   "fin": 0.53,
+   "frase": "hook"
+  },
+  {
+   "texto": "que",
+   "inicio": 0.54,
+   "fin": 0.9,
+   "frase": "hook"
+  },
+  {
+   "texto": "espera",
+   "inicio": 0.9,
+   "fin": 1.28,
+   "frase": "hook"
+  },
+  {
+   "texto": "no",
+   "inicio": 1.28,
+   "fin": 1.58,
+   "frase": "hook"
+  },
+  {
+   "texto": "WhatsApp",
+   "inicio": 1.58,
+   "fin": 1.92,
+   "frase": "hook"
+  },
+  {
+   "texto": "esfria.",
+   "inicio": 1.92,
+   "fin": 2.56,
+   "frase": "hook"
+  },
+  {
+   "texto": "Cada",
+   "inicio": 3.0,
+   "fin": 3.18,
+   "frase": "dor"
+  },
+  {
+   "texto": "minuto",
+   "inicio": 3.18,
+   "fin": 3.72,
+   "frase": "dor"
+  },
+  {
+   "texto": "sem",
+   "inicio": 3.72,
+   "fin": 3.84,
+   "frase": "dor"
+  },
+  {
+   "texto": "resposta",
+   "inicio": 3.84,
+   "fin": 4.34,
+   "frase": "dor"
+  },
+  {
+   "texto": "é",
+   "inicio": 4.34,
+   "fin": 4.76,
+   "frase": "dor"
+  },
+  {
+   "texto": "uma",
+   "inicio": 4.76,
+   "fin": 4.92,
+   "frase": "dor"
+  },
+  {
+   "texto": "venda",
+   "inicio": 4.92,
+   "fin": 5.36,
+   "frase": "dor"
+  },
+  {
+   "texto": "indo",
+   "inicio": 5.36,
+   "fin": 5.68,
+   "frase": "dor"
+  },
+  {
+   "texto": "embora.",
+   "inicio": 5.68,
+   "fin": 5.96,
+   "frase": "dor"
+  },
+  {
+   "texto": "Com",
+   "inicio": 6.69,
+   "fin": 6.996,
+   "frase": "chega"
+  },
+  {
+   "texto": "o",
+   "inicio": 6.996,
+   "fin": 7.15,
+   "frase": "chega"
+  },
+  {
+   "texto": "atende-leads,",
+   "inicio": 7.15,
+   "fin": 8.069,
+   "frase": "chega"
+  },
+  {
+   "texto": "quem",
+   "inicio": 8.069,
+   "fin": 8.452,
+   "frase": "chega"
+  },
+  {
+   "texto": "responde",
+   "inicio": 8.452,
+   "fin": 9.141,
+   "frase": "chega"
+  },
+  {
+   "texto": "primeiro",
+   "inicio": 9.141,
+   "fin": 9.831,
+   "frase": "chega"
+  },
+  {
+   "texto": "é",
+   "inicio": 9.831,
+   "fin": 9.984,
+   "frase": "chega"
+  },
+  {
+   "texto": "um",
+   "inicio": 9.984,
+   "fin": 10.214,
+   "frase": "chega"
+  },
+  {
+   "texto": "agente.",
+   "inicio": 10.214,
+   "fin": 10.75,
+   "frase": "chega"
+  },
+  {
+   "texto": "Ele",
+   "inicio": 11.19,
+   "fin": 11.41,
+   "frase": "faq"
+  },
+  {
+   "texto": "pergunta",
+   "inicio": 11.41,
+   "fin": 11.77,
+   "frase": "faq"
+  },
+  {
+   "texto": "o",
+   "inicio": 11.77,
+   "fin": 12.01,
+   "frase": "faq"
+  },
+  {
+   "texto": "nome,",
+   "inicio": 12.01,
+   "fin": 12.31,
+   "frase": "faq"
+  },
+  {
+   "texto": "o",
+   "inicio": 12.49,
+   "fin": 12.87,
+   "frase": "faq"
+  },
+  {
+   "texto": "que",
+   "inicio": 12.87,
+   "fin": 12.95,
+   "frase": "faq"
+  },
+  {
+   "texto": "a",
+   "inicio": 12.95,
+   "fin": 13.09,
+   "frase": "faq"
+  },
+  {
+   "texto": "pessoa",
+   "inicio": 13.09,
+   "fin": 13.43,
+   "frase": "faq"
+  },
+  {
+   "texto": "procura",
+   "inicio": 13.43,
+   "fin": 14.19,
+   "frase": "faq"
+  },
+  {
+   "texto": "e",
+   "inicio": 14.19,
+   "fin": 14.41,
+   "frase": "faq"
+  },
+  {
+   "texto": "para",
+   "inicio": 14.41,
+   "fin": 14.61,
+   "frase": "faq"
+  },
+  {
+   "texto": "quando.",
+   "inicio": 14.61,
+   "fin": 14.93,
+   "frase": "faq"
+  },
+  {
+   "texto": "E",
+   "inicio": 15.37,
+   "fin": 15.47,
+   "frase": "nota"
+  },
+  {
+   "texto": "dá",
+   "inicio": 15.47,
+   "fin": 15.59,
+   "frase": "nota"
+  },
+  {
+   "texto": "uma",
+   "inicio": 15.59,
+   "fin": 15.79,
+   "frase": "nota"
+  },
+  {
+   "texto": "nota",
+   "inicio": 15.79,
+   "fin": 16.13,
+   "frase": "nota"
+  },
+  {
+   "texto": "ao",
+   "inicio": 16.13,
+   "fin": 16.31,
+   "frase": "nota"
+  },
+  {
+   "texto": "lead:",
+   "inicio": 16.32,
+   "fin": 17.48,
+   "frase": "nota"
+  },
+  {
+   "texto": "quente,",
+   "inicio": 17.49,
+   "fin": 17.89,
+   "frase": "nota"
+  },
+  {
+   "texto": "morno",
+   "inicio": 17.89,
+   "fin": 18.29,
+   "frase": "nota"
+  },
+  {
+   "texto": "ou",
+   "inicio": 18.29,
+   "fin": 18.49,
+   "frase": "nota"
+  },
+  {
+   "texto": "frio.",
+   "inicio": 18.49,
+   "fin": 18.91,
+   "frase": "nota"
+  },
+  {
+   "texto": "Quando",
+   "inicio": 19.64,
+   "fin": 19.8,
+   "frase": "gatilho"
+  },
+  {
+   "texto": "é",
+   "inicio": 19.8,
+   "fin": 19.96,
+   "frase": "gatilho"
+  },
+  {
+   "texto": "hora",
+   "inicio": 19.96,
+   "fin": 20.2,
+   "frase": "gatilho"
+  },
+  {
+   "texto": "de",
+   "inicio": 20.2,
+   "fin": 20.36,
+   "frase": "gatilho"
+  },
+  {
+   "texto": "um",
+   "inicio": 20.36,
+   "fin": 20.46,
+   "frase": "gatilho"
+  },
+  {
+   "texto": "humano,",
+   "inicio": 20.46,
+   "fin": 20.78,
+   "frase": "gatilho"
+  },
+  {
+   "texto": "o",
+   "inicio": 20.98,
+   "fin": 21.34,
+   "frase": "gatilho"
+  },
+  {
+   "texto": "lead",
+   "inicio": 21.35,
+   "fin": 21.59,
+   "frase": "gatilho"
+  },
+  {
+   "texto": "vai",
+   "inicio": 21.6,
+   "fin": 21.92,
+   "frase": "gatilho"
+  },
+  {
+   "texto": "para",
+   "inicio": 21.92,
+   "fin": 22.2,
+   "frase": "gatilho"
+  },
+  {
+   "texto": "quem",
+   "inicio": 22.2,
+   "fin": 22.46,
+   "frase": "gatilho"
+  },
+  {
+   "texto": "está",
+   "inicio": 22.46,
+   "fin": 22.72,
+   "frase": "gatilho"
+  },
+  {
+   "texto": "livre",
+   "inicio": 22.72,
+   "fin": 23.08,
+   "frase": "gatilho"
+  },
+  {
+   "texto": "há",
+   "inicio": 23.08,
+   "fin": 23.36,
+   "frase": "gatilho"
+  },
+  {
+   "texto": "mais",
+   "inicio": 23.36,
+   "fin": 23.64,
+   "frase": "gatilho"
+  },
+  {
+   "texto": "tempo.",
+   "inicio": 23.64,
+   "fin": 24.0,
+   "frase": "gatilho"
+  },
+  {
+   "texto": "No",
+   "inicio": 24.44,
+   "fin": 24.56,
+   "frase": "card"
+  },
+  {
+   "texto": "Telegram",
+   "inicio": 24.56,
+   "fin": 25.06,
+   "frase": "card"
+  },
+  {
+   "texto": "chegam",
+   "inicio": 25.06,
+   "fin": 25.5,
+   "frase": "card"
+  },
+  {
+   "texto": "o",
+   "inicio": 25.5,
+   "fin": 25.58,
+   "frase": "card"
+  },
+  {
+   "texto": "nome,",
+   "inicio": 25.56,
+   "fin": 25.94,
+   "frase": "card"
+  },
+  {
+   "texto": "o",
+   "inicio": 26.02,
+   "fin": 26.32,
+   "frase": "card"
+  },
+  {
+   "texto": "interesse,",
+   "inicio": 26.32,
+   "fin": 27.02,
+   "frase": "card"
+  },
+  {
+   "texto": "as",
+   "inicio": 27.06,
+   "fin": 27.38,
+   "frase": "card"
+  },
+  {
+   "texto": "últimas",
+   "inicio": 27.38,
+   "fin": 27.82,
+   "frase": "card"
+  },
+  {
+   "texto": "mensagens",
+   "inicio": 27.82,
+   "fin": 28.54,
+   "frase": "card"
+  },
+  {
+   "texto": "e",
+   "inicio": 28.54,
+   "fin": 28.76,
+   "frase": "card"
+  },
+  {
+   "texto": "os",
+   "inicio": 28.76,
+   "fin": 28.9,
+   "frase": "card"
+  },
+  {
+   "texto": "botões.",
+   "inicio": 28.9,
+   "fin": 29.44,
+   "frase": "card"
+  },
+  {
+   "texto": "Se",
+   "inicio": 29.88,
+   "fin": 30.06,
+   "frase": "dois"
+  },
+  {
+   "texto": "ninguém",
+   "inicio": 30.06,
+   "fin": 30.38,
+   "frase": "dois"
+  },
+  {
+   "texto": "responder",
+   "inicio": 30.38,
+   "fin": 30.9,
+   "frase": "dois"
+  },
+  {
+   "texto": "em",
+   "inicio": 30.9,
+   "fin": 31.3,
+   "frase": "dois"
+  },
+  {
+   "texto": "dois",
+   "inicio": 31.3,
+   "fin": 31.48,
+   "frase": "dois"
+  },
+  {
+   "texto": "minutos,",
+   "inicio": 31.48,
+   "fin": 31.84,
+   "frase": "dois"
+  },
+  {
+   "texto": "passa",
+   "inicio": 32.2,
+   "fin": 32.98,
+   "frase": "dois"
+  },
+  {
+   "texto": "para",
+   "inicio": 32.98,
+   "fin": 33.28,
+   "frase": "dois"
+  },
+  {
+   "texto": "o",
+   "inicio": 33.28,
+   "fin": 33.44,
+   "frase": "dois"
+  },
+  {
+   "texto": "próximo.",
+   "inicio": 33.44,
+   "fin": 33.76,
+   "frase": "dois"
+  },
+  {
+   "texto": "O",
+   "inicio": 34.2,
+   "fin": 34.28,
+   "frase": "assume"
+  },
+  {
+   "texto": "Bruno",
+   "inicio": 34.28,
+   "fin": 34.54,
+   "frase": "assume"
+  },
+  {
+   "texto": "assume",
+   "inicio": 34.54,
+   "fin": 34.9,
+   "frase": "assume"
+  },
+  {
+   "texto": "e",
+   "inicio": 34.9,
+   "fin": 35.28,
+   "frase": "assume"
+  },
+  {
+   "texto": "liga",
+   "inicio": 35.28,
+   "fin": 35.8,
+   "frase": "assume"
+  },
+  {
+   "texto": "na",
+   "inicio": 35.8,
+   "fin": 35.9,
+   "frase": "assume"
+  },
+  {
+   "texto": "hora.",
+   "inicio": 35.9,
+   "fin": 36.14,
+   "frase": "assume"
+  },
+  {
+   "texto": "No",
+   "inicio": 36.87,
+   "fin": 37.01,
+   "frase": "painel"
+  },
+  {
+   "texto": "grupo,",
+   "inicio": 37.01,
+   "fin": 37.41,
+   "frase": "painel"
+  },
+  {
+   "texto": "um",
+   "inicio": 37.53,
+   "fin": 38.03,
+   "frase": "painel"
+  },
+  {
+   "texto": "painel",
+   "inicio": 38.03,
+   "fin": 38.55,
+   "frase": "painel"
+  },
+  {
+   "texto": "mostra",
+   "inicio": 38.55,
+   "fin": 38.87,
+   "frase": "painel"
+  },
+  {
+   "texto": "quem",
+   "inicio": 38.87,
+   "fin": 39.19,
+   "frase": "painel"
+  },
+  {
+   "texto": "está",
+   "inicio": 39.19,
+   "fin": 39.43,
+   "frase": "painel"
+  },
+  {
+   "texto": "livre,",
+   "inicio": 39.43,
+   "fin": 39.73,
+   "frase": "painel"
+  },
+  {
+   "texto": "quem",
+   "inicio": 39.95,
+   "fin": 40.29,
+   "frase": "painel"
+  },
+  {
+   "texto": "está",
+   "inicio": 40.29,
+   "fin": 40.61,
+   "frase": "painel"
+  },
+  {
+   "texto": "atendendo",
+   "inicio": 40.61,
+   "fin": 41.29,
+   "frase": "painel"
+  },
+  {
+   "texto": "e",
+   "inicio": 41.29,
+   "fin": 41.43,
+   "frase": "painel"
+  },
+  {
+   "texto": "a",
+   "inicio": 41.43,
+   "fin": 41.53,
+   "frase": "painel"
+  },
+  {
+   "texto": "fila.",
+   "inicio": 41.53,
+   "fin": 41.99,
+   "frase": "painel"
+  },
+  {
+   "texto": "A",
+   "inicio": 42.382,
+   "fin": 42.462,
+   "frase": "sugestao"
+  },
+  {
+   "texto": "cada",
+   "inicio": 42.462,
+   "fin": 42.662,
+   "frase": "sugestao"
+  },
+  {
+   "texto": "mensagem",
+   "inicio": 42.662,
+   "fin": 43.262,
+   "frase": "sugestao"
+  },
+  {
+   "texto": "do",
+   "inicio": 43.262,
+   "fin": 43.422,
+   "frase": "sugestao"
+  },
+  {
+   "texto": "lead",
+   "inicio": 43.432,
+   "fin": 43.632,
+   "frase": "sugestao"
+  },
+  {
+   "texto": "chega",
+   "inicio": 43.642,
+   "fin": 43.962,
+   "frase": "sugestao"
+  },
+  {
+   "texto": "uma",
+   "inicio": 43.962,
+   "fin": 44.142,
+   "frase": "sugestao"
+  },
+  {
+   "texto": "sugestão",
+   "inicio": 44.142,
+   "fin": 44.762,
+   "frase": "sugestao"
+  },
+  {
+   "texto": "de",
+   "inicio": 44.762,
+   "fin": 44.842,
+   "frase": "sugestao"
+  },
+  {
+   "texto": "resposta.",
+   "inicio": 44.842,
+   "fin": 45.222,
+   "frase": "sugestao"
+  },
+  {
+   "texto": "É",
+   "inicio": 45.582,
+   "fin": 46.062,
+   "frase": "sugestao"
+  },
+  {
+   "texto": "só",
+   "inicio": 46.062,
+   "fin": 46.302,
+   "frase": "sugestao"
+  },
+  {
+   "texto": "tocar",
+   "inicio": 46.302,
+   "fin": 46.662,
+   "frase": "sugestao"
+  },
+  {
+   "texto": "em",
+   "inicio": 46.662,
+   "fin": 46.882,
+   "frase": "sugestao"
+  },
+  {
+   "texto": "enviar.",
+   "inicio": 46.882,
+   "fin": 47.302,
+   "frase": "sugestao"
+  },
+  {
+   "texto": "Vendeu?",
+   "inicio": 48.032,
+   "fin": 48.572,
+   "frase": "vendeu"
+  },
+  {
+   "texto": "Um",
+   "inicio": 48.692,
+   "fin": 49.312,
+   "frase": "vendeu"
+  },
+  {
+   "texto": "toque",
+   "inicio": 49.312,
+   "fin": 49.792,
+   "frase": "vendeu"
+  },
+  {
+   "texto": "registra",
+   "inicio": 49.792,
+   "fin": 50.392,
+   "frase": "vendeu"
+  },
+  {
+   "texto": "o",
+   "inicio": 50.392,
+   "fin": 50.472,
+   "frase": "vendeu"
+  },
+  {
+   "texto": "valor",
+   "inicio": 50.412,
+   "fin": 50.732,
+   "frase": "vendeu"
+  },
+  {
+   "texto": "e",
+   "inicio": 50.732,
+   "fin": 51.032,
+   "frase": "vendeu"
+  },
+  {
+   "texto": "o",
+   "inicio": 51.032,
+   "fin": 51.112,
+   "frase": "vendeu"
+  },
+  {
+   "texto": "Bruno",
+   "inicio": 51.112,
+   "fin": 51.352,
+   "frase": "vendeu"
+  },
+  {
+   "texto": "volta",
+   "inicio": 51.352,
+   "fin": 51.752,
+   "frase": "vendeu"
+  },
+  {
+   "texto": "para",
+   "inicio": 51.752,
+   "fin": 52.052,
+   "frase": "vendeu"
+  },
+  {
+   "texto": "a",
+   "inicio": 52.052,
+   "fin": 52.132,
+   "frase": "vendeu"
+  },
+  {
+   "texto": "fila.",
+   "inicio": 52.132,
+   "fin": 52.592,
+   "frase": "vendeu"
+  },
+  {
+   "texto": "E",
+   "inicio": 53.032,
+   "fin": 53.152,
+   "frase": "gestor"
+  },
+  {
+   "texto": "o",
+   "inicio": 53.152,
+   "fin": 53.232,
+   "frase": "gestor"
+  },
+  {
+   "texto": "gestor",
+   "inicio": 53.212,
+   "fin": 53.812,
+   "frase": "gestor"
+  },
+  {
+   "texto": "vê",
+   "inicio": 53.812,
+   "fin": 54.292,
+   "frase": "gestor"
+  },
+  {
+   "texto": "tudo",
+   "inicio": 54.292,
+   "fin": 54.612,
+   "frase": "gestor"
+  },
+  {
+   "texto": "ao",
+   "inicio": 54.612,
+   "fin": 54.852,
+   "frase": "gestor"
+  },
+  {
+   "texto": "vivo.",
+   "inicio": 54.852,
+   "fin": 55.072,
+   "frase": "gestor"
+  },
+  {
+   "texto": "É",
+   "inicio": 55.512,
+   "fin": 55.674,
+   "frase": "cta"
+  },
+  {
+   "texto": "código",
+   "inicio": 55.674,
+   "fin": 56.239,
+   "frase": "cta"
+  },
+  {
+   "texto": "aberto",
+   "inicio": 56.239,
+   "fin": 56.804,
+   "frase": "cta"
+  },
+  {
+   "texto": "e",
+   "inicio": 56.804,
+   "fin": 56.965,
+   "frase": "cta"
+  },
+  {
+   "texto": "roda",
+   "inicio": 56.965,
+   "fin": 57.369,
+   "frase": "cta"
+  },
+  {
+   "texto": "na",
+   "inicio": 57.369,
+   "fin": 57.611,
+   "frase": "cta"
+  },
+  {
+   "texto": "sua",
+   "inicio": 57.611,
+   "fin": 57.934,
+   "frase": "cta"
+  },
+  {
+   "texto": "VPS.",
+   "inicio": 57.934,
+   "fin": 58.257,
+   "frase": "cta"
+  },
+  {
+   "texto": "Tá",
+   "inicio": 58.257,
+   "fin": 58.499,
+   "frase": "cta"
+  },
+  {
+   "texto": "tudo",
+   "inicio": 58.499,
+   "fin": 58.903,
+   "frase": "cta"
+  },
+  {
+   "texto": "no",
+   "inicio": 58.903,
+   "fin": 59.145,
+   "frase": "cta"
+  },
+  {
+   "texto": "INEMA.CLUB.",
+   "inicio": 59.145,
+   "fin": 59.952,
+   "frase": "cta"
+  }
+ ]
+}

@@ -65,6 +65,7 @@ Quick installation test (no voice, ~1 min):
 
 | Example | Type | Files |
 |---|---|---|
+| atende-leads product film (real screens, cursor, voice tied to words) | narrated product film, 63 s; Spanish version 61 s | `exemplos/filme-produto/` · `renders/atende-16x9.mp4` · `renders/atende-9x16.mp4` · [YouTube](https://www.youtube.com/watch?v=tWv1mEIK62c) · ES: `exemplos/filme-produto-es/` |
 | This video has no camera | narrated explainer (local voice), 44 s | `exemplos/explicativo-narrado/` · `renders/explicativo-16x9.mp4` · `renders/explicativo-9x16.mp4` · [YouTube](https://www.youtube.com/watch?v=tkT2I6nrMAk) |
 | INEMA.CLUB in one shot | launch video with music only, 21 s | `exemplos/lancamento/` · `renders/lancamento-16x9.mp4` · `renders/lancamento-9x16.mp4` · [YouTube](https://www.youtube.com/watch?v=IJ-qZQ1drBc) |
 
