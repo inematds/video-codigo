@@ -34,6 +34,7 @@ fi
 if command -v python3 >/dev/null 2>&1; then
   ok "Python $(python3 -c 'import platform; print(platform.python_version())')"
   if python3 -c 'import numpy' >/dev/null 2>&1; then ok "numpy (voz e mixagem)"; else falta "Falta numpy" "python3 -m pip install --user numpy"; fi
+  if python3 -c 'import scipy' >/dev/null 2>&1; then ok "scipy (música do mezcla.py)"; else falta "Falta scipy" "python3 -m pip install --user scipy"; fi
   if python3 -c 'import PIL' >/dev/null 2>&1; then ok "Pillow (hojas de revisión)"; else falta "Falta Pillow" "python3 -m pip install --user pillow"; fi
   if python3 -c 'import librosa' >/dev/null 2>&1; then ok "librosa (detectar pulsos de una canción)"; else echo "  · librosa no está: opcional, solo para analizar una pista existente (python3 -m pip install --user librosa)"; fi
   if python3 -c 'import cairosvg' >/dev/null 2>&1; then ok "CairoSVG (ruta SVG)"; else echo "  · CairoSVG no está: opcional, solo para la ruta SVG (python3 -m pip install --user cairosvg)"; fi

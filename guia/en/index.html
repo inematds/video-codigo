@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>video-codigo — videos made with code</title>
-<meta name="description" content="A skill for Claude Code and Codex that makes videos without a camera: every frame written in code, voice synced to each word, in 16:9 and 9:16.">
+<meta name="description" content="A skill for Claude Code and Codex that makes videos without a camera: every frame is coded, local voice synced to each word, in 16:9 and 9:16.">
 <link rel="alternate" hreflang="pt-BR" href="https://inematds.github.io/video-codigo/guia/">
 <link rel="alternate" hreflang="en" href="https://inematds.github.io/video-codigo/guia/en/">
 <link rel="alternate" hreflang="es" href="https://inematds.github.io/video-codigo/guia/es/">
@@ -114,9 +114,9 @@
   <div class="links">
     <a class="sec" href="#oque">What it is</a>
     <a class="sec" href="#fluxo">How it works</a>
-    <a class="sec" href="#guia">How to use</a>
+    <a class="sec" href="#guia">User guide</a>
     <a class="sec" href="#exemplos">Examples</a>
-    <a class="sec" href="#roadmap">What's next</a>
+    <a class="sec" href="#roadmap">Next steps</a>
     <span class="lang"><a href="../">PT</a><a class="on" href="./">EN</a><a href="../es/">ES</a></span>
     <button class="tgl" id="themeToggle" aria-label="Toggle theme" title="Toggle theme">🌙</button>
     <a class="btn" href="https://github.com/inematds/video-codigo" target="_blank" rel="noopener">GitHub</a>
@@ -128,8 +128,8 @@
   <div class="wrap">
     <div>
       <span class="chip">Skill for Claude Code and Codex</span>
-      <h1>Product videos made with <span class="amb">code</span></h1>
-      <p class="lead">Answer three questions and the agent writes every frame in HTML, renders MP4s in 16:9 and 9:16, and, if you want narration, syncs each image to the word your voice is saying.</p>
+      <h1>A video for your product, made with <span class="amb">code</span></h1>
+      <p class="lead">Answer three questions and the agent writes every frame in HTML, renders an MP4 in 16:9 and 9:16 and, if you want narration, syncs each image to the word your voice is saying.</p>
       <div class="cta">
         <a class="btn" href="#guia">Start the guide</a>
         <a class="btn ghost" href="https://github.com/inematds/video-codigo" target="_blank" rel="noopener">View on GitHub</a>
@@ -141,17 +141,17 @@
 
 <section id="resumo" class="resumo"><div class="wrap">
   <span class="chip">In short</span>
-  <p>video-codigo is a skill (a package of instructions and scripts) for Claude Code and Codex, Anthropic and OpenAI's coding agents, that makes videos without a camera or editor: every frame is written in code (HTML, Canvas, or SVG) and turned into an MP4. It is for anyone who wants to show a product, project, or idea on video—a launch, ad, explainer, or lesson. If the video has narration, the voice is generated on your computer at no cost, and each image appears at the exact moment its word is spoken. To use it, you need Node, Python, and FFmpeg; for voice, you need inemavox with an NVIDIA GPU (without one, the video will have music only).</p>
+  <p>video-codigo is a skill (a package of instructions and scripts) for Claude Code and Codex, Anthropic's and OpenAI's coding agents, that makes videos without a camera or editor: every frame is written in code (HTML, Canvas, or SVG) and becomes an MP4. It's for anyone who wants to show a product, project, or idea in a video — a launch, ad, explainer, or lesson. If the video has narration, the voice is generated on your computer at no cost for voice generation, and each image appears at the exact moment its word is spoken. To use it, you need Node, Python, and FFmpeg; for voice, you need inemavox and an NVIDIA GPU (without it, the video has music only).</p>
 </div></section>
 
 <section id="oque"><div class="wrap">
   <span class="chip">What it is</span>
   <h2>A video director inside your agent</h2>
-  <p class="sub">The skill asks what matters, proposes a direction, tests a segment, and only then renders the full video.</p>
+  <p class="sub">The skill asks what matters, proposes the direction, tests a segment, and only then renders the full video.</p>
   <figure style="margin:0 0 26px;border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:0 30px 80px -30px #000"><img src="../assets/banner-grade-en.jpg" alt="Six video types: launch, ad with hooks, explainer, product series, local voice, 16:9 and 9:16" loading="lazy" style="width:100%;display:block"></figure>
   <div class="grid g3">
-    <div class="card"><h3>🎬 Several video types</h3><p>The skill can direct a launch, an ad with multiple hooks, a product explainer, a series with a consistent look, a narrated sales video, and a long lesson. Two ready-to-copy examples are included: a narrated explainer and a music-only launch.</p></div>
-    <div class="card"><h3>🎙️ Voice synced to each word</h3><p><code>scripts/voz.py</code> generates narration with your cloned voice and measures the timing of each word. In the HTML, <code>pal('frase', 'palavra')</code> specifies when each thing appears.</p></div>
+    <div class="card"><h3>🎬 Several video types</h3><p>The skill can direct a launch, an ad with multiple hooks, a product explainer, a series with a consistent look, a narrated sales video, and a long lesson. Two are ready to copy: a narrated explainer and a music-only launch video.</p></div>
+    <div class="card"><h3>🎙️ Voice synced to each word</h3><p><code>scripts/voz.py</code> generates narration in your cloned voice and measures the timing of every word. In the HTML, <code>pal('frase', 'palavra')</code> tells each element when to appear.</p></div>
     <div class="card"><h3>📐 16:9 and 9:16 together</h3><p>The same project adapts to each format. One render for YouTube, another for Reels, Shorts, and TikTok.</p></div>
   </div>
 </div></section>
@@ -159,7 +159,7 @@
 <section id="fluxo"><div class="wrap">
   <span class="chip">How it works</span>
   <h2>From request to MP4</h2>
-  <p class="sub">With voice, the speech sets the video's timing. Without voice, the music does.</p>
+  <p class="sub">With voice, speech sets the video's timing. Without voice, music does.</p>
   <div class="flow">
     <span>3 questions</span><span class="arr">→</span>
     <span>roteiro.json</span><span class="arr">→</span>
@@ -170,22 +170,24 @@
     <span>review</span>
   </div>
   <div class="grid g3" style="margin-top:26px">
-    <div class="card"><h3>1 · The questions</h3><p><b>What is it about, and who is it for?</b> (it can be a folder, repository, or website to read) · <b>Voice or music only?</b> · <b>What style?</b> — the INEMA look or a reference video.</p></div>
-    <div class="card"><h3>2 · The voice</h3><p>Chatterbox speaks each sentence using the cloned voice; Whisper listens, checks it, and marks the timing of every word. Any sentence that comes out wrong is generated again.</p></div>
-    <div class="card"><h3>3 · The render</h3><p>A headless browser opens the page, requests the frame for each moment (<code>window.seek(t)</code>), and FFmpeg combines everything with the audio. No network needed: fonts and images are kept in the project.</p></div>
+    <div class="card"><h3>1 · The questions</h3><p><b>What is it about, and who is it for?</b> (it can be a folder, repository, or website to read) · <b>Voice or music only?</b> · <b>What style?</b> — the INEMA standard or a reference video.</p></div>
+    <div class="card"><h3>2 · The voice</h3><p>Chatterbox speaks each sentence in the cloned voice; Whisper listens, checks it, and timestamps every word. Any sentence that comes out wrong is generated again.</p></div>
+    <div class="card"><h3>3 · The render</h3><p>A headless browser opens the page, requests the frame for each moment (<code>window.seek(t)</code>), and FFmpeg combines everything with the audio. No network needed: fonts and images stay in the project.</p></div>
   </div>
 </div></section>
 
 <section id="pre"><div class="wrap">
-  <span class="chip">Prerequisites</span>
-  <h2>What needs to be on your machine</h2>
-  <p class="sub">The installer checks and installs what is missing, without sudo.</p>
+  <span class="chip">Requirements</span>
+  <h2>What needs to be installed</h2>
+  <p class="sub">The installer (<code>instalar.sh</code>) installs Playwright and Chromium automatically, without sudo. It only checks for the rest and shows you the command to install it.</p>
   <div class="grid g3">
-    <div class="card"><h3>Node, Python, and FFmpeg</h3><p>Node 18 or newer, Python 3 with numpy and Pillow, FFmpeg on PATH.</p><pre><span class="c"># check</span>
-node -v && python3 -V && ffmpeg -version | head -1</pre></div>
-    <div class="card"><h3>Playwright + Chromium</h3><p>A headless browser controlled by a script that captures each video frame. Installed in <code>~/.cache</code>.</p><pre><span class="c"># install.sh (step 1) already runs this</span>
+    <div class="card"><h3>Node, Python, and FFmpeg</h3><p>Node 18 or later, Python 3 with numpy, scipy, and Pillow, and FFmpeg on your PATH.</p><pre><span class="c"># check</span>
+node -v && python3 -V && ffmpeg -version | head -1
+<span class="c"># Python libraries</span>
+python3 -m pip install --user numpy scipy pillow</pre></div>
+    <div class="card"><h3>Playwright + Chromium</h3><p>A headless browser controlled by a script that captures each video frame. It installs to <code>~/.cache</code>.</p><pre><span class="c"># instalar.sh (step 1) already runs this</span>
 bash ~/projetos/video-codigo/scripts/preparar-entorno.sh</pre></div>
-    <div class="card"><h3>Voice (optional, requires an NVIDIA GPU)</h3><p>Voice uses <a href="https://github.com/inematds/inemavox" target="_blank" rel="noopener">inemavox</a> installed in <code>~/projetos/inemavox</code>: <b>Chatterbox</b> (a model that speaks with a voice copied from a recording, or “cloned voice”) and <b>Whisper</b> (a model that listens to audio and marks the timing of every word). You also need a clean 10–20 s recording of your voice in <code>.wav</code> format. Without a GPU or inemavox, make videos with music only.</p><pre><span class="c"># all three must exist</span>
+    <div class="card"><h3>Voice (optional, requires an NVIDIA GPU)</h3><p>Voice uses <a href="https://github.com/inematds/inemavox" target="_blank" rel="noopener">inemavox</a> installed in <code>~/projetos/inemavox</code>: <b>Chatterbox</b> (a model that speaks in a voice copied from a recording, called a "cloned voice") and <b>Whisper</b> (a model that listens to the audio and timestamps every word). You also need <b>Miniconda</b> (a Python environment manager) and a clean 10–20-second recording of your voice in <code>.wav</code> format. The models download several GB the first time. If your conda or inemavox is elsewhere, point to them with <code>CHATTERBOX_PYTHON=/caminho/python3</code> and <code>INEMAVOX_DIR=/caminho/inemavox</code>. Without a GPU or inemavox, make videos with music only.</p><pre><span class="c"># all three must exist</span>
 ls ~/miniconda3/envs/chatterbox/bin/python3 \
    ~/projetos/inemavox/chatterbox_tts_worker.py \
    ~/projetos/inemavox/venv/bin/python
@@ -198,37 +200,43 @@ cd ~/projetos/inemavox && python3 -m venv venv && venv/bin/pip install faster-wh
 </div></section>
 
 <section id="guia"><div class="wrap">
-  <span class="chip">Step-by-step guide</span>
+  <span class="chip">User guide · step by step</span>
   <h2>Your first video made with code</h2>
-  <p class="sub">Normally, you just ask the agent. The commands below are what it runs and let you repeat any step by hand. In them, <code>$K</code> is the kit folder and <code>$P</code> is your video folder:</p>
+  <p class="sub">Normally, you just ask the agent (step 2): it writes the script and scenes and runs everything. The commands in the following steps are what it runs, and let you redo a step by hand. To do that, first run this in the terminal (<code>$K</code> is the kit folder, <code>$P</code> is your video folder):</p>
 <pre><span class="k">K=~/projetos/video-codigo</span>                      <span class="c"># where the kit was cloned</span>
-<span class="k">P=~/videos/trabalho/2026-11-06-meuapp</span>         <span class="c"># one folder per video</span></pre>
+<span class="k">P=~/videos/trabalho/2026-11-06-meuapp</span>         <span class="c"># one folder per video</span>
+<span class="k">mkdir -p "$P"</span></pre>
 
   <div class="step"><div class="b">1</div><div>
     <h3>Install the skill</h3>
-    <p>Clone the repository, connect the skill to Claude Code and Codex, and install the render browser.</p>
+    <p>Clone the repository, enable the skill in Claude Code and Codex, and install the render browser.</p>
 <pre><span class="k">git clone https://github.com/inematds/video-codigo ~/projetos/video-codigo</span>
 <span class="k">bash ~/projetos/video-codigo/instalar.sh</span>  <span class="c"># ✓ skill in ~/.claude/skills/video-codigo</span></pre>
-    <p>Test the installation by rendering the ready-made example (no voice or GPU needed; takes about 1 minute):</p>
-<pre><span class="k">cd ~/projetos/video-codigo/exemplos/lancamento && node ../../scripts/render-video.mjs --project . --output teste.mp4 --audio audio/lancamento/mezcla.wav</span></pre>
+    <p>Check the installation by rendering the ready-made example (no voice or GPU needed; takes about 1 minute):</p>
+<pre><span class="k">cd ~/projetos/video-codigo/exemplos/lancamento && node ../../scripts/render-video.mjs --project . --output teste.mp4 --audio audio/lancamento/mezcla.wav --overwrite</span></pre>
   </div></div>
 
   <div class="step"><div class="b">2</div><div>
     <h3>Request the video</h3>
-    <p>Describe the subject and, if available, where the material is. The agent asks any remaining questions. To narrate with your voice, tell it where the <code>.wav</code> recording is.</p>
-<pre><span class="k">/video-codigo</span> <span class="s">make a 40-second video of my app, read the ~/projetos/meu-app folder, narrated with the voice in ~/minha-voz.wav, INEMA style</span></pre>
+    <p>Say what the video is about and, if you have it, where the material is. The agent asks the three remaining questions. To narrate in your voice, say where the <code>.wav</code> recording is.</p>
+<pre><span class="k">/video-codigo</span> <span class="s">make a 40-second video of my app, read the ~/projetos/meu-app folder, narrated in the voice from ~/minha-voz.wav, INEMA style</span></pre>
   </div></div>
 
   <div class="step"><div class="b">↷</div><div>
-    <h3>No voice? Skip to the music</h3>
-    <p>Without narration, the music sets the timing, and you don't need a script or GPU. Copy the launch example, generate music for as long as you want (<code>--duracao</code>), and replace the <code>SEG</code> text and the shape states in <code>S</code> in <code>index.html</code> (each has the second when it happens). Then go straight to step 7.</p>
+    <h3>No voice? Music sets the timing</h3>
+    <p>Without narration, you don't need a script or a GPU. The simplest option is to ask the agent ("music only, 20 seconds") — it writes the scenes. To start from the launch example by hand, know what to change in the <code>&lt;script&gt;</code> in <code>index.html</code>:</p>
+    <p>• <code>window.videoSpec = {… duration: 21}</code> — the video duration in seconds; use the same length as the music.<br>
+    • <code>SEG</code> — the list of segments: <code>a</code> and <code>b</code> are the seconds when each segment starts and ends; <code>rot</code> and <code>sub</code> are its title and subtitle.<br>
+    • <code>S</code> — the position and size of the yellow shape at each second (<code>t</code>), which connects one segment to the next.<br>
+    • <code>function conteudo</code> — the drawing inside the shape in each segment (modules, page, play, terminal, conversation). Replace them with elements from your product.</p>
 <pre><span class="k">cp -r $K/exemplos/lancamento/{index.html,motion.mjs,inema} $P/</span>
-<span class="k">python3 $K/scripts/mezcla.py --projeto $P --id meuapp --duracao 21 --musica energica --lufs -14</span></pre>
+<span class="k">python3 $K/scripts/mezcla.py --projeto $P --id meuapp --duracao 21 --musica energica --lufs -14</span>  <span class="c"># same duration as videoSpec</span></pre>
+    <p>Then go to step 7 (preview) and step 8 (render, with <code>--audio $P/audio/meuapp/mezcla.wav</code>).</p>
   </div></div>
 
   <div class="step"><div class="b">3</div><div>
-    <h3>One sentence per moment in the script</h3>
-    <p>File <code>$P/roteiro.json</code>. Each sentence has an <code>id</code>: that's what the image syncs to. In <code>voz</code>, put the path to your recording. <code>dicionario</code> replaces what appears on screen with what the voice should read.</p>
+    <h3>Script with one sentence per moment</h3>
+    <p>File <code>$P/roteiro.json</code>. Each sentence has an <code>id</code>: that's what the image syncs to. In <code>voz</code>, the path to your recording. <code>dicionario</code> replaces what appears on screen with what the voice should read.</p>
 <pre>{"id": "meuapp", "pausa": 0.28, "voz": "/home/voce/minha-voz.wav",
  "dicionario": [["16:9", "dezesseis por nove"]],
  "blocos": [{"id": "abertura", "frases": [
@@ -237,20 +245,20 @@ cd ~/projetos/inemavox && python3 -m venv venv && venv/bin/pip install faster-wh
   </div></div>
 
   <div class="step"><div class="b">4</div><div>
-    <h3>Generate the voice with timing for each word</h3>
-    <p>Runs on your computer. Outputs <code>$P/voz/meuapp/voz.wav</code> and <code>$P/voz/meuapp/tiempos.js</code> (the timing of each word); sentences below 80% similarity are regenerated automatically.</p>
+    <h3>Generate the voice with word-level timing</h3>
+    <p>Runs on your computer. Outputs <code>$P/voz/meuapp/voz.wav</code> and <code>$P/voz/meuapp/tiempos.js</code> (the timing for each word); any sentence below 80% similarity is regenerated automatically.</p>
 <pre><span class="k">python3 $K/scripts/voz.py --projeto $P $P/roteiro.json</span>  <span class="c"># e.g.: meuapp: 41.9 s · 12 sentences · 107 words</span></pre>
   </div></div>
 
   <div class="step"><div class="b">5</div><div>
-    <h3>Background music</h3>
-    <p>Original synthesized music (<code>energica</code>, 120 beats per minute; <code>tranquila</code>, 84; or <code>--pista</code> with your own music), 24 dB below the voice while speaking. <code>--lufs -14</code> sets the final volume to the level used by YouTube and Instagram (so the platform doesn't turn it down or make it too loud). Without voice, pass <code>--duracao</code> in seconds.</p>
+    <h3>Music underneath</h3>
+    <p>Original synthesized music (<code>energica</code>, 120 beats per minute; <code>tranquila</code>, 84; or <code>--pista</code> with your music), 24 dB below the voice while speaking. <code>--lufs -14</code> sets the final volume to the level used by YouTube and Instagram (so the platform doesn't turn it down or make it too loud). Without voice, pass <code>--duracao</code> in seconds.</p>
 <pre><span class="k">python3 $K/scripts/mezcla.py --projeto $P --id meuapp --musica tranquila --lufs -14</span>  <span class="c"># → $P/audio/meuapp/mezcla.wav</span></pre>
   </div></div>
 
   <div class="step"><div class="b">6</div><div>
     <h3>Scenes synced to speech</h3>
-    <p>Start from the narrated example: it already includes the theme, timing engine, and skeleton used by the renderer (<code>videoSpec</code> = size and duration, <code>seek(t)</code> = draws moment <code>t</code>, <code>renderReady</code> = signals when fonts and images have loaded). Replace the scene text and, in every <code>pal('frase', 'palavra')</code>, <code>ini('frase')</code>, and <code>data-in</code>, replace the <code>id</code>s and words with those from your script. If any example ones remain, the render stops and tells you which: <code>Não encontrei «câmera» na frase hook do roteiro</code>.</p>
+    <p>Start from the narrated example: it already includes the theme, timing engine, and skeleton used by the render (<code>videoSpec</code> = size and duration, <code>seek(t)</code> = draws moment <code>t</code>, <code>renderReady</code> = signals when fonts and images have loaded). Replace the scene text and, in every <code>pal('frase', 'palavra')</code>, <code>ini('frase')</code>, and <code>data-in</code>, replace the <code>id</code>s and words with those from your script. If any example ones are left over, the render stops and tells you which: <code>Não encontrei «câmera» na frase hook do roteiro</code>.</p>
 <pre><span class="k">cp -r $K/exemplos/explicativo-narrado/{index.html,engine.mjs,motion.mjs,declarativo.mjs,inema} $P/</span>
 <span class="k">cp $P/voz/meuapp/tiempos.js $P/</span>   <span class="c"># your voice timings</span></pre>
 <pre>&lt;h1 data-in="hook"&gt;Code only.&lt;/h1&gt;
@@ -259,14 +267,14 @@ cd ~/projetos/inemavox && python3 -m venv venv && venv/bin/pip install faster-wh
 
   <div class="step"><div class="b">7</div><div>
     <h3>Preview before rendering the whole video</h3>
-    <p>Capture individual frames at tricky moments in both formats and review them before spending time on the full video. <code>--still</code> is the second of the video (it must be within the duration; for a 5-second script, use 2 or 3).</p>
+    <p>Capture individual frames at difficult moments, in both formats, and review them before spending time on the whole video. <code>--still</code> is the second in the video (it must be within the duration; for a 5-second script, use 2 or 3).</p>
 <pre><span class="k">node $K/scripts/render-video.mjs --project $P --output $P/prova.png --still 2</span>
 <span class="k">node $K/scripts/render-video.mjs --project $P --output $P/prova-v.png --still 2 --width 1080 --height 1920</span></pre>
   </div></div>
 
   <div class="step"><div class="b">8</div><div>
     <h3>Render and review</h3>
-    <p>One MP4 per format and a contact sheet to review the entire video at once.</p>
+    <p>One MP4 per format and a contact sheet to review the whole video at a glance.</p>
 <pre><span class="k">node $K/scripts/render-video.mjs --project $P --output $P/renders/meuapp-16x9.mp4 --audio $P/audio/meuapp/mezcla.wav</span>
 <span class="k">node $K/scripts/render-video.mjs --project $P --output $P/renders/meuapp-9x16.mp4 --width 1080 --height 1920 --audio $P/audio/meuapp/mezcla.wav</span>
 <span class="k">python3 $K/scripts/inspect-video.py $P/renders/meuapp-9x16.mp4 --output-dir $P/reviews</span></pre>
@@ -276,21 +284,21 @@ cd ~/projetos/inemavox && python3 -m venv venv && venv/bin/pip install faster-wh
 <section id="exemplos"><div class="wrap">
   <span class="chip">Examples</span>
   <h2>Two videos made with the kit itself</h2>
-  <p class="sub">The code, script, and audio for each are in <a href="https://github.com/inematds/video-codigo/tree/main/exemplos" target="_blank" rel="noopener"><code>exemplos/</code></a>. Not one frame was filmed. The fastest first win, with no voice or GPU: render the launch example.</p>
-<pre><span class="k">cd $K/exemplos/lancamento && node ../../scripts/render-video.mjs --project . --output teste.mp4 --audio audio/lancamento/mezcla.wav</span></pre>
+  <p class="sub">The code, script, and audio for each are in <a href="https://github.com/inematds/video-codigo/tree/main/exemplos" target="_blank" rel="noopener"><code>exemplos/</code></a>. No frames were filmed. The quickest first success, with no voice or GPU: render the launch example.</p>
+<pre><span class="k">cd $K/exemplos/lancamento && node ../../scripts/render-video.mjs --project . --output teste.mp4 --audio audio/lancamento/mezcla.wav --overwrite</span></pre>
   <div class="ex">
-    <figure><video controls preload="none" playsinline poster="../assets/explicativo-16x9.jpg" src="../../renders/explicativo-16x9.mp4" style="width:100%;display:block"></video><figcaption><b>Narrated explainer</b> (44 s) — Nei's local voice; typing code, word-by-word timing marks, and the 16:9 frame turning into 9:16 on the right word. <a href="../../renders/explicativo-9x16.mp4">9:16 version</a> · <a href="https://www.youtube.com/watch?v=tkT2I6nrMAk" target="_blank" rel="noopener">YouTube</a></figcaption></figure>
+    <figure><video controls preload="none" playsinline poster="../assets/explicativo-16x9.jpg" src="../../renders/explicativo-16x9.mp4" style="width:100%;display:block"></video><figcaption><b>Narrated explainer</b> (44 s) — Nei's local voice; code being typed, timestamps for every word, and the 16:9 frame turning into 9:16 on the right word. <a href="../../renders/explicativo-9x16.mp4">9:16 version</a> · <a href="https://www.youtube.com/watch?v=tkT2I6nrMAk" target="_blank" rel="noopener">YouTube</a></figcaption></figure>
     <figure><video controls preload="none" playsinline poster="../assets/lancamento-16x9.jpg" src="../../renders/lancamento-16x9.mp4" style="width:100%;display:block"></video><figcaption><b>Music-only launch</b> (21 s) — one continuous shot: the same shape becomes a course, guide, video, kit, community, and the INEMA.CLUB dot. <a href="../../renders/lancamento-9x16.mp4">9:16 version</a> · <a href="https://www.youtube.com/watch?v=IJ-qZQ1drBc" target="_blank" rel="noopener">YouTube</a></figcaption></figure>
   </div>
 </div></section>
 
 <section id="roadmap"><div class="wrap">
-  <span class="chip">What's next</span>
-  <h2>What exists and what's coming</h2>
-  <p class="sub">Done = it is in the repository and has been used in the examples.</p>
+  <span class="chip">Next steps</span>
+  <h2>What exists now and what's next</h2>
+  <p class="sub">Done = in the repository and used in the examples.</p>
   <div class="phase"><div class="tag">Done</div><div class="d"><strong>Skill, local voice, and INEMA theme</strong><span>SKILL.md and references in Portuguese, voz.py with Chatterbox + Whisper, theme with local fonts, two examples in 16:9 and 9:16.</span></div></div>
-  <div class="phase"><div class="tag">Next</div><div class="d"><strong>Ready-made ad example with multiple hooks</strong><span>The skill already knows how to make it; what is missing is a rendered example with the same body and five different openings.</span></div></div>
-  <div class="phase"><div class="tag">Later</div><div class="d"><strong>Ready-made product series example</strong><span>One video per product with the same look, generated from a list.</span></div></div>
+  <div class="phase"><div class="tag">Next</div><div class="d"><strong>Ready-made ad example with multiple hooks</strong><span>The skill can already make it; what's missing is a rendered example with the same body and five different openings.</span></div></div>
+  <div class="phase"><div class="tag">Later</div><div class="d"><strong>Ready-made product series example</strong><span>One video per product with the same look, based on a list.</span></div></div>
 </div></section>
 
 <footer>

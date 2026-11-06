@@ -52,13 +52,14 @@ git clone https://github.com/inematds/video-codigo ~/projetos/video-codigo
 bash ~/projetos/video-codigo/instalar.sh     # liga a skill no Claude Code/Codex e instala o Playwright (sem sudo)
 ```
 
-Pré-requisitos: Node 18+, Python 3 com `numpy` e Pillow, FFmpeg. **Voz (opcional):** o
+Pré-requisitos: Node 18+, Python 3 com `numpy`, `scipy` e Pillow, FFmpeg. O `instalar.sh` instala o Playwright e o Chromium (sem sudo); o resto ele confere e mostra o comando. **Voz (opcional):** o
 [inemavox](https://github.com/inematds/inemavox) em `~/projetos/inemavox` com o ambiente Chatterbox (`~/miniconda3/envs/chatterbox`) e o Whisper do
 `venv` dele; a voz de referência é um `.wav` de 10–20 s (`"voz": "/caminho/minha-voz.wav"` no roteiro). Sem voz, a
 skill funciona só com música.
 
 ```bash
-# voz local (testado: Python 3.11, chatterbox-tts 0.1.6, GPU NVIDIA)
+# voz local (testado: Python 3.11, chatterbox-tts 0.1.6, GPU NVIDIA, Miniconda; os modelos baixam alguns GB no 1º uso)
+# conda ou inemavox em outro lugar: CHATTERBOX_PYTHON=/caminho/python3  INEMAVOX_DIR=/caminho/inemavox
 git clone https://github.com/inematds/inemavox ~/projetos/inemavox
 conda create -n chatterbox python=3.11 -y
 ~/miniconda3/envs/chatterbox/bin/pip install chatterbox-tts==0.1.6
@@ -66,7 +67,7 @@ cd ~/projetos/inemavox && python3 -m venv venv && venv/bin/pip install faster-wh
 ```
 
 Teste rápido da instalação (sem voz, ~1 min):
-`cd ~/projetos/video-codigo/exemplos/lancamento && node ../../scripts/render-video.mjs --project . --output teste.mp4 --audio audio/lancamento/mezcla.wav`
+`cd ~/projetos/video-codigo/exemplos/lancamento && node ../../scripts/render-video.mjs --project . --output teste.mp4 --audio audio/lancamento/mezcla.wav --overwrite`
 
 ## Exemplos (feitos com o próprio kit)
 
@@ -75,7 +76,7 @@ Teste rápido da instalação (sem voz, ~1 min):
 | Este vídeo não tem câmera | explicativo narrado (voz local), 44 s | `exemplos/explicativo-narrado/` · `renders/explicativo-16x9.mp4` · `renders/explicativo-9x16.mp4` · [YouTube](https://www.youtube.com/watch?v=tkT2I6nrMAk) |
 | INEMA.CLUB em um plano | lançamento só com música, 21 s | `exemplos/lancamento/` · `renders/lancamento-16x9.mp4` · `renders/lancamento-9x16.mp4` · [YouTube](https://www.youtube.com/watch?v=IJ-qZQ1drBc) |
 
-Para refazer um exemplo: `cd exemplos/lancamento && node ../../scripts/render-video.mjs --project . --output x.mp4 --audio audio/lancamento/mezcla.wav`.
+O roteiro do exemplo narrado usa a voz `nei`, que só existe na máquina do autor: para gerar de novo a voz, rode com `VC_VOZ=/caminho/sua-voz.wav`. Para refazer só o vídeo (o áudio já está no repositório): `cd exemplos/lancamento && node ../../scripts/render-video.mjs --project . --output x.mp4 --audio audio/lancamento/mezcla.wav`.
 
 ## Estrutura
 

@@ -179,13 +179,15 @@
 <section id="pre"><div class="wrap">
   <span class="chip">Pré-requisitos</span>
   <h2>O que precisa estar na máquina</h2>
-  <p class="sub">O instalador confere e instala o que falta, sem sudo.</p>
+  <p class="sub">O instalador (<code>instalar.sh</code>) instala sozinho o Playwright e o Chromium, sem sudo. O resto ele só confere e mostra o comando para instalar.</p>
   <div class="grid g3">
-    <div class="card"><h3>Node, Python e FFmpeg</h3><p>Node 18 ou mais novo, Python 3 com numpy e Pillow, FFmpeg no PATH.</p><pre><span class="c"># conferir</span>
-node -v && python3 -V && ffmpeg -version | head -1</pre></div>
+    <div class="card"><h3>Node, Python e FFmpeg</h3><p>Node 18 ou mais novo, Python 3 com numpy, scipy e Pillow, FFmpeg no PATH.</p><pre><span class="c"># conferir</span>
+node -v && python3 -V && ffmpeg -version | head -1
+<span class="c"># bibliotecas do Python</span>
+python3 -m pip install --user numpy scipy pillow</pre></div>
     <div class="card"><h3>Playwright + Chromium</h3><p>Um navegador sem janela, controlado por script, que tira a foto de cada quadro do vídeo. Vai para <code>~/.cache</code>.</p><pre><span class="c"># o instalar.sh (passo 1) já roda isto</span>
 bash ~/projetos/video-codigo/scripts/preparar-entorno.sh</pre></div>
-    <div class="card"><h3>Voz (opcional, precisa de GPU NVIDIA)</h3><p>A voz usa o <a href="https://github.com/inematds/inemavox" target="_blank" rel="noopener">inemavox</a> instalado em <code>~/projetos/inemavox</code>: o <b>Chatterbox</b> (modelo que fala com uma voz copiada de uma gravação, a "voz clonada") e o <b>Whisper</b> (modelo que ouve o áudio e marca o tempo de cada palavra). Você também precisa de uma gravação limpa de 10–20 s da sua voz em <code>.wav</code>. Sem GPU ou sem o inemavox, faça vídeos só com música.</p><pre><span class="c"># os três precisam existir</span>
+    <div class="card"><h3>Voz (opcional, precisa de GPU NVIDIA)</h3><p>A voz usa o <a href="https://github.com/inematds/inemavox" target="_blank" rel="noopener">inemavox</a> instalado em <code>~/projetos/inemavox</code>: o <b>Chatterbox</b> (modelo que fala com uma voz copiada de uma gravação, a "voz clonada") e o <b>Whisper</b> (modelo que ouve o áudio e marca o tempo de cada palavra). Precisa também do <b>Miniconda</b> (gerenciador de ambientes Python) e de uma gravação limpa de 10–20 s da sua voz em <code>.wav</code>. No primeiro uso os modelos baixam alguns GB. Se o seu conda ou o inemavox estiverem em outro lugar, aponte com <code>CHATTERBOX_PYTHON=/caminho/python3</code> e <code>INEMAVOX_DIR=/caminho/inemavox</code>. Sem GPU ou sem o inemavox, faça vídeos só com música.</p><pre><span class="c"># os três precisam existir</span>
 ls ~/miniconda3/envs/chatterbox/bin/python3 \
    ~/projetos/inemavox/chatterbox_tts_worker.py \
    ~/projetos/inemavox/venv/bin/python
@@ -200,9 +202,10 @@ cd ~/projetos/inemavox && python3 -m venv venv && venv/bin/pip install faster-wh
 <section id="guia"><div class="wrap">
   <span class="chip">Guia de uso · passo a passo</span>
   <h2>Seu primeiro vídeo com código</h2>
-  <p class="sub">O jeito normal é só pedir ao agente. Os comandos abaixo são o que ele roda — e servem para você refazer qualquer etapa à mão. Neles, <code>$K</code> é a pasta do kit e <code>$P</code> é a pasta do seu vídeo:</p>
+  <p class="sub">O jeito normal é só pedir ao agente (passo 2): ele escreve o roteiro e as cenas e roda tudo. Os comandos dos passos seguintes são o que ele roda — e servem para você refazer uma etapa à mão. Para isso, rode antes no terminal (<code>$K</code> é a pasta do kit, <code>$P</code> a do seu vídeo):</p>
 <pre><span class="k">K=~/projetos/video-codigo</span>                      <span class="c"># onde o kit foi clonado</span>
-<span class="k">P=~/videos/trabalho/2026-11-06-meuapp</span>         <span class="c"># uma pasta por vídeo</span></pre>
+<span class="k">P=~/videos/trabalho/2026-11-06-meuapp</span>         <span class="c"># uma pasta por vídeo</span>
+<span class="k">mkdir -p "$P"</span></pre>
 
   <div class="step"><div class="b">1</div><div>
     <h3>Instale a skill</h3>
@@ -210,7 +213,7 @@ cd ~/projetos/inemavox && python3 -m venv venv && venv/bin/pip install faster-wh
 <pre><span class="k">git clone https://github.com/inematds/video-codigo ~/projetos/video-codigo</span>
 <span class="k">bash ~/projetos/video-codigo/instalar.sh</span>  <span class="c"># ✓ skill em ~/.claude/skills/video-codigo</span></pre>
     <p>Teste a instalação renderizando o exemplo pronto (não precisa de voz nem de GPU; leva cerca de 1 minuto):</p>
-<pre><span class="k">cd ~/projetos/video-codigo/exemplos/lancamento && node ../../scripts/render-video.mjs --project . --output teste.mp4 --audio audio/lancamento/mezcla.wav</span></pre>
+<pre><span class="k">cd ~/projetos/video-codigo/exemplos/lancamento && node ../../scripts/render-video.mjs --project . --output teste.mp4 --audio audio/lancamento/mezcla.wav --overwrite</span></pre>
   </div></div>
 
   <div class="step"><div class="b">2</div><div>
@@ -220,10 +223,15 @@ cd ~/projetos/inemavox && python3 -m venv venv && venv/bin/pip install faster-wh
   </div></div>
 
   <div class="step"><div class="b">↷</div><div>
-    <h3>Sem voz? Pule para a música</h3>
-    <p>Sem narração, o relógio é a música e você não precisa de roteiro nem de GPU. Copie o exemplo de lançamento, gere a música com a duração que quiser (<code>--duracao</code>) e troque, no <code>index.html</code>, os textos de <code>SEG</code> e os estados da forma em <code>S</code> (cada um tem o segundo em que acontece). Depois vá direto ao passo 7.</p>
+    <h3>Sem voz? O relógio é a música</h3>
+    <p>Sem narração você não precisa de roteiro nem de GPU. O mais simples é pedir ao agente ("só com música, 20 s") — ele escreve as cenas. Para partir do exemplo de lançamento à mão, saiba o que mudar no <code>&lt;script&gt;</code> do <code>index.html</code>:</p>
+    <p>• <code>window.videoSpec = {… duration: 21}</code> — a duração do vídeo em segundos; use a mesma da música.<br>
+    • <code>SEG</code> — a lista das etapas: <code>a</code> e <code>b</code> são os segundos em que cada etapa entra e sai, <code>rot</code> e <code>sub</code> são o título e a linha de baixo.<br>
+    • <code>S</code> — onde fica e que tamanho tem a forma amarela em cada segundo (<code>t</code>), que é o que liga uma etapa à outra.<br>
+    • <code>function conteudo</code> — o desenho dentro da forma em cada etapa (módulos, página, play, terminal, conversa). Troque pelos do seu produto.</p>
 <pre><span class="k">cp -r $K/exemplos/lancamento/{index.html,motion.mjs,inema} $P/</span>
-<span class="k">python3 $K/scripts/mezcla.py --projeto $P --id meuapp --duracao 21 --musica energica --lufs -14</span></pre>
+<span class="k">python3 $K/scripts/mezcla.py --projeto $P --id meuapp --duracao 21 --musica energica --lufs -14</span>  <span class="c"># mesma duração do videoSpec</span></pre>
+    <p>Depois vá ao passo 7 (prova) e ao 8 (render, com <code>--audio $P/audio/meuapp/mezcla.wav</code>).</p>
   </div></div>
 
   <div class="step"><div class="b">3</div><div>
@@ -277,7 +285,7 @@ cd ~/projetos/inemavox && python3 -m venv venv && venv/bin/pip install faster-wh
   <span class="chip">Exemplos</span>
   <h2>Dois vídeos feitos com o próprio kit</h2>
   <p class="sub">Código, roteiro e áudio de cada um estão em <a href="https://github.com/inematds/video-codigo/tree/main/exemplos" target="_blank" rel="noopener"><code>exemplos/</code></a>. Nenhum quadro foi filmado. O primeiro sucesso mais rápido, sem voz nem GPU: renderize o exemplo de lançamento.</p>
-<pre><span class="k">cd $K/exemplos/lancamento && node ../../scripts/render-video.mjs --project . --output teste.mp4 --audio audio/lancamento/mezcla.wav</span></pre>
+<pre><span class="k">cd $K/exemplos/lancamento && node ../../scripts/render-video.mjs --project . --output teste.mp4 --audio audio/lancamento/mezcla.wav --overwrite</span></pre>
   <div class="ex">
     <figure><video controls preload="none" playsinline poster="assets/explicativo-16x9.jpg" src="../renders/explicativo-16x9.mp4" style="width:100%;display:block"></video><figcaption><b>Explicativo narrado</b> (44 s) — voz local do Nei; código digitando, marcas de tempo de cada palavra e o quadro 16:9 virando 9:16 na palavra certa. <a href="../renders/explicativo-9x16.mp4">versão 9:16</a> · <a href="https://www.youtube.com/watch?v=tkT2I6nrMAk" target="_blank" rel="noopener">YouTube</a></figcaption></figure>
     <figure><video controls preload="none" playsinline poster="assets/lancamento-16x9.jpg" src="../renders/lancamento-16x9.mp4" style="width:100%;display:block"></video><figcaption><b>Lançamento só com música</b> (21 s) — um plano só: a mesma forma vira curso, guia, vídeo, kit, comunidade e o ponto do INEMA.CLUB. <a href="../renders/lancamento-9x16.mp4">versão 9:16</a> · <a href="https://www.youtube.com/watch?v=IJ-qZQ1drBc" target="_blank" rel="noopener">YouTube</a></figcaption></figure>
