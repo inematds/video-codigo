@@ -1,0 +1,738 @@
+{
+ "video": {
+  "largura": 1920,
+  "altura": 1080,
+  "fps": 30,
+  "duracao": 33.467,
+  "quadros": "quadros/%05d.jpg",
+  "n_quadros": 1004
+ },
+ "rosto": {
+  "cx": 0.58,
+  "cy": 0.45,
+  "r": 0.38,
+  "tamanho": "inteiro"
+ },
+ "cores": {
+  "amarelo": "#FACC15",
+  "preto": "#0c0c10"
+ },
+ "frases": [
+  {
+   "id": "f01",
+   "inicio": 0.0,
+   "fim": 4.78,
+   "texto": "Você pode testar 20 ferramentas de inteligência artificial e continuar sem resolver uma tarefa.",
+   "tratamento": "rosto",
+   "motivo": "abertura: o público conhece quem fala",
+   "visual": {
+    "tipo": "nenhum",
+    "titulo": "INTELIGÊNCIA",
+    "entra": 0.2
+   },
+   "palavras": [
+    [
+     "Você",
+     0.0,
+     0.16
+    ],
+    [
+     "pode",
+     0.16,
+     0.38
+    ],
+    [
+     "testar",
+     0.38,
+     0.74
+    ],
+    [
+     "20",
+     0.74,
+     0.92
+    ],
+    [
+     "ferramentas",
+     0.92,
+     1.6
+    ],
+    [
+     "de",
+     1.6,
+     1.64
+    ],
+    [
+     "inteligência",
+     1.64,
+     2.16
+    ],
+    [
+     "artificial",
+     2.16,
+     2.46
+    ],
+    [
+     "e",
+     2.46,
+     3.1
+    ],
+    [
+     "continuar",
+     3.1,
+     3.54
+    ],
+    [
+     "sem",
+     3.54,
+     3.86
+    ],
+    [
+     "resolver",
+     3.86,
+     4.18
+    ],
+    [
+     "uma",
+     4.18,
+     4.38
+    ],
+    [
+     "tarefa.",
+     4.38,
+     4.78
+    ]
+   ]
+  },
+  {
+   "id": "f02",
+   "inicio": 4.84,
+   "fim": 6.96,
+   "texto": "O problema pode ser a falta de um método.",
+   "tratamento": "pip",
+   "motivo": "um conceito: desenhado em traço, pessoa no canto",
+   "visual": {
+    "tipo": "traco",
+    "titulo": "PROBLEMA",
+    "icone": "alerta",
+    "ancora": 5.09,
+    "palavra": "problema",
+    "entra": 5.04
+   },
+   "palavras": [
+    [
+     "O",
+     4.84,
+     5.34
+    ],
+    [
+     "problema",
+     5.34,
+     5.64
+    ],
+    [
+     "pode",
+     5.64,
+     5.86
+    ],
+    [
+     "ser",
+     5.86,
+     6.04
+    ],
+    [
+     "a",
+     6.04,
+     6.14
+    ],
+    [
+     "falta",
+     6.14,
+     6.4
+    ],
+    [
+     "de",
+     6.4,
+     6.58
+    ],
+    [
+     "um",
+     6.58,
+     6.62
+    ],
+    [
+     "método.",
+     6.62,
+     6.96
+    ]
+   ],
+   "fim_visual": 7.21
+  },
+  {
+   "id": "f03",
+   "inicio": 7.06,
+   "fim": 12.42,
+   "texto": "Se a resposta vem errada e você precisa refazer tudo, o tempo que parecia economizado desaparece.",
+   "tratamento": "pip",
+   "motivo": "um conceito: desenhado em traço, pessoa no canto",
+   "visual": {
+    "tipo": "traco",
+    "titulo": "RESPOSTA",
+    "icone": "balao",
+    "ancora": 7.25,
+    "palavra": "resposta",
+    "entra": 7.26
+   },
+   "palavras": [
+    [
+     "Se",
+     7.06,
+     7.42
+    ],
+    [
+     "a",
+     7.42,
+     7.5
+    ],
+    [
+     "resposta",
+     7.5,
+     7.78
+    ],
+    [
+     "vem",
+     7.78,
+     8.04
+    ],
+    [
+     "errada",
+     8.04,
+     8.48
+    ],
+    [
+     "e",
+     8.48,
+     8.64
+    ],
+    [
+     "você",
+     8.64,
+     8.8
+    ],
+    [
+     "precisa",
+     8.8,
+     9.14
+    ],
+    [
+     "refazer",
+     9.14,
+     9.6
+    ],
+    [
+     "tudo,",
+     9.6,
+     9.82
+    ],
+    [
+     "o",
+     10.04,
+     10.36
+    ],
+    [
+     "tempo",
+     10.36,
+     10.64
+    ],
+    [
+     "que",
+     10.64,
+     10.72
+    ],
+    [
+     "parecia",
+     10.72,
+     11.08
+    ],
+    [
+     "economizado",
+     11.08,
+     11.68
+    ],
+    [
+     "desaparece.",
+     11.68,
+     12.42
+    ]
+   ],
+   "fim_visual": 12.67
+  },
+  {
+   "id": "f04",
+   "inicio": 12.64,
+   "fim": 16.3,
+   "texto": "Imagine terminar uma tarefa com menos esforço e saber conferir o resultado.",
+   "tratamento": "rosto",
+   "motivo": "fala pessoal / chamada: a pessoa é o assunto",
+   "visual": {
+    "tipo": "nenhum",
+    "titulo": "RESULTADO",
+    "entra": 12.84
+   },
+   "palavras": [
+    [
+     "Imagine",
+     12.64,
+     13.16
+    ],
+    [
+     "terminar",
+     13.16,
+     13.42
+    ],
+    [
+     "uma",
+     13.42,
+     13.76
+    ],
+    [
+     "tarefa",
+     13.76,
+     14.12
+    ],
+    [
+     "com",
+     14.12,
+     14.26
+    ],
+    [
+     "menos",
+     14.26,
+     14.52
+    ],
+    [
+     "esforço",
+     14.52,
+     15.08
+    ],
+    [
+     "e",
+     15.08,
+     15.22
+    ],
+    [
+     "saber",
+     15.22,
+     15.46
+    ],
+    [
+     "conferir",
+     15.46,
+     15.96
+    ],
+    [
+     "o",
+     15.96,
+     16.04
+    ],
+    [
+     "resultado.",
+     16.04,
+     16.3
+    ]
+   ]
+  },
+  {
+   "id": "f05",
+   "inicio": 16.7,
+   "fim": 19.42,
+   "texto": "Comece pequeno, com uma atividade que você já conhece.",
+   "tratamento": "pip",
+   "motivo": "um conceito: desenhado em traço, pessoa no canto",
+   "visual": {
+    "tipo": "traco",
+    "titulo": "ATIVIDADE",
+    "icone": "lista",
+    "ancora": 17.67,
+    "palavra": "atividade",
+    "entra": 16.9
+   },
+   "palavras": [
+    [
+     "Comece",
+     16.7,
+     17.18
+    ],
+    [
+     "pequeno,",
+     17.18,
+     17.66
+    ],
+    [
+     "com",
+     17.66,
+     17.78
+    ],
+    [
+     "uma",
+     17.78,
+     17.92
+    ],
+    [
+     "atividade",
+     17.92,
+     18.24
+    ],
+    [
+     "que",
+     18.24,
+     18.52
+    ],
+    [
+     "você",
+     18.52,
+     18.72
+    ],
+    [
+     "já",
+     18.72,
+     18.96
+    ],
+    [
+     "conhece.",
+     18.96,
+     19.42
+    ]
+   ],
+   "fim_visual": 19.67
+  },
+  {
+   "id": "f06",
+   "inicio": 19.52,
+   "fim": 20.68,
+   "texto": "Não precisa programar.",
+   "tratamento": "rosto",
+   "motivo": "frase curta (1.2 s) para desenhar um conceito",
+   "visual": {
+    "tipo": "nenhum"
+   },
+   "palavras": [
+    [
+     "Não",
+     19.52,
+     19.86
+    ],
+    [
+     "precisa",
+     19.86,
+     20.12
+    ],
+    [
+     "programar.",
+     20.12,
+     20.68
+    ]
+   ]
+  },
+  {
+   "id": "f07",
+   "inicio": 20.76,
+   "fim": 25.36,
+   "texto": "São três passos. Escolher a tarefa, testar um pedido claro e conferir o que saiu.",
+   "tratamento": "cheio",
+   "motivo": "sequência de passos: mostrar ordena melhor que falar",
+   "visual": {
+    "tipo": "passos",
+    "titulo": "SÃO TRÊS PASSOS",
+    "itens": [
+     {
+      "texto": "Escolher a tarefa",
+      "t": 21.84
+     },
+     {
+      "texto": "testar um pedido claro",
+      "t": 22.94
+     },
+     {
+      "texto": "conferir o que saiu",
+      "t": 24.4
+     }
+    ],
+    "ancora": 21.84
+   },
+   "palavras": [
+    [
+     "São",
+     20.76,
+     21.14
+    ],
+    [
+     "três",
+     21.14,
+     21.3
+    ],
+    [
+     "passos.",
+     21.3,
+     21.7
+    ],
+    [
+     "Escolher",
+     21.84,
+     22.36
+    ],
+    [
+     "a",
+     22.36,
+     22.46
+    ],
+    [
+     "tarefa,",
+     22.46,
+     22.9
+    ],
+    [
+     "testar",
+     22.94,
+     23.4
+    ],
+    [
+     "um",
+     23.4,
+     23.5
+    ],
+    [
+     "pedido",
+     23.5,
+     23.78
+    ],
+    [
+     "claro",
+     23.78,
+     24.0
+    ],
+    [
+     "e",
+     24.0,
+     24.4
+    ],
+    [
+     "conferir",
+     24.4,
+     24.9
+    ],
+    [
+     "o",
+     24.9,
+     25.0
+    ],
+    [
+     "que",
+     25.0,
+     25.1
+    ],
+    [
+     "saiu.",
+     25.1,
+     25.36
+    ]
+   ],
+   "fim_visual": 26.65
+  },
+  {
+   "id": "f08",
+   "inicio": 25.54,
+   "fim": 27.26,
+   "texto": "Messa também o tempo de revisão.",
+   "tratamento": "segue",
+   "motivo": "o visual anterior ainda está sendo lido",
+   "visual": {
+    "tipo": "nenhum"
+   },
+   "palavras": [
+    [
+     "Messa",
+     25.54,
+     25.96
+    ],
+    [
+     "também",
+     25.96,
+     26.26
+    ],
+    [
+     "o",
+     26.26,
+     26.54
+    ],
+    [
+     "tempo",
+     26.54,
+     26.8
+    ],
+    [
+     "de",
+     26.8,
+     26.9
+    ],
+    [
+     "revisão.",
+     26.9,
+     27.26
+    ]
+   ]
+  },
+  {
+   "id": "f09",
+   "inicio": 27.4,
+   "fim": 29.46,
+   "texto": "Só automatize depois de comprovar que ajuda. ajuda.",
+   "tratamento": "pip",
+   "motivo": "um conceito: desenhado em traço, pessoa no canto",
+   "visual": {
+    "tipo": "traco",
+    "titulo": "AUTOMATIZE",
+    "icone": "engrenagem",
+    "ancora": 27.45,
+    "palavra": "automatize",
+    "entra": 27.6
+   },
+   "palavras": [
+    [
+     "Só",
+     27.4,
+     27.7
+    ],
+    [
+     "automatize",
+     27.7,
+     28.28
+    ],
+    [
+     "depois",
+     28.28,
+     28.44
+    ],
+    [
+     "de",
+     28.44,
+     28.66
+    ],
+    [
+     "comprovar",
+     28.66,
+     29.0
+    ],
+    [
+     "que",
+     29.0,
+     29.12
+    ],
+    [
+     "ajuda.",
+     29.12,
+     29.28
+    ],
+    [
+     "ajuda.",
+     29.28,
+     29.46
+    ]
+   ],
+   "fim_visual": 29.71
+  },
+  {
+   "id": "f10",
+   "inicio": 29.54,
+   "fim": 31.14,
+   "texto": "Está tudo no inema .club.",
+   "tratamento": "rosto",
+   "motivo": "fala pessoal / chamada: a pessoa é o assunto",
+   "visual": {
+    "tipo": "nenhum",
+    "entra": 29.74
+   },
+   "palavras": [
+    [
+     "Está",
+     29.54,
+     29.86
+    ],
+    [
+     "tudo",
+     29.86,
+     30.12
+    ],
+    [
+     "no",
+     30.12,
+     30.54
+    ],
+    [
+     "inema",
+     30.54,
+     30.74
+    ],
+    [
+     ".club.",
+     30.74,
+     31.14
+    ]
+   ]
+  },
+  {
+   "id": "f11",
+   "inicio": 31.4,
+   "fim": 32.82,
+   "texto": "Ou me pede o link aqui nos comentários.",
+   "tratamento": "rosto",
+   "motivo": "fechamento: termina na pessoa",
+   "visual": {
+    "tipo": "nenhum",
+    "entra": 31.6
+   },
+   "palavras": [
+    [
+     "Ou",
+     31.4,
+     31.76
+    ],
+    [
+     "me",
+     31.76,
+     31.86
+    ],
+    [
+     "pede",
+     31.86,
+     32.1
+    ],
+    [
+     "o",
+     32.1,
+     32.14
+    ],
+    [
+     "link",
+     32.14,
+     32.28
+    ],
+    [
+     "aqui",
+     32.28,
+     32.46
+    ],
+    [
+     "nos",
+     32.46,
+     32.58
+    ],
+    [
+     "comentários.",
+     32.58,
+     32.82
+    ]
+   ]
+  }
+ ],
+ "avisos": []
+}

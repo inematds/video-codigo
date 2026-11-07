@@ -37,6 +37,7 @@ def num_pt(n):
 def tokens(texto):
     """Palavras para comparar: minúsculas sem acento; inteiros 0–999 viram palavra; uma/duas = um/dois; catorze = quatorze."""
     out = []
+    texto = re.sub(r"(?<=\d)\s*[x×:/]\s*(?=\d)", " por ", texto)   # 16x9, 16:9, 9/16 = "dezesseis por nove"
     for raw in texto.split():
         core = raw.strip('.,;:!?"()[]«»…')
         if re.fullmatch(r"0|[1-9]\d{0,2}", core): out += num_pt(int(core)); continue

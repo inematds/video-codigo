@@ -19,7 +19,10 @@ até ele sumir. Só a 1ª aparição conta. Texto que cresce (máquina de escrev
 De onde vêm os textos:
   1. o DOM: cada bloco com texto visível (spans e <b> dentro de um título contam como o título);
   2. window.TEXTOS(t), se a página tiver (texto desenhado em canvas/WebGL): [{id, texto, x0, y0, x1, y1}].
-Fica de fora: #subs (legenda presa à voz) e tudo dentro de [data-leitura="ignorar"] ou de --ignorar "seletor,…".
+Página HyperFrames (data-composition-id + evento hf-seek, como no reel-ciencia-3d) também vale: o script adapta.
+Contador (número que muda a cada quadro): é UMA peça se só os algarismos mudam; para outros (data, mês) marque o bloco
+com data-leitura="contador".
+Fica de fora: #subs e #leg (legenda presa à voz) e tudo dentro de [data-leitura="ignorar"] ou de --ignorar "seletor,…".
 
 Outras opções:
   --entry index.html   --step 0.05 (s)   --json relatorio.json
@@ -73,16 +76,37 @@ await new Promise((ok, ko) => { server.once('error', ko); server.listen(0, '127.
 const origin = `http://127.0.0.1:${server.address().port}`;
 const {chromium} = playwright();
 const exe = process.env.VIDEO_CHROMIUM_PATH || undefined;
-const browser = await chromium.launch({headless: true, ...(exe ? {executablePath: exe} : {})});
+// WebGL por software (SwiftShader): sem isto, página com Three.js quebra no Chromium sem tela e nenhum texto aparece
+const browser = await chromium.launch({headless: true, args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'], ...(exe ? {executablePath: exe} : {})});
 let res;
 try {
   const ctx = await browser.newContext({viewport: {width: 1280, height: 720}, deviceScaleFactor: 1, serviceWorkers: 'block'});
-  await ctx.route('**/*', r => (r.request().url().startsWith(origin + '/') || /^(data|blob):/.test(r.request().url()) ? r.continue() : r.abort()));
+  // rede de fora bloqueada; áudio e vídeo também (não têm texto e seguram o "networkidle")
+  await ctx.route('**/*', r => { const u = r.request().url();
+    return (u.startsWith(origin + '/') || /^(data|blob):/.test(u)) && !/\.(wav|mp3|m4a|ogg|mp4|webm|mov)(\?|$)/i.test(u) ? r.continue() : r.abort(); });
   const page = await ctx.newPage();
   const erros = [];
   page.on('pageerror', e => erros.push(e.message));
-  await page.goto(origin + '/' + entry, {waitUntil: 'networkidle'});
-  if (erros.length) { console.error('Erro na página:\n' + erros.join('\n')); process.exit(2); }
+  try { await page.goto(origin + '/' + entry, {waitUntil: 'networkidle', timeout: 60000}); }
+  catch (e) { console.error('NÃO VERIFICADO — a página não carregou: ' + e.message.split('\n')[0]); process.exit(2); }
+  // Página HyperFrames (data-composition-id + evento hf-seek, ex.: reel-ciencia-3d): adapta para o mesmo contrato.
+  const hf = await page.evaluate(() => {
+    if (typeof window.seek === 'function') return false;
+    const r = document.querySelector('[data-composition-id][data-duration]');
+    if (!r) return false;
+    window.videoSpec = {width: +r.dataset.width || innerWidth, height: +r.dataset.height || innerHeight, duration: +r.dataset.duration};
+    window.seek = async t => {
+      window.__hfThreeTime = t;
+      for (const tl of Object.values(window.__timelines || {})) try { tl.seek(t, false); } catch {}
+      window.dispatchEvent(new CustomEvent('hf-seek', {detail: {time: t}}));
+    };
+    window.renderReady = Promise.all(Object.values((window.__hf || {}).buildReady || {}));
+    return true;
+  });
+  if (erros.length) {   // no HyperFrames, script externo bloqueado (ex.: gsap do CDN) não impede ler o texto
+    if (!hf) { console.error('Erro na página:\n' + erros.join('\n')); process.exit(2); }
+    console.error('Aviso (página HyperFrames): ' + erros.join(' | ').slice(0, 300));
+  }
   const spec = await page.evaluate(() => window.videoSpec || {});
   const W = Number(o.width ?? spec.width), H = Number(o.height ?? spec.height), DUR = Number(spec.duration);
   if (!(W > 0 && H > 0 && DUR > 0)) { console.error('NÃO VERIFICADO — falta window.videoSpec com width/height/duration.'); process.exit(2); }
@@ -92,7 +116,7 @@ try {
     Object.assign(window.videoSpec, {width: W, height: H});
     if (window.renderReady) await window.renderReady;
     await document.fonts.ready;
-    const fora = ['#subs', '[data-leitura="ignorar"]', ...(ignorar ? ignorar.split(',') : [])].join(',');
+    const fora = ['#subs', '#leg', '[data-leitura="ignorar"]', ...(ignorar ? ignorar.split(',') : [])].join(',');
     const ids = new WeakMap(); let nid = 0;
     const nome = el => { const c = el.classList.length ? '.' + [...el.classList].slice(0, 2).join('.') : ''; return el.tagName.toLowerCase() + (el.id ? '#' + el.id : '') + c; };
     const bloco = el => { while (el.parentElement && getComputedStyle(el).display === 'inline') el = el.parentElement; return el; };
@@ -118,7 +142,8 @@ try {
         const r = rg.getBoundingClientRect();
         if (r.width < 1 || r.height < 6) continue;
         if (!ids.has(b)) ids.set(b, 'b' + (++nid) + ' ' + nome(b));
-        const k = ids.get(b), a = agora.get(k) || {txt: [], x0: 1e9, y0: 1e9, x1: -1e9, y1: -1e9};
+        const k = ids.get(b), a = agora.get(k) || {txt: [], x0: 1e9, y0: 1e9, x1: -1e9, y1: -1e9, contador: !!b.closest('[data-leitura="contador"]')};
+        if (a.txt.length && n.previousSibling && n.previousSibling.nodeName === 'BR') a.txt.push(' ');   // <br> separa palavras
         a.txt.push(s); a.x0 = Math.min(a.x0, r.left); a.y0 = Math.min(a.y0, r.top); a.x1 = Math.max(a.x1, r.right); a.y1 = Math.max(a.y1, r.bottom);
         agora.set(k, a);
       }
@@ -130,7 +155,9 @@ try {
         const dentro = a.x0 >= -1 && a.y0 >= -1 && a.x1 <= W + 1 && a.y1 <= H + 1;
         const lista = pecas[k] ??= [];
         // mesmo bloco e texto igual ou crescendo (máquina de escrever) = a mesma peça; texto trocado = peça nova
-        let p = lista.find(x => txt.startsWith(x.texto) || x.texto.startsWith(txt));
+        // contador (só os algarismos mudam, ou o bloco está em [data-leitura="contador"]) = a mesma peça
+        const forma = x => x.replace(/\d+([.,]\d+)?/g, '#');
+        let p = lista.find(x => txt.startsWith(x.texto) || x.texto.startsWith(txt) || (x.contador ??= a.contador) || forma(x.texto) === forma(txt));
         if (!dentro) { if (!p) parcial[k + txt] ??= {id: k, texto: txt, t0: t}; continue; }
         if (!p) { p = {id: k, texto: txt, t0: t, run: 0, feito: false}; lista.push(p); }
         vis.add(p);

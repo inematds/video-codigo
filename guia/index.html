@@ -248,13 +248,13 @@ cd ~/projetos/inemavox && python3 -m venv venv && venv/bin/pip install faster-wh
 
   <div class="step"><div class="b">4</div><div>
     <h3>Gere a voz com o tempo de cada palavra</h3>
-    <p>Roda no seu computador. Sai <code>$P/voz/meuapp/voz.wav</code> e <code>$P/voz/meuapp/tiempos.js</code> (o tempo de cada palavra); frase abaixo de 80% de semelhança é refeita sozinha.</p>
+    <p>Roda no seu computador. Sai <code>$P/voz/meuapp/voz.wav</code> e <code>$P/voz/meuapp/tiempos.js</code> (o tempo de cada palavra); frase abaixo de 80% de semelhança é refeita sozinha. Cada frase é ouvida pelo Whisper: se não bate com o texto (ou um número sai trocado), é gerada de novo, até <code>--tentativas</code> vezes. O relatório fica em <code>$P/voz/meuapp/checagem.md</code>, com o que o Whisper ouviu — leia as frases marcadas com ⚠.</p>
 <pre><span class="k">python3 $K/scripts/voz.py --projeto $P $P/roteiro.json</span>  <span class="c"># ex.: meuapp: 41.9 s · 12 frases · 107 palavras</span></pre>
   </div></div>
 
   <div class="step"><div class="b">5</div><div>
     <h3>Música por baixo</h3>
-    <p>Música original sintetizada (<code>energica</code>, 120 batidas por minuto; <code>tranquila</code>, 84; ou <code>--pista</code> com a sua música), 24 dB abaixo da voz enquanto se fala. <code>--lufs -14</code> deixa o volume final no nível que YouTube e Instagram usam (assim a plataforma não abaixa nem estoura o som). Sem voz, passe <code>--duracao</code> em segundos.</p>
+    <p>Música original sintetizada (<code>energica</code>, 120 batidas por minuto; <code>tranquila</code>, 84; ou <code>--pista</code> com a sua música), 24 dB abaixo da voz enquanto se fala. <code>--lufs -14</code> deixa o volume final no nível que YouTube e Instagram usam (assim a plataforma não abaixa nem estoura o som). Sem voz, passe <code>--duracao</code> em segundos. A música se prende aos cortes das cenas: cada troca de cena cai num tempo forte, na troca de acorde, sem pulo de volume. No fim o script confere isso, a voz na frente e a ausência de whoosh, e grava <code>trilha.json</code>.</p>
 <pre><span class="k">python3 $K/scripts/mezcla.py --projeto $P --id meuapp --musica tranquila --lufs -14</span>  <span class="c"># → $P/audio/meuapp/mezcla.wav</span></pre>
   </div></div>
 
@@ -273,6 +273,9 @@ pop($('.onda', c1), t, ini('voz'));                 <span class="c">// entra no 
     <p>Tire quadros soltos nos momentos difíceis, nos dois formatos, e olhe antes de gastar tempo com o vídeo todo. <code>--still</code> é o segundo do vídeo (tem que estar dentro da duração; num roteiro de 5 s, use 2 ou 3).</p>
 <pre><span class="k">node $K/scripts/render-video.mjs --project $P --output $P/prova.png --still 2</span>
 <span class="k">node $K/scripts/render-video.mjs --project $P --output $P/prova-v.png --still 2 --width 1080 --height 1920</span></pre>
+    <p>Confira também se todo texto fica o tempo de ser lido (1 s + 0,3 s por palavra, mínimo 1,5 s) e grave os cortes das cenas; depois rode a música de novo para ela se prender a eles.</p>
+<pre><span class="k">node $K/scripts/checar-leitura.mjs --project $P --salvar-cortes $P/audio/meuapp/cortes.json</span>  <span class="c"># sai 0 = tudo legível; 1 = algum texto some cedo</span>
+<span class="k">python3 $K/scripts/mezcla.py --projeto $P --id meuapp --musica tranquila --lufs -14</span>  <span class="c"># a música agora cai nos cortes</span></pre>
   </div></div>
 
   <div class="step"><div class="b">8</div><div>
@@ -281,6 +284,19 @@ pop($('.onda', c1), t, ini('voz'));                 <span class="c">// entra no 
 <pre><span class="k">node $K/scripts/render-video.mjs --project $P --output $P/renders/meuapp-16x9.mp4 --audio $P/audio/meuapp/mezcla.wav</span>
 <span class="k">node $K/scripts/render-video.mjs --project $P --output $P/renders/meuapp-9x16.mp4 --width 1080 --height 1920 --audio $P/audio/meuapp/mezcla.wav</span>
 <span class="k">python3 $K/scripts/inspect-video.py $P/renders/meuapp-9x16.mp4 --output-dir $P/reviews</span></pre>
+  </div></div>
+
+  <div class="step"><div class="b">9</div><div>
+    <h3>Modo b-roll: vídeo de pessoa falando</h3>
+    <p>Para aula, depoimento ou avatar: a gravação não é cortada. A partir da transcrição com o tempo de cada palavra, o kit decide frase a frase o que a tela mostra — a pessoa inteira, a pessoa num círculo com o conceito desenhado em traço, ou um gráfico em tela cheia — e monta o projeto pronto para renderizar. Revise <code>$P/plano.md</code> e edite <code>$P/plano.json</code> antes do render.</p>
+<pre><span class="c"># transcrição local com o tempo de cada palavra</span>
+<span class="k">cd ~/projetos/inemavox && venv/bin/python transcrever_v1.py --in aula.mp4 --outdir $P/transcricao --src pt --words</span>
+<span class="c"># plano + molde + quadros + áudio; --rosto = onde está o rosto</span>
+<span class="k">python3 $K/scripts/broll-plano.py --fala aula.mp4 --transcricao $P/transcricao/transcript.json --projeto $P --rosto 0.58,0.45,0.38</span>
+<span class="c"># depois de editar o plano.json</span>
+<span class="k">python3 $K/scripts/broll-plano.py --projeto $P --replanejar</span>
+<span class="k">node $K/scripts/checar-leitura.mjs --project $P</span>
+<span class="k">node $K/scripts/render-video.mjs --project $P --output $P/renders/aula-broll.mp4 --audio $P/audio/fala.wav</span></pre>
   </div></div>
 </div></section>
 
@@ -301,6 +317,7 @@ pop($('.onda', c1), t, ini('voz'));                 <span class="c">// entra no 
   <h2>O que já existe e o que vem</h2>
   <p class="sub">Feito = está no repositório e foi usado nos exemplos.</p>
   <div class="phase"><div class="tag">Feito</div><div class="d"><strong>Skill, voz local e tema INEMA</strong><span>SKILL.md e referências em português, voz.py com Chatterbox + Whisper, tema com fontes locais, dois exemplos em 16:9 e 9:16.</span></div></div>
+  <div class="phase"><div class="tag">Feito</div><div class="d"><strong>Qualidade conferida sozinha (1.2)</strong><span>Verificador de tempo de leitura, voz checada pelo Whisper (com números), música presa aos cortes e modo b-roll para vídeo de pessoa falando.</span></div></div>
   <div class="phase"><div class="tag">Próximo</div><div class="d"><strong>Exemplo pronto de anúncio com vários ganchos</strong><span>A skill já sabe fazer; falta um exemplo renderizado com o mesmo corpo e cinco aberturas diferentes.</span></div></div>
   <div class="phase"><div class="tag">Depois</div><div class="d"><strong>Exemplo pronto de série de produtos</strong><span>Um vídeo por produto com o mesmo visual, a partir de uma lista.</span></div></div>
 </div></section>

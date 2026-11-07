@@ -58,6 +58,7 @@ DICIONARIO = [
     (r"\bINEMA\.CLUB\b", "Inema Club"), (r"\bLLM\b", "éle éle ême"), (r"\bIA\b", "i a"), (r"\bAPI\b", "a pê i"), (r"\bMP4\b", "ême pê quatro"),
     (r"\bHTML\b", "agá tê ême éle"), (r"\bSVG\b", "ésse vê gê"), (r"\bCRM\b", "cê érre ême"),
     (r"\bClaude Code\b", "Clód Côud"), (r"\bClaude\b", "Clód"), (r"\bGitHub\b", "guit rãb"),
+    (r"\b(16|9|4|3|1|5|21)\s*[:x×]\s*(9|16|3|4|1|5)\b", r"\1 por \2"),   # formato de tela: o TTS lia "16:9" como "16 maio a 9"
     (r"/([a-z][\w-]*)", lambda m: "barra " + m.group(1).replace("-", " ")),
 ]
 

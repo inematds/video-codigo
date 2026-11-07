@@ -1,6 +1,7 @@
 ---
 name: video-codigo
 description: Dirige e produz vídeos feitos com CÓDIGO (HTML, Canvas, SVG → MP4) a partir de uma ideia, documento, pasta, repositório ou site — lançamento, anúncio com vários ganchos, explicativo de produto, série de produtos, venda narrada e aula longa, em 16:9 e 9:16. Antes de tudo pergunta se vai COM VOZ (voz local clonada, sem API) ou SÓ COM MÚSICA; com voz, cada imagem entra no instante da palavra dita. Testa um trecho antes do render inteiro e revisa o MP4. Gatilho: "vídeo com código", "/video-codigo", "vídeo do meu produto sem câmera", "motion graphics do repositório". Não usa Remotion nem HyperFrames.
+version: 1.2.3
 compatibility: Roda no computador da pessoa (Claude Code ou Codex). Precisa de Node 18+, Python 3 e FFmpeg; o resto o preparar-entorno.sh instala. Voz: inemavox (Chatterbox + Whisper) com GPU.
 ---
 
@@ -54,6 +55,15 @@ Deixe pausas para ler.
 Com voz: `roteiro.json`, voz com `scripts/voz.py` (local, sem custo), imagem atada a `tiempos.js` com `assets/voz-sync/`.
 Música com `scripts/mezcla.py`; com voz, a música fica 24 dB abaixo. Detalhes em [voz e sincronia](references/voz-e-sincronia.md).
 
+O `voz.py` ouve cada frase com o Whisper e refaz a que não bate (semelhança < 0,80 ou número ouvido errado), até
+`--tentativas` (3). Leia `voz/<id>/checagem.md`: a coluna do que o Whisper OUVIU mostra sigla mal pronunciada que a
+semelhança não pega. Para conferir depois, ou um wav qualquer: `python3 scripts/checar-fala.py --projeto P P/roteiro.json`.
+
+**Trilha presa aos cortes:** depois das cenas escritas, `node scripts/checar-leitura.mjs --project P --salvar-cortes
+P/audio/<id>/cortes.json` grava os inícios de cena; o `mezcla.py` lê esse arquivo, põe um número inteiro de tempos
+entre dois cortes (o corte cai no tempo forte e na tônica) e confere: compasso a ±100 ms do corte, nenhum salto > +6 dB,
+música ≥ 18 dB abaixo da voz, nenhum whoosh. Falhou → sai 1 e grava `audio/<id>/trilha.json`.
+
 Com música própria, leia [som e ritmo](references/som-e-ritmo.md) e gere `beats.json` com `scripts/beat-grid.py`.
 
 Monte o roteiro de planos: tempo/pulso, intenção, mensagem, recurso, enquadramento, estado inicial/final, transformação,
@@ -76,8 +86,20 @@ Sem estado acumulado e sem aleatório sem semente. **O render bloqueia a rede:**
 no HTML ou `H > W` no Canvas, e renderize o 9:16 com `--width 1080 --height 1920`.
 
 Faça uma prova de 4–6 s (ou quadros soltos com `--still`) com a transformação mais difícil, uma troca de
-enquadramento e o som pedido. Compare com a direção usando [revisão](references/revisao.md). Se ainda parece slide de
+enquadramento e o som pedido. **Tempo de leitura:** `node scripts/checar-leitura.mjs --project P` (e com
+`--width 1080 --height 1920`) lê todo texto visível no DOM e reprova o que fica menos que máx(1,5 s; 1 s + 0,3 s por
+palavra) na tela. Código 1 = conserte (segure o texto, corte palavras); 2 = não verificou (nunca é aprovação).
+Texto desenhado em canvas: exponha `window.TEXTOS(t)`. Legenda `#subs` e `[data-leitura="ignorar"]` ficam de fora. Compare com a direção usando [revisão](references/revisao.md). Se ainda parece slide de
 cartões, conserte antes de escalar.
+
+### Modo b-roll (pessoa falando)
+
+Vídeo de alguém falando + transcrição com tempo por palavra (inemavox `transcrever_v1.py --words`) →
+`python3 scripts/broll-plano.py --fala aula.mp4 --transcricao T/transcript.json --projeto P --rosto cx,cy,r`. Gera o
+plano frase a frase (rosto inteiro · traço do conceito com a pessoa num círculo · gráfico em tela cheia), o molde
+`assets/broll/` já ligado ao plano, os quadros e o áudio. Revise `P/plano.md`, edite `P/plano.json` (tratamento, título,
+ícone, itens), rode `--replanejar`, confira com `checar-leitura.mjs` e renderize com `--audio P/audio/fala.wav`.
+Passo a passo no README › "Modo b-roll".
 
 ## 5 Produzir e revisar
 
@@ -101,4 +123,4 @@ o brief usado. Explique como trocar marca, mensagem e duração. Não publique n
   [Voz e sincronia](references/voz-e-sincronia.md) · [Render e entrega](references/render-e-entrega.md) ·
   [Revisão](references/revisao.md)
 - `assets/inema/` (tema e fontes locais) · `assets/voz-sync/` (motor de tempo) · `assets/base-video/`, `assets/base-svg/`,
-  `assets/motion/` (mecanismos, não estilos prontos) · `exemplos/` (dois vídeos completos: explicativo narrado e lançamento só com música)
+  `assets/motion/` (mecanismos, não estilos prontos) · `assets/broll/` (molde b-roll) · `exemplos/` (dois vídeos completos: explicativo narrado e lançamento só com música)

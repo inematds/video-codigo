@@ -6,3 +6,4 @@ renders/log*.txt
 reviews/
 __pycache__/
 guia/assets/*.codex.log
+quadros/

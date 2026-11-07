@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="pt"><meta charset="utf-8"><title>b-roll — pessoa falando + traço + gráfico</title>
+<!-- Molde do b-roll automático (scripts/broll-plano.py gera plano.js e os quadros). Não edite as cenas aqui:
+     edite plano.json e rode `broll-plano.py --projeto P --replanejar`. Visual novo = função em broll.mjs › VISUAIS. -->
+<link rel="stylesheet" href="inema/tema.css">
+<style>
+html,body{margin:0;width:100vw;height:100vh;overflow:hidden;background:var(--bg,#0c0c10)}
+#fundo{position:absolute;inset:0;background:radial-gradient(circle at 1px 1px,rgba(255,255,255,.07) 1.2px,transparent 0) 0 0/38px 38px,var(--bg,#0c0c10)}
+#pessoa{position:absolute;overflow:hidden;will-change:transform}
+#pessoa img{position:absolute;left:0;top:0;transform-origin:0 0;max-width:none}
+#anel{position:absolute;border-radius:50%;box-shadow:0 0 0 6px #FACC15,0 18px 60px -10px rgba(0,0,0,.8);pointer-events:none}
+.vis{position:absolute;inset:0;opacity:0}
+.vis.cheio{background:var(--bg,#0c0c10)}
+.vis svg.ic{position:absolute;fill:none;stroke:#F5F5F4;stroke-linecap:round;stroke-linejoin:round}
+.vis svg.ic .acc{stroke:#FACC15}
+.titulo{position:absolute;font-family:var(--titulos,'Sora');font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.02;text-transform:uppercase}
+.titulo i{display:block;height:.09em;margin-top:.18em;background:#FACC15;transform-origin:0 50%;font-style:normal}
+.num{position:absolute;font-family:var(--titulos,'Sora');font-weight:800;color:#FACC15;letter-spacing:-.04em;line-height:1;font-variant-numeric:tabular-nums}
+.rot{position:absolute;font-family:var(--titulos,'Sora');font-weight:700;color:#fff;text-transform:uppercase;letter-spacing:.06em}
+.barra{position:absolute;background:#FACC15;border-radius:10px;transform-origin:0 50%}
+.barra.b2{background:#F5F5F4}
+.val{position:absolute;font-family:var(--titulos,'Sora');font-weight:800;color:#fff}
+.passo{position:absolute;display:flex;align-items:center;font-family:var(--texto,'Inter');font-weight:700;color:#fff;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:18px;box-sizing:border-box}
+.passo b{flex:none;display:flex;align-items:center;justify-content:center;background:#FACC15;color:#0c0c10;border-radius:12px;font-family:var(--titulos,'Sora');font-weight:800}
+</style>
+<div id="fundo"></div>
+<div id="vis"></div>
+<div id="pessoa"><img id="q" alt=""></div>
+<div id="anel"></div>
+<script src="plano.js"></script>
+<script type="module">
+import {iniciar} from './broll.mjs';
+iniciar(window.PLANO);
+</script>
+</html>

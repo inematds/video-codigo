@@ -71,7 +71,14 @@ python3 scripts/mezcla.py --proyecto P --id teaser --duracion 30 --musica energi
 ```
 
 - Música original sintetizada (`energica` 120 BPM, `tranquila` 84 BPM) ou `--pista` própria com licença.
-- **Com voz, a música vai bem baixo:** 24 dB abaixo da voz quando se fala (`--bajo-voz`), sobe 10 dB nas pausas (`--agache`).
+- **Com voz, a música vai bem baixo:** 24 dB abaixo da voz quando se fala (`--bajo-voz`), sobe 10 dB nas pausas (`--agache`)
+  — só nas pausas maiores que `--respiro` (1,5 s): subir a cada frase soava como susto no corte de cena.
+- **Presa aos cortes:** com `P/audio/<id>/cortes.json` (gravado por `checar-leitura.mjs --salvar-cortes`) ou, sem ele, o
+  início de cada bloco da voz, a música põe um número inteiro de tempos entre dois cortes: o corte cai no início de
+  compasso, a seção começa na tônica e o compasso antes vai à dominante. O corte se marca pela harmonia, não por volume.
+- **Conferência no fim** (`audio/<id>/trilha.json`; sai 1 se falhar, `--avisar` só avisa): compasso a ±100 ms de cada
+  corte · nenhum salto > +6 dB no corte · música ≥ 18 dB abaixo da voz ao falar (`--margem-min`) · nenhum `whoosh`.
+  Com `--pista` própria, é a imagem que segue a música: o relatório mostra o ataque forte mais perto; mova o corte.
 - Efeitos em `P/audio/<id>/eventos.json`, nos mesmos instantes da imagem (`"t": "frase@palavra"`). No padrão INEMA,
   reel e short ficam **sem efeito no meio** (só voz + trilha); use efeito só para marcar uma ação que pede som.
 - Sonoridade final: −14 LUFS; pico real ≤ −1,5 dB.
