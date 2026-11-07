@@ -177,7 +177,8 @@ def musica(estilo, dur, cortes=None):
         raiz = [p[0] - 24 for p in prog]
     tempos, usados = grade(dur, beat, cortes)
     for i, (t, bt, pos, bar, kbar, nbar) in enumerate(tempos):
-        h = 3 if (nbar > 1 and kbar == nbar - 1 and usados) else kbar % 4   # compasso antes do corte → dominante
+        ultima = t >= (usados[-1] if usados else dur)   # a última seção termina no fim do vídeo, não num corte
+        h = 3 if (nbar > 1 and kbar == nbar - 1 and usados and not ultima) else kbar % 4   # compasso antes do corte → dominante
         acorde, r = prog[h], raiz[h]
         resto = sum(x[1] for x in tempos[i:i + 4 - pos])   # até o fim do compasso
         if estilo == "energica":
