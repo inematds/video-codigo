@@ -173,6 +173,8 @@ export function subtitulos(box, {max = 4, clase = ''} = {}) {
 export function arrancar(film, {fps = 30, cola = 1.2} = {}) {
   window.videoSpec = {width: 1920, height: 1080, fps, duration: Math.ceil((T.duracion + cola) * fps) / fps};
   window.seek = t => film.seek(t);
+  // inícios de cena (os cortes): scripts/checar-leitura.mjs --salvar-cortes grava para o mezcla.py prender a música neles
+  window.CORTES = [...new Set(film.scenes.map(s => +s.start.toFixed(3)).filter(x => x > 0 && x < window.videoSpec.duration))].sort((a, b) => a - b);
   // Un recorrido completo antes del primer fotograma: así cada escena ya se ha pintado una vez y el primer
   // instante queda igual que cuando se vuelve a él tras un salto (la comprobación de determinismo del render).
   window.renderReady = document.fonts.ready.then(async () => {

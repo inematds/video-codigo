@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="pt"><meta charset="utf-8"><title>teste leitura — ruim</title>
+<style>body{margin:0;background:#0c0c10;color:#fff;font:700 64px sans-serif}.t{position:absolute;left:100px;top:300px;display:none}</style>
+<!-- Teste do checar-leitura.mjs: a 2ª frase (9 palavras) fica só 0,6 s — tem de dar RUIM. -->
+<div class="t" id="a">Título curto</div>
+<div class="t" id="b">Esta frase longa some antes de alguém conseguir ler</div>
+<div class="t" id="c">Fim</div>
+<script>
+const cenas = [['a', 0, 2.5], ['b', 2.5, 3.1], ['c', 3.1, 5]];
+window.videoSpec = {width: 1280, height: 720, fps: 30, duration: 5};
+window.seek = t => { for (const [id, a, b] of cenas) document.getElementById(id).style.display = t >= a && t < b ? 'block' : 'none'; };
+window.renderReady = Promise.resolve();
+</script>
+</html>
