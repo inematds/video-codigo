@@ -14,31 +14,78 @@ Complete guide (landing page + walkthrough + examples): **https://inematds.githu
 
 ## What it does
 
-- **Three questions before getting started:** what it’s about and who it’s for; voice or music only; and the style.
-- **Reads the source:** a document, folder, repository, or website—“read everything and propose a video.”
-- **Locally generated, synced voice:** `scripts/voz.py` generates narration with a cloned voice (Chatterbox) and measures the timing of each word (Whisper); the `assets/voz-sync/` engine syncs each image to a word (`pal('frase', 'palavra')`).
-- **Synthesized original music:** `scripts/mezcla.py` (120 or 84 BPM), mixed very quietly under the voice.
+- **Three questions before starting:** what it’s about and who it’s for; voice or music only; which style.
+- **Reads the source:** document, folder, repository, or website — “read everything and propose a video.”
+- **Synchronized local voice:** `scripts/voz.py` generates the narration with a cloned voice (Chatterbox) and measures the timing of each
+  word (Whisper); the `assets/voz-sync/` engine ties each image to a word (`pal('frase', 'palavra')`).
+- **Voice checked by Whisper:** each sentence is listened to again and redone if it doesn’t match (similarity or incorrect number);
+  everything goes in `voz/<id>/checagem.md`, including what Whisper heard. `scripts/checar-fala.py` checks it afterward.
+- **Original music synthesized and synced to the cuts:** `scripts/mezcla.py` (120 or 84 BPM), very low under the voice;
+  each scene cut lands on a strong beat, at the chord change, with no volume jump and no whoosh — and it checks this.
+- **Reading-time checker:** `scripts/checar-leitura.mjs` reads all on-screen text and fails anything that disappears before there’s
+  time to read it (1 s + 0,3 s per word, minimum 1,5 s).
+- **Automatic b-roll:** video of a person speaking + transcript → a sentence-by-sentence plan (face, concept sketch with the
+  person in a circle, full-screen graphic) and the template that renders that plan (`scripts/broll-plano.py`, `assets/broll/`).
 - **16:9 and 9:16 from the same project:** the layout recalculates for each format.
-- **Preview before the full render** and MP4 review with frame sheets (`scripts/inspect-video.py`).
+- **Proof before the full render** and MP4 review with frame sheets (`scripts/inspect-video.py`).
 - **INEMA theme ready to use:** `assets/inema/` (colors, local fonts, outlined captions).
 
-## The process, from start to finish
+## The Process, from Start to Finish
 
-Who does what: 🧠 session with you · ⚙️ script · 🤖 agent (Claude Code following `SKILL.md`). In the commands, `P` is the video folder (e.g., `~/videos/work/2026-11-06-myapp`), and `scripts/` is the kit’s folder (run commands from `~/projetos/video-codigo` or use the full path).
+Who does what: 🧠 session with you · ⚙️ script · 🤖 agent (Claude Code following the `SKILL.md`). In the commands, `P` is the video folder (e.g., `~/videos/trabalho/2026-11-06-meuapp`) and `scripts/` is the kit folder (run from inside `~/projetos/video-codigo` or use the full path).
 
 | # | Step | Command / action | Who |
 |---|---|---|---|
-| 1 | Request the video | "/video-codigo make a 40-second video of my product; read folder X" | 🧠 |
+| 1 | Request the video | "/video-codigo faz um vídeo de 40 s do meu produto, lê a pasta X" | 🧠 |
 | 2 | Answer the 3 questions | topic and audience · voice or music only · style (INEMA default or reference) | 🧠 |
-| 3 | Read the source and propose a direction | brief, shot script, duration, and formats | 🤖 |
-| 4 | Approve the proposal (if you want to) | the agent shows the proposal; an explicit request to produce it counts as approval | 🧠 |
-| 5 | Script → voice with word-level timing | `python3 scripts/voz.py --projeto P P/roteiro.json` → `voz.wav`, `tiempos.js` | ⚙️ |
-| 6 | Music and mixing | `python3 scripts/mezcla.py --projeto P --id <id> --musica tranquila --lufs -14` | ⚙️ |
-| 7 | Write the scenes | start from `exemplos/explicativo-narrado/` (voice) or `exemplos/lancamento/` (music only), then replace the scenes | 🤖 |
-| 8 | Preview: individual frames and a clip | `node scripts/render-video.mjs --project P --output prova.png --still 3` (and `--start/--end`) | ⚙️ + 🤖 |
-| 9 | Render in 16:9 and 9:16 | `node scripts/render-video.mjs --project P --output P/renders/x.mp4 --audio P/audio/<id>/mezcla.wav` (+ `--width 1080 --height 1920`) | ⚙️ |
-| 10 | Review | `python3 scripts/inspect-video.py P/renders/x.mp4 --output-dir P/reviews` and inspect the frame sheets | ⚙️ + 🤖 |
-| 11 | Deliver | MP4 + cover + editable project; publish only with your OK | 🧠 |
+| 3 | Read the source and propose a direction | brief, shot list, duration, and formats | 🤖 |
+| 4 | Approve the proposal (if you want to approve it) | the agent shows the proposal; an explicit instruction to produce it right away is also enough | 🧠 |
+| 5 | Script → voice with word-level timing, checked by Whisper | `python3 scripts/voz.py --projeto P P/roteiro.json [--tentativas 3]` → `voz.wav`, `tiempos.js`, `checagem.md` | ⚙️ |
+| 6 | Read the voice check | open `P/voz/<id>/checagem.md` (sentences ⚠ and what Whisper heard); redo with `--refazer --frase <id>` | 🤖 |
+| 7 | Write the scenes | start from `exemplos/explicativo-narrado/` (voice) or `exemplos/lancamento/` (music only) and replace the scenes | 🤖 |
+| 8 | Reading time + cuts | `node scripts/checar-leitura.mjs --project P --salvar-cortes P/audio/<id>/cortes.json` (and `--width 1080 --height 1920`) → must return 0 | ⚙️ + 🤖 |
+| 9 | Music synced to the cuts and mixing | `python3 scripts/mezcla.py --projeto P --id <id> --musica tranquila --lufs -14` → `mezcla.wav` + `trilha.json` (returns 1 if anything fails) | ⚙️ |
+| 10 | Proof: still frames and a clip | `node scripts/render-video.mjs --project P --output prova.png --still 3` (and `--start/--end`) | ⚙️ + 🤖 |
+| 11 | Render 16:9 and 9:16 | `node scripts/render-video.mjs --project P --output P/renders/x.mp4 --audio P/audio/<id>/mezcla.wav` (+ `--width 1080 --height 1920`) | ⚙️ |
+| 12 | Review | `python3 scripts/inspect-video.py P/renders/x.mp4 --output-dir P/reviews` and inspect the sheets | ⚙️ + 🤖 |
+| 13 | Deliver | MP4 + cover + editable project; publish only with your OK | 🧠 |
+
+## B-Roll Mode (Video of a Person Speaking)
+
+For a lesson, testimonial, or talking avatar: the recording isn’t cut; the kit decides, sentence by sentence, what appears on screen.
+
+| Treatment | When | On screen |
+|---|---|---|
+| `rosto` | opening, opinion, story, call to action, closing | the full person (or half screen with `--rosto-tamanho meia`) |
+| `pip` | the sentence has a concept | the person in a corner circle + the concept drawn as a line illustration (icon + word) |
+| `cheio` | number, comparison, steps | full-screen graphic; the number appears ON the spoken word |
+
+Rules checked by the generator: opens and closes on the face, face ≤ 8 s in a row, full-screen 3 to 8 s, never two full-screen segments
+back to back, short illustration (< 1,8 s) returns to the face, and all text stays on screen long enough to be read (the visual holds over the next sentence
+when needed).
+
+```bash
+K=~/projetos/video-codigo; P=~/videos/trabalho/2026-11-07-aula
+# 1. transcription with word-level timing (local)
+cd ~/projetos/inemavox && venv/bin/python transcrever_v1.py --in aula.mp4 --outdir $P/transcricao --src pt --words
+# 2. plan + template + frames + audio  (--rosto = face center x, center y, and radius; x and y as fractions of width/height, radius as a fraction of height)
+python3 $K/scripts/broll-plano.py --fala aula.mp4 --transcricao $P/transcricao/transcript.json --projeto $P --rosto 0.58,0.45,0.38
+# 3. review $P/plano.md; edit $P/plano.json (tratamento, visual.titulo, visual.icone, itens) and regenerate plano.js
+python3 $K/scripts/broll-plano.py --projeto $P --replanejar
+# 4. proof frames (check the face in the circle) and reading time
+node $K/scripts/render-video.mjs --project $P --output $P/prova.png --still 6
+node $K/scripts/checar-leitura.mjs --project $P
+# 5. render with the original sound
+node $K/scripts/render-video.mjs --project $P --output $P/renders/aula-broll.mp4 --audio $P/audio/fala.wav
+```
+
+**For the agent making the film:** the plan is a heuristic draft (no paid AI). Read all of `plano.md`,
+replace anything that doesn’t work (a number Whisper heard incorrectly must never appear on screen), choose better icons
+(`assets/broll/broll.mjs › ICONES`; a new icon = SVG paths in viewBox 100×100) or write a new visual in
+`VISUAIS` (function `(caixa, v, G) → (t) => pinta`). The video becomes JPG frames in `P/quadros/` (the render’s Chromium doesn’t
+play H.264 and needs an exact frame); don’t version this folder. Accepted transcript formats: `transcript.json` and
+`words.json` from inemavox, `tempos.json` from `voz.py` or r7ex, `.srt` (no word-level timing: worse sync).
+INEMA avatar rule: at most half screen — for Nei’s avatar, use `--rosto-tamanho meia`.
 
 ## Installation
 
