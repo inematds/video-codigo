@@ -14,11 +14,14 @@ roteiro.json (as chaves em espanhol do formato antigo também valem: bloques, hu
 Como funciona:
   1. Cada frase vira uma fala no Chatterbox (inemavox, GPU) com a voz clonada (padrão: nei).
   2. O Whisper large-v3 local ouve cada frase, mede a semelhança com o texto e dá o tempo de cada palavra.
-     Frase abaixo de VC_SIM_MIN (0,80) é gerada de novo (até 2 vezes).
+     Frase abaixo de VC_SIM_MIN (0,80), ou com um número ouvido errado, é gerada de novo (--tentativas, padrão 3 no total).
+     Cada rodada fica registrada em DIR/voz/<id>/checagem.md (semelhança, tentativas e o que o Whisper OUVIU) —
+     leia o "ouvido" das frases marcadas: semelhança alta não garante pronúncia boa de sigla.
+     Para conferir de novo uma voz já gerada, ou um wav qualquer contra um texto: scripts/checar-fala.py.
   3. Junta tudo com `pausa` entre frases e `intervalo_blocos` entre blocos.
 Saída em DIR/voz/<id>/: voz.wav (mono, 48 kHz), tiempos.json e tiempos.js (window.TIEMPOS) com bloques, frases e
 palabras — o formato que assets/voz-sync/engine.mjs lê.
-Variáveis: VC_VOZ · VC_VOZES (pasta das vozes) · VC_IDIOMA (pt) · VC_SIM_MIN · CHATTERBOX_PYTHON · INEMAVOX_DIR.
+Variáveis: VC_VOZ · VC_VOZES (pasta das vozes) · VC_IDIOMA (pt) · VC_SIM_MIN · VC_TENTATIVAS · CHATTERBOX_PYTHON · INEMAVOX_DIR.
 """
 import argparse
 import hashlib
@@ -38,6 +41,16 @@ VOX_PY = str(VOX / "venv/bin/python")
 VOZES = pathlib.Path(os.environ.get("VC_VOZES", HOME / "projetos/timesmkt3/media/voice-refs"))
 IDIOMA = os.environ.get("VC_IDIOMA", "pt")
 SIM_MIN = float(os.environ.get("VC_SIM_MIN", "0.80"))
+TENTATIVAS = int(os.environ.get("VC_TENTATIVAS", "3"))
+
+
+def boa(r):
+    """Frase aprovada: semelhança ≥ SIM_MIN e nenhum número ouvido como outro."""
+    return r["sim"] >= SIM_MIN and r.get("num_ok", True)
+
+
+def nota(r):
+    return (boa(r), r.get("num_ok", True), r["sim"])
 SR = 48000
 
 # O que aparece na tela → o que a voz lê. O mais longo primeiro.
@@ -103,6 +116,27 @@ def repartir(texto, ouvidas):
     return out
 
 
+def registrar(saida, textos, hist, melhor):
+    """Acrescenta a rodada em checagem.md (legível) e checagem.json (máquina)."""
+    import datetime
+    agora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+    fj = saida / "checagem.json"
+    dados = json.loads(fj.read_text()) if fj.exists() else {"rodadas": []}
+    dados["rodadas"].append({"quando": agora, "sim_min": SIM_MIN, "frases": {
+        k: {"texto": textos[k], "aprovada": boa(melhor[k]), "tentativas": hist[k]} for k in textos}})
+    fj.write_text(json.dumps(dados, ensure_ascii=False, indent=1))
+    linhas = [f"\n## {agora} · {len(textos)} frases geradas · mínimo {SIM_MIN}\n", "| frase | ok | tentativas (semelhança) | o que o Whisper ouviu (melhor) |", "|---|---|---|---|"]
+    for k in textos:
+        r = melhor[k]
+        sims = " → ".join(f"{h['sim']:.2f}" + ("" if h["num_ok"] else " nº✗") for h in hist[k])
+        linhas.append(f"| {k} | {'✅' if boa(r) else '⚠'} | {sims} | {r['heard'].replace('|', '/')} |")
+    fm = saida / "checagem.md"
+    topo = "" if fm.exists() else "# Checagem da fala (Whisper) — gerado pelo voz.py\n\nCada geração é ouvida pelo Whisper e comparada com o texto. Leia a coluna do ouvido nas frases ⚠.\n"
+    with open(fm, "a") as f:
+        f.write(topo + "\n".join(linhas) + "\n")
+    print(f"  checagem → {fm}")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("roteiro")
@@ -110,6 +144,7 @@ def main():
     ap.add_argument("--frase", help="com --refazer: gera de novo só esta frase")
     ap.add_argument("--refazer", "--rehacer", dest="refazer", action="store_true")
     ap.add_argument("--simular", action="store_true")
+    ap.add_argument("--tentativas", type=int, default=TENTATIVAS, help="gerações por frase no máximo (padrão 3)")
     a = ap.parse_args()
 
     projeto = pathlib.Path(a.projeto).resolve()
@@ -148,14 +183,15 @@ def main():
     if falta:
         tmp = cache / "_trabalho"
         textos = {f["id"]: falado(f["texto"], extra) for f in falta}
-        melhor, todo = {}, list(textos)
-        for tentativa in range(3):
+        melhor, todo, hist = {}, list(textos), {k: [] for k in textos}
+        for tentativa in range(max(1, a.tentativas)):
             wavs = sintetizar([(k, textos[k]) for k in todo], tmp / f"t{tentativa}", ref)
             res = alinhar(wavs, {k: textos[k] for k in todo}, tmp / f"t{tentativa}")
             for k, r in res.items():
-                if k not in melhor or r["sim"] > melhor[k]["sim"]:
+                hist[k].append({"sim": r["sim"], "num_ok": r.get("num_ok", True), "ouvido": r["heard"]})
+                if k not in melhor or nota(r) > nota(melhor[k]):
                     melhor[k] = r
-            todo = [k for k in todo if melhor[k]["sim"] < SIM_MIN]
+            todo = [k for k in todo if not boa(melhor[k])]
             print(f"  tentativa {tentativa + 1}: {len(textos) - len(todo)}/{len(textos)} frases ok", flush=True)
             if not todo:
                 break
@@ -167,7 +203,9 @@ def main():
         shutil.rmtree(tmp, ignore_errors=True)
         ruins = [(k, melhor[k]["sim"], melhor[k]["heard"]) for k in todo]
         for k, s, h in ruins:
-            print(f"  ⚠ {k}: semelhança {s} — ouvido «{h}» (reescreva a frase ou rode com --refazer --frase {k})")
+            extra = "" if melhor[k].get("num_ok", True) else f" · número diferente {melhor[k]['nums']}"
+            print(f"  ⚠ {k}: semelhança {s}{extra} — ouvido «{h}» (reescreva a frase ou rode com --refazer --frase {k})")
+        registrar(saida, textos, hist, melhor)
 
     # monta a pista e os tempos
     lista, t, ib, ifr, ip = [], 0.0, [], [], []

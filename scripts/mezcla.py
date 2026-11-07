@@ -11,6 +11,14 @@ Efectos: DIR/audio/<id>/eventos.json, una lista de {"t": …, "tipo": "whoosh|po
 «t» puede ser segundos o, con voz, «frase», «frase@palabra», «frase@palabra+.2» (como data-in en declarativo.mjs).
 Músicas: energica (120 BPM, La menor) · tranquila (84 BPM, Do mayor) · ninguna. --pista FICHERO usa una pista propia.
 Salida: DIR/audio/<id>/mezcla.wav (estéreo, 48 kHz, normalizada a --lufs).
+
+Trilha presa aos cortes (1.2): os cortes da composição vêm de DIR/audio/<id>/cortes.json (o checar-leitura.mjs
+--salvar-cortes grava; lista de segundos ou «frase@palavra») ou, sem ele, do início de cada bloco da voz. A música
+sintetizada põe um número inteiro de tempos entre dois cortes: todo corte cai num tempo forte e na tônica (o compasso
+antes vai à dominante). --sem-cortes volta à grade fixa. No fim confere e grava DIR/audio/<id>/trilha.json:
+  · ataque forte da música a ±100 ms de cada corte (com --pista, é a imagem que segue a música: mova o corte);
+  · nenhum salto > +6 dB no corte (susto); · música ≥ --margem-min dB (18) abaixo da voz ao falar; · nenhum whoosh.
+Falhou → sai com código 1 (a mezcla fica gravada para ouvir). --avisar só avisa.
 """
 import argparse
 import json
@@ -134,39 +142,119 @@ def impacto():
 EFECTOS = {"whoosh": whoosh, "pop": pop_, "click": click, "ding": ding, "impacto": impacto}
 
 
-def musica(estilo, dur):
+def grade(dur, beat, cortes):
+    """Mapa de tempo: entre dois cortes cabe um número inteiro de tempos (o andamento flexiona um pouco), então todo
+    corte cai num tempo forte (início de compasso). Devolve [(t, dur_tempo, pos_no_compasso, compasso_global,
+    compasso_na_secao, compassos_na_secao)]. Ideia da skill soundtrack (motion-skills, MIT); código nosso."""
+    limites = [0.0]
+    for c in sorted(cortes or []):
+        if 2 * beat <= c - limites[-1] and c <= dur - 2 * beat:   # corte colado no anterior ou no fim não ganha seção
+            limites.append(c)
+    limites.append(dur)
+    out, gbar = [], 0
+    for k in range(len(limites) - 1):
+        a, b = limites[k], limites[k + 1]
+        ultima = k == len(limites) - 2
+        n = int(np.ceil((b - a) / beat)) + 1 if ultima else max(2, int(round((b - a) / beat)))
+        bt = beat if ultima else (b - a) / n
+        nb = int(np.ceil(n / 4))
+        for j in range(n):
+            if j and j % 4 == 0: gbar += 1
+            out.append((a + j * bt, bt, j % 4, gbar, j // 4, nb))
+        gbar += 1
+    return out, limites[1:-1]
+
+
+def musica(estilo, dur, cortes=None):
+    """Música sintetizada. Com cortes: cada seção começa na tônica e o compasso antes do corte vai à dominante —
+    o corte se marca pela HARMONIA, não por volume (nada de acento extra no corte)."""
     buf = np.zeros(int(dur * SR))
-    if estilo == "ninguna": return buf
+    if estilo == "ninguna": return buf, []
     if estilo == "energica":
         beat, prog, raiz = .5, [[57, 60, 64], [53, 57, 60], [48, 52, 55], [55, 59, 62]], [45, 41, 48, 43]
-        for i in range(int(dur / beat) + 1):
-            t, bar = i * beat, i // 4
-            acorde = prog[bar % 4]
-            if i % 4 == 0: poner(buf, pad(acorde, 4 * beat + .6, 1600), t, .32)
-            poner(buf, kick(), t, .55)
-            if bar >= 2 and i % 4 in (1, 3): poner(buf, clap(), t, .35)
-            if bar >= 1: poner(buf, hat(), t + beat / 2, .5)
-            for k in (0, .5): poner(buf, bajo(raiz[bar % 4], beat / 2), t + k * beat, .32)
-            if i % 2 == 0 and bar >= 4: poner(buf, pluck(acorde[(i // 2) % 3] + 12), t, .22)
-        poner(buf, pad([57, 60, 64, 69], 3.5, 2200), max(0, dur - 3.2), .35)
     else:  # tranquila
         beat, prog = 60 / 84, [[60, 64, 67], [57, 60, 64], [53, 57, 60], [55, 59, 62]]
-        for i in range(int(dur / beat) + 1):
-            t, acorde = i * beat, prog[(i // 4) % 4]
-            if i % 4 == 0:
-                poner(buf, pad([m - 12 for m in acorde], 4 * beat + .8, 1100), t, .26)
-                poner(buf, bajo(acorde[0] - 24, beat * 1.5), t, .18)
-            for k in (0, .5): poner(buf, pluck(acorde[(i * 2 + int(k * 2)) % 3] + 12, .7), t + k * beat, .11)
-            if i % 4 == 2: poner(buf, kick(), t, .12)
-    return buf
+        raiz = [p[0] - 24 for p in prog]
+    tempos, usados = grade(dur, beat, cortes)
+    for i, (t, bt, pos, bar, kbar, nbar) in enumerate(tempos):
+        h = 3 if (nbar > 1 and kbar == nbar - 1 and usados) else kbar % 4   # compasso antes do corte → dominante
+        acorde, r = prog[h], raiz[h]
+        resto = sum(x[1] for x in tempos[i:i + 4 - pos])   # até o fim do compasso
+        if estilo == "energica":
+            if pos == 0: poner(buf, pad(acorde, resto + .6, 1600), t, .32)
+            poner(buf, kick(), t, .55)
+            if bar >= 2 and pos in (1, 3): poner(buf, clap(), t, .35)
+            if bar >= 1: poner(buf, hat(), t + bt / 2, .5)
+            for k in (0, .5): poner(buf, bajo(r, bt / 2), t + k * bt, .32)
+            if i % 2 == 0 and bar >= 4: poner(buf, pluck(acorde[(i // 2) % 3] + 12), t, .22)
+        else:
+            if pos == 0:
+                poner(buf, pad([m - 12 for m in acorde], resto + .8, 1100), t, .26)
+                poner(buf, bajo(acorde[0] - 24, bt * 1.5), t, .18)
+            for k in (0, .5): poner(buf, pluck(acorde[(i * 2 + int(k * 2)) % 3] + 12, .7), t + k * bt, .11)
+            if pos == 2: poner(buf, kick(), t, .12)
+    if estilo == "energica":
+        poner(buf, pad([57, 60, 64, 69], 3.5, 2200), max(0, dur - 3.2), .35)
+    return buf, [x[0] for x in tempos if x[2] == 0]
+
+
+# ── Conferência da trilha ──
+def ataques(x):
+    """Força de ataque a cada 10 ms: quanto a energia (janela de 40 ms, em dB) subiu nos últimos 30 ms; só os picos
+    locais (±50 ms) ficam, o resto vira 0."""
+    paso, jan = int(.01 * SR), int(.04 * SR)
+    n = max(1, (len(x) - jan) // paso)
+    q = np.cumsum(np.concatenate([[0.0], x ** 2]))
+    e = 10 * np.log10((q[np.arange(n) * paso + jan] - q[np.arange(n) * paso]) / jan + 1e-10)
+    f = np.maximum(0, e - np.concatenate([np.full(3, e[0]), e[:-3]]))
+    from scipy.ndimage import maximum_filter1d
+    return np.where(f >= maximum_filter1d(f, 11), f, 0.0)
+
+
+def conferir(cortes, mus, voz, habla, eventos, margem_min, fora_min=.1, susto_max=6.0, cru=None, fortes=None):
+    """Cada corte perto de um ataque forte da música (±100 ms), sem salto de volume (> +6 dB contra o segundo antes),
+    voz na frente (música ≥ margem_min dB abaixo enquanto fala) e nenhum whoosh (regra INEMA)."""
+    fl, falhas, linhas = ataques(mus if cru is None else cru), [], []   # ataques na música crua; volume na mixada
+    for c in cortes:
+        i0, i1 = max(0, int((c - 2) / .01)), min(len(fl), int((c + 2) / .01))
+        viz = fl[i0:i1]
+        if not len(viz):
+            continue
+        forte = np.where(viz >= max(2.0, .3 * viz.max()))[0]
+        alvo = int(c / .01) - i0
+        off = (forte[np.argmin(np.abs(forte - alvo))] - alvo) * .01 if len(forte) else 9.9
+        if fortes:   # música nossa: vale o início de compasso mais perto (o ataque solto pode ser um pluck qualquer)
+            off_ataque, off = off, min((f - c for f in fortes), key=abs)
+        a, b = int(c * SR), int(min(len(mus), (c + .25) * SR))
+        antes = rms_db(mus[max(0, a - SR):a]) if a > SR // 4 else rms_db(mus[a:b])
+        salto = rms_db(mus[a:b]) - antes
+        ok = abs(off) <= fora_min and salto <= susto_max
+        linhas.append({"corte": round(c, 3), ("compasso_mais_perto" if fortes else "ataque_mais_perto"): round(float(off), 3),
+                       "salto_db": round(float(salto), 1), "ok": bool(ok)})
+        if abs(off) > fora_min:
+            falhas.append(f"corte {c:.2f}s: " + (f"início de compasso mais perto a {off * 1000:+.0f} ms" if fortes else
+                          f"ataque forte mais perto a {off * 1000:+.0f} ms — com pista própria, mova o corte") + f" (máx ±{fora_min * 1000:.0f})")
+        if salto > susto_max: falhas.append(f"corte {c:.2f}s: música sobe {salto:+.1f} dB no corte (susto; máx +{susto_max:.0f})")
+    margem = None
+    if voz is not None and habla.any():
+        margem = rms_db(voz, habla) - rms_db(mus, habla)
+        if margem < margem_min: falhas.append(f"música só {margem:.1f} dB abaixo da voz ao falar (mínimo {margem_min:.0f})")
+    if any(ev["tipo"] == "whoosh" for ev in eventos):
+        falhas.append("eventos.json usa whoosh — regra INEMA: sem som de movimento de tela (troque por pop/click/ding ou tire)")
+    return {"cortes": linhas, "musica_abaixo_da_voz_db": None if margem is None else round(margem, 1), "falhas": falhas}
 
 
 # ── La voz manda ──
-def envolvente(voz, ataque=.04, suelta=.45, umbral_db=-38):
+def envolvente(voz, ataque=.04, suelta=.45, umbral_db=-38, respiro=1.5):
     paso = int(.01 * SR); n = len(voz) // paso
     rms = np.sqrt(np.mean(voz[:n * paso].reshape(n, paso) ** 2, axis=1) + 1e-12)
     ref = np.percentile(rms[rms > 1e-6], 95)
     activo = (20 * np.log10(rms / ref) > umbral_db).astype(float)
+    # pausa curta (< respiro s) entre falas conta como fala: a música não "respira" a cada frase — esse sobe-desce
+    # de 8–10 dB no corte de cena soava como susto (medido no exemplo explicativo, 07/11/2026)
+    on = np.where(activo > 0)[0]
+    for i, j in zip(on[:-1], on[1:]):
+        if 1 < j - i < respiro / .01: activo[i:j] = 1
     sube, baja = 1 - np.exp(-.01 / ataque), 1 - np.exp(-.01 / suelta)
     e, acc = np.empty(n), 0.0
     for i, x in enumerate(activo):
@@ -196,6 +284,11 @@ def main():
     ap.add_argument("--bajo-voz", type=float, default=24, help="dB que queda la música bajo la voz al hablar")
     ap.add_argument("--agache", type=float, default=10, help="dB que sube la música en los huecos de la voz")
     ap.add_argument("--lufs", type=float, default=-14)
+    ap.add_argument("--cortes", help="arquivo de cortes (padrão DIR/audio/<id>/cortes.json; sem ele, os blocos da voz)")
+    ap.add_argument("--sem-cortes", action="store_true", help="grade fixa, sem prender a música aos cortes (a conferência continua)")
+    ap.add_argument("--margem-min", type=float, default=18, help="dB mínimos da música abaixo da voz ao falar")
+    ap.add_argument("--avisar", action="store_true", help="conferência só avisa (sai 0)")
+    ap.add_argument("--respiro", type=float, default=1.5, help="pausa da voz (s) abaixo da qual a música não sobe")
     a = ap.parse_args()
     P = pathlib.Path(a.proyecto).resolve()
     dvoz = P / "voz" / a.id
@@ -209,16 +302,31 @@ def main():
     else:
         sys.exit("Sin voz hace falta --duracion.")
     n = len(voz) if voz is not None else int(round(dur * SR))  # len(voz): int(dur*SR) pode perder 1 amostra
-    mus = leer(a.pista)[:n] if a.pista else musica(a.musica, dur)
+    fc = pathlib.Path(a.cortes) if a.cortes else P / "audio" / a.id / "cortes.json"
+    fortes = None
+    if fc.exists():
+        cortes, origem = [cuando(c, tiempos) for c in json.loads(fc.read_text())], str(fc.name)
+    elif tiempos:
+        cortes, origem = [b["inicio"] for b in tiempos["bloques"][1:]], "início dos blocos da voz"
+    else:
+        cortes, origem = [], "nenhum"
+    if a.pista:
+        mus = leer(a.pista)[:n]
+        mus = np.pad(mus, (0, max(0, n - len(mus))))[:n]
+    else:
+        mus, fortes = musica(a.musica, dur, [] if a.sem_cortes else cortes)
     mus = np.pad(mus, (0, max(0, n - len(mus))))[:n]
+    cru = mus.copy()
     sfx = np.zeros(n)
     fe = P / "audio" / a.id / "eventos.json"
-    for ev in (json.loads(fe.read_text()) if fe.exists() else []):
+    eventos = json.loads(fe.read_text()) if fe.exists() else []
+    habla = np.zeros(n, bool)
+    for ev in eventos:
         x = EFECTOS[ev["tipo"]](ev["nota"]) if ev["tipo"] == "ding" and "nota" in ev else EFECTOS[ev["tipo"]]()
         poner(sfx, x, cuando(ev["t"], tiempos), ev.get("g", 1.0))
     fi, fo = int(.25 * SR), int(1.0 * SR)
     if voz is not None:
-        e = envolvente(voz); habla = e > .5
+        e = envolvente(voz, respiro=a.respiro); habla = e > .5
         mus = mus * 10 ** ((rms_db(voz, habla) - (a.bajo_voz - a.agache) - rms_db(mus)) / 20) * 10 ** (-a.agache * e / 20)
         sfx = sfx / (np.max(np.abs(sfx)) + 1e-9) * np.max(np.abs(voz)) * .33
         mus[:fi] *= np.linspace(0, 1, fi); mus[-fo:] *= np.linspace(1, 0, fo)
@@ -237,6 +345,16 @@ def main():
                     "-ar", str(SR), str(out / "mezcla.wav")], check=True)
     crudo.unlink()
     print(f"{a.id}: {dur:.2f} s → {out / 'mezcla.wav'}")
+    if a.musica == "ninguna" and not a.pista:
+        return
+    rel = conferir(cortes, mus, voz, habla, eventos, a.margem_min, cru=cru, fortes=fortes)
+    rel.update({"origem_dos_cortes": origem, "musica": a.pista or a.musica, "presa_aos_cortes": not a.sem_cortes and not a.pista})
+    (out / "trilha.json").write_text(json.dumps(rel, ensure_ascii=False, indent=1))
+    print(f"{a.id}: trilha — {len(cortes)} cortes ({origem}) · " + ("tudo certo" if not rel["falhas"] else f"{len(rel['falhas'])} problema(s):"))
+    for f in rel["falhas"]:
+        print("  ⚠ " + f)
+    if rel["falhas"] and not a.avisar:
+        sys.exit(1)
 
 
 if __name__ == "__main__":
